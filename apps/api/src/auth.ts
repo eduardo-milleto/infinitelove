@@ -15,7 +15,9 @@ export const auth = betterAuth({
   }),
   secret: env.BETTER_AUTH_SECRET,
   baseURL: env.BETTER_AUTH_URL,
-  trustedOrigins: [env.WEB_URL],
+  // Vercel faz proxy de /api/* → Railway, então requests chegam same-origin.
+  // Aceita tanto o domínio da Vercel quanto o próprio api (health-check, curl, etc).
+  trustedOrigins: [env.WEB_URL, env.BETTER_AUTH_URL],
   emailAndPassword: {
     enabled: true,
     autoSignIn: true,
@@ -31,7 +33,7 @@ export const auth = betterAuth({
   advanced: {
     useSecureCookies: isProd,
     defaultCookieAttributes: {
-      sameSite: isProd ? 'none' : 'lax',
+      sameSite: 'lax',
       secure: isProd,
       httpOnly: true,
     },
@@ -39,7 +41,7 @@ export const auth = betterAuth({
   rateLimit: {
     enabled: true,
     window: 60,
-    max: 20,
+    max: 30,
   },
 });
 

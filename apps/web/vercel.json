@@ -5,6 +5,7 @@
   "installCommand": "echo 'skipping; build command handles install'",
   "framework": "vite",
   "rewrites": [
+    { "source": "/api/:path*", "destination": "https://api-production-1c64.up.railway.app/api/:path*" },
     { "source": "/(.*)", "destination": "/index.html" }
   ],
   "headers": [

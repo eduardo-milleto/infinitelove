@@ -9,6 +9,20 @@ import { momentsRoute } from './routes/moments.js';
 import { photosRoute } from './routes/photos.js';
 import { ensurePhotosRoot } from './lib/storage.js';
 
+process.on('uncaughtException', (err) => {
+  console.error('[fatal] uncaughtException:', err);
+  process.exit(1);
+});
+process.on('unhandledRejection', (reason) => {
+  console.error('[fatal] unhandledRejection:', reason);
+  process.exit(1);
+});
+
+console.log('[boot] node version:', process.version);
+console.log('[boot] NODE_ENV:', env.NODE_ENV, 'PORT:', env.PORT);
+console.log('[boot] WEB_URL:', env.WEB_URL);
+console.log('[boot] PHOTOS_DIR:', env.PHOTOS_DIR);
+
 const app = new Hono();
 
 app.use('*', logger());
@@ -24,6 +38,7 @@ app.use(
 );
 
 app.get('/health', (c) => c.json({ ok: true, env: env.NODE_ENV }));
+app.get('/', (c) => c.json({ name: 'infinitelove api', ok: true }));
 
 app.on(['GET', 'POST'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 
@@ -35,11 +50,18 @@ app.onError((err, c) => {
   return c.json({ error: isProd ? 'internal error' : String(err) }, 500);
 });
 
-await ensurePhotosRoot();
+try {
+  console.log('[boot] ensuring photos dir…');
+  await ensurePhotosRoot();
+  console.log('[boot] photos dir ok');
+} catch (err) {
+  console.error('[boot] failed to ensure photos dir:', err);
+  process.exit(1);
+}
 
 serve(
   { fetch: app.fetch, port: env.PORT, hostname: '0.0.0.0' },
   (info) => {
-    console.log(`🌱 api listening on http://localhost:${info.port} (env=${env.NODE_ENV})`);
+    console.log(`🌱 api listening on http://0.0.0.0:${info.port} (env=${env.NODE_ENV})`);
   },
 );

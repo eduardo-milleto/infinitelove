@@ -1,0 +1,327 @@
+@import 'tailwindcss';
+
+@theme {
+  /* Typography — Claude editorial serif + pixel accents for game flavor */
+  --font-serif: 'Lora', Georgia, 'Times New Roman', serif;
+  --font-sans: system-ui, -apple-system, 'Helvetica Neue', Arial, sans-serif;
+  --font-pixel: 'Pixelify Sans', system-ui, sans-serif;
+  --font-arcade: 'Press Start 2P', 'Pixelify Sans', monospace;
+
+  /* Claude warm palette — parchment canvas */
+  --color-parchment: #f5f4ed;
+  --color-ivory: #faf9f5;
+  --color-sand: #e8e6dc;
+  --color-border-cream: #f0eee6;
+  --color-border-warm: #e8e6dc;
+  --color-ring-warm: #d1cfc5;
+  --color-ring-deep: #c2c0b6;
+
+  /* Text — warm neutrals (no cool grays) */
+  --color-near-black: #141413;
+  --color-dark-warm: #3d3d3a;
+  --color-charcoal-warm: #4d4c48;
+  --color-olive-gray: #5e5d59;
+  --color-stone-gray: #87867f;
+  --color-warm-silver: #b0aea5;
+  --color-dark-surface: #30302e;
+
+  /* Brand accents — Claude terracotta + love pink for the romance */
+  --color-terracotta: #c96442;
+  --color-coral: #d97757;
+  --color-love: #ff477e;
+  --color-love-soft: #ffb3c6;
+  --color-love-wash: #ffe1ea;
+
+  /* Secondary Stardew flavor tokens — used sparingly */
+  --color-grass: #6b9e4a;
+  --color-grass-deep: #2e6b32;
+  --color-wood: #8b5a2b;
+  --color-wood-deep: #6b4226;
+  --color-gold: #f3c969;
+}
+
+@layer base {
+  html,
+  body,
+  #root {
+    height: 100%;
+  }
+
+  body {
+    font-family: var(--font-sans);
+    background-color: var(--color-parchment);
+    color: var(--color-near-black);
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  * {
+    box-sizing: border-box;
+  }
+
+  h1, h2, h3, h4 {
+    font-family: var(--font-serif);
+    font-weight: 500;
+    color: var(--color-near-black);
+    letter-spacing: -0.005em;
+  }
+
+  h1 { font-size: clamp(2.25rem, 5vw, 4rem); line-height: 1.10; }
+  h2 { font-size: clamp(1.75rem, 3.5vw, 2.75rem); line-height: 1.20; }
+  h3 { font-size: clamp(1.25rem, 2.5vw, 1.6rem); line-height: 1.25; }
+  h4 { font-size: 1.15rem; line-height: 1.3; }
+
+  p { line-height: 1.6; }
+
+  input, textarea, select, button {
+    font-family: inherit;
+  }
+
+  ::selection {
+    background: var(--color-love-soft);
+    color: var(--color-near-black);
+  }
+}
+
+@layer components {
+  /* Claude ring-shadow card — the workhorse surface */
+  .card {
+    background: var(--color-ivory);
+    border: 1px solid var(--color-border-cream);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 0 0 1px var(--color-border-cream);
+  }
+
+  .card-elevated {
+    background: var(--color-ivory);
+    border-radius: 16px;
+    padding: 1.5rem;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.05);
+  }
+
+  .card-hoverable {
+    transition: box-shadow 180ms ease, transform 180ms ease;
+  }
+  .card-hoverable:hover {
+    box-shadow: 0 0 0 1px var(--color-ring-warm), 0 4px 24px rgba(0, 0, 0, 0.06);
+    transform: translateY(-2px);
+  }
+
+  /* Pixel frame — signature Stardew flavor moment (used on hero counter + splash) */
+  .pixel-frame {
+    position: relative;
+    background: var(--color-ivory);
+    border: 3px solid var(--color-wood-deep);
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 3px var(--color-sand),
+      0 0 0 6px var(--color-wood-deep),
+      6px 6px 0 6px rgba(61, 40, 23, 0.2);
+    image-rendering: pixelated;
+  }
+
+  /* Buttons — Claude primary (terracotta) + secondary (warm sand) + love variant */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    font-weight: 500;
+    padding: 0.5rem 1rem;
+    border-radius: 12px;
+    border: 0;
+    cursor: pointer;
+    transition: box-shadow 160ms ease, transform 80ms ease, background-color 160ms ease;
+    outline: none;
+  }
+  .btn:focus-visible {
+    box-shadow: 0 0 0 2px var(--color-parchment), 0 0 0 4px var(--color-terracotta);
+  }
+  .btn:disabled {
+    opacity: 0.55;
+    cursor: not-allowed;
+  }
+
+  .btn-primary {
+    background: var(--color-terracotta);
+    color: var(--color-ivory);
+    box-shadow: 0 0 0 1px var(--color-terracotta);
+  }
+  .btn-primary:hover:not(:disabled) {
+    background: var(--color-coral);
+    box-shadow: 0 0 0 1px var(--color-coral), 0 4px 12px rgba(201, 100, 66, 0.25);
+  }
+  .btn-primary[data-pressed]:not(:disabled) {
+    transform: translateY(1px);
+  }
+
+  .btn-secondary {
+    background: var(--color-sand);
+    color: var(--color-charcoal-warm);
+    box-shadow: 0 0 0 1px var(--color-ring-warm);
+  }
+  .btn-secondary:hover:not(:disabled) {
+    box-shadow: 0 0 0 1px var(--color-ring-deep);
+  }
+
+  .btn-love {
+    background: var(--color-love);
+    color: var(--color-ivory);
+    box-shadow: 0 0 0 1px var(--color-love);
+  }
+  .btn-love:hover:not(:disabled) {
+    background: var(--color-love-soft);
+    color: var(--color-near-black);
+    box-shadow: 0 0 0 1px var(--color-love);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--color-olive-gray);
+  }
+  .btn-ghost:hover:not(:disabled) {
+    background: var(--color-border-cream);
+    color: var(--color-near-black);
+  }
+
+  /* Pixel accent button — used on the hero CTA for game flavor only */
+  .btn-pixel {
+    font-family: var(--font-pixel);
+    font-weight: 600;
+    font-size: 1.05rem;
+    padding: 0.5rem 1.25rem;
+    background: var(--color-love-soft);
+    color: var(--color-near-black);
+    border: 3px solid var(--color-wood-deep);
+    border-radius: 4px;
+    box-shadow:
+      inset 3px 3px 0 0 rgba(255, 255, 255, 0.5),
+      inset -3px -3px 0 0 rgba(255, 71, 126, 0.35),
+      3px 3px 0 0 var(--color-wood-deep);
+    cursor: pointer;
+    transition: transform 80ms ease, box-shadow 80ms ease;
+  }
+  .btn-pixel:hover {
+    transform: translate(1px, 1px);
+    box-shadow:
+      inset 3px 3px 0 0 rgba(255, 255, 255, 0.5),
+      inset -3px -3px 0 0 rgba(255, 71, 126, 0.35),
+      2px 2px 0 0 var(--color-wood-deep);
+  }
+  .btn-pixel:active {
+    transform: translate(3px, 3px);
+    box-shadow: inset -2px -2px 0 0 rgba(255, 71, 126, 0.35);
+  }
+
+  /* Inputs — Claude-style: warm, thin border, generous radius, focus blue for a11y */
+  .input {
+    width: 100%;
+    font-family: var(--font-sans);
+    font-size: 1rem;
+    padding: 0.65rem 0.9rem;
+    background: var(--color-ivory);
+    color: var(--color-near-black);
+    border: 1px solid var(--color-border-warm);
+    border-radius: 12px;
+    outline: none;
+    transition: box-shadow 160ms ease, border-color 160ms ease;
+  }
+  .input:focus,
+  .input[data-focused] {
+    border-color: #3898ec;
+    box-shadow: 0 0 0 3px rgba(56, 152, 236, 0.18);
+  }
+  .input[data-invalid] {
+    border-color: #b53333;
+  }
+
+  .label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-olive-gray);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.01em;
+  }
+
+  /* Chips / overline labels */
+  .overline {
+    font-family: var(--font-sans);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+    color: var(--color-stone-gray);
+    font-weight: 500;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.2rem 0.6rem;
+    background: var(--color-love-wash);
+    color: var(--color-love);
+    border-radius: 999px;
+    font-size: 0.78rem;
+    font-weight: 500;
+  }
+
+  .chip-sand {
+    background: var(--color-sand);
+    color: var(--color-charcoal-warm);
+  }
+
+  /* Counter — pixel/arcade for numbers, serif for words (blended signature) */
+  .counter-digit {
+    font-family: var(--font-arcade);
+    color: var(--color-terracotta);
+    text-shadow: 2px 2px 0 var(--color-sand);
+    line-height: 1;
+    display: inline-block;
+    min-width: 1ch;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .serif-body {
+    font-family: var(--font-serif);
+    font-size: 1.06rem;
+    line-height: 1.6;
+    color: var(--color-dark-warm);
+  }
+
+  .divider {
+    height: 1px;
+    background: var(--color-border-warm);
+    margin: 2rem 0;
+  }
+
+  /* React Aria Dialog / Modal overlay */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(20, 20, 19, 0.35);
+    backdrop-filter: blur(4px);
+    display: grid;
+    place-items: center;
+    padding: 1rem;
+    z-index: 50;
+  }
+  .modal-panel {
+    background: var(--color-ivory);
+    border-radius: 16px;
+    border: 1px solid var(--color-border-cream);
+    box-shadow: 0 20px 48px rgba(0, 0, 0, 0.15);
+    max-width: 32rem;
+    width: 100%;
+    padding: 1.5rem;
+  }
+
+  /* Subtle dot pattern for parchment-feeling bg on sections */
+  .bg-parchment-dots {
+    background-image: radial-gradient(rgba(107, 66, 38, 0.06) 1px, transparent 1px);
+    background-size: 14px 14px;
+  }
+}

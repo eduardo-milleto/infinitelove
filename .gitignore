@@ -1,0 +1,30 @@
+node_modules
+dist
+build
+.turbo
+.cache
+coverage
+
+# env
+.env
+.env.*
+!.env.example
+
+# logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+
+# editors
+.vscode/*
+!.vscode/settings.json
+!.vscode/extensions.json
+.idea
+.DS_Store
+
+# generated
+routeTree.gen.ts
+drizzle/meta
+
+# local photos dir during dev
+apps/api/data

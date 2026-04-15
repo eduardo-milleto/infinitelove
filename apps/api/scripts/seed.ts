@@ -1,13 +1,34 @@
-import { auth } from '../src/auth.js';
+import { betterAuth } from 'better-auth';
+import { drizzleAdapter } from 'better-auth/adapters/drizzle';
+import { eq } from 'drizzle-orm';
 import { db, schema } from '../src/db/client.js';
 import { env } from '../src/env.js';
-import { eq } from 'drizzle-orm';
 
 const password = env.SEED_PASSWORD;
 if (!password) {
   console.error('❌ set SEED_PASSWORD in env to seed users');
   process.exit(1);
 }
+
+// Instância temporária só para seed — com signup habilitado
+const seedAuth = betterAuth({
+  database: drizzleAdapter(db, {
+    provider: 'pg',
+    schema: {
+      user: schema.user,
+      session: schema.session,
+      account: schema.account,
+      verification: schema.verification,
+    },
+  }),
+  secret: env.BETTER_AUTH_SECRET,
+  baseURL: env.BETTER_AUTH_URL,
+  emailAndPassword: {
+    enabled: true,
+    disableSignUp: false,
+    minPasswordLength: 6,
+  },
+});
 
 const users = [
   { name: 'Eduardo', email: env.SEED_EDUARDO_EMAIL },
@@ -20,7 +41,7 @@ for (const u of users) {
     console.log(`↷ skipping ${u.email} (already exists)`);
     continue;
   }
-  await auth.api.signUpEmail({ body: { email: u.email, password, name: u.name } });
+  await seedAuth.api.signUpEmail({ body: { email: u.email, password, name: u.name } });
   console.log(`✅ created ${u.email}`);
 }
 

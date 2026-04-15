@@ -22,8 +22,7 @@ pnpm-debug.log*
 .idea
 .DS_Store
 
-# generated
-routeTree.gen.ts
+# generated (routeTree.gen.ts is committed — TanStack Router needs it at build time)
 drizzle/meta
 
 # local photos dir during dev

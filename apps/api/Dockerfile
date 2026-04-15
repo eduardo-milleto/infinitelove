@@ -5,12 +5,13 @@ ENV PATH=$PNPM_HOME:$PATH
 RUN corepack enable && corepack prepare pnpm@9.12.0 --activate
 WORKDIR /app
 
-# ----- deps -----
+# ----- deps (install with workspace package.json files only) -----
 FROM base AS deps
-COPY pnpm-workspace.yaml package.json pnpm-lock.yaml* ./
+COPY pnpm-workspace.yaml package.json pnpm-lock.yaml ./
 COPY packages/shared/package.json packages/shared/
 COPY apps/api/package.json apps/api/
-RUN pnpm install --frozen-lockfile || pnpm install
+COPY apps/web/package.json apps/web/
+RUN pnpm install --frozen-lockfile
 
 # ----- build -----
 FROM base AS build
@@ -18,7 +19,7 @@ COPY --from=deps /app /app
 COPY tsconfig.base.json ./
 COPY packages/shared packages/shared
 COPY apps/api apps/api
-RUN pnpm --filter @infinitelove/shared exec tsc -p tsconfig.json || true
+RUN pnpm --filter @infinitelove/shared build
 RUN pnpm --filter api build
 
 # ----- runtime -----

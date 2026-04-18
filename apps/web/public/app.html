@@ -1850,12 +1850,13 @@ function Hero({ onDialog }) {
 
       {/* === MESA DO PROGRAMADOR (atrás-esquerda, menor, trás do sofá) === */}
       <div
-        style={{ position: 'absolute', bottom: '38%', left: '20%', cursor: 'pointer', zIndex: 2 }}
+        style={{ position: 'absolute', bottom: 'calc(3% + 120px)', left: '20%', cursor: 'pointer', zIndex: 2 }}
         onClick={() => onDialog({ who: 'setup do Edu', text: 'mesa limpa. VSCode aberto. café preto. terminal no neovim. vida boa.' })}
       >
         <div style={{ position: 'relative', width: 140, height: 8, background: '#3a2a1a', borderTop: '3px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
-        <div style={{ position: 'absolute', bottom: -40, left: 8, width: 5, height: 40, background: '#2a1a10' }} />
-        <div style={{ position: 'absolute', bottom: -40, left: 127, width: 5, height: 40, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: -120, left: 8, width: 5, height: 120, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: -120, left: 127, width: 5, height: 120, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: -72, left: 8, right: 8, height: 4, background: '#2a1a10' }} />
         <div style={{ position: 'absolute', bottom: 8, left: 20, transform: 'scale(2)', transformOrigin: 'bottom left' }}>
           <PixelSprite data={MONITOR_DATA} palette={MONITOR_PALETTE} scale={2} />
         </div>
@@ -1867,13 +1868,13 @@ function Hero({ onDialog }) {
 
       {/* === CANTO NUTRI - bancada com pernas aterradas === */}
       <div
-        style={{ position: 'absolute', bottom: '24%', right: '4%', cursor: 'pointer', zIndex: 2 }}
+        style={{ position: 'absolute', bottom: 'calc(3% + 140px)', right: '4%', cursor: 'pointer', zIndex: 2 }}
         onClick={() => onDialog({ who: 'bancada da Bella', text: 'tábua de frutas, iogurte grego, whey na prateleira. a nutri mandou.' })}
       >
         <div style={{ position: 'relative', width: 150, height: 10, background: '#e8e0d4', borderTop: '3px solid #fff', borderBottom: '2px solid #8b8070' }} />
-        <div style={{ position: 'absolute', bottom: -90, left: 8, width: 6, height: 90, background: '#d0c4b0' }} />
-        <div style={{ position: 'absolute', bottom: -90, right: 8, width: 6, height: 90, background: '#d0c4b0' }} />
-        <div style={{ position: 'absolute', bottom: -90, left: 8, right: 8, height: 6, background: '#b8a898', top: 40 }} />
+        <div style={{ position: 'absolute', bottom: -140, left: 8, width: 6, height: 140, background: '#d0c4b0' }} />
+        <div style={{ position: 'absolute', bottom: -140, right: 8, width: 6, height: 140, background: '#d0c4b0' }} />
+        <div style={{ position: 'absolute', bottom: -90, left: 8, right: 8, height: 4, background: '#b8a898' }} />
         <div style={{ position: 'absolute', bottom: 10, left: 8, transform: 'scale(1.4)', transformOrigin: 'bottom left' }}>
           <PixelSprite data={APPLE_DATA} palette={APPLE_PALETTE} scale={2} />
         </div>

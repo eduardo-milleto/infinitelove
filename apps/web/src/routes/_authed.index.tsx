@@ -4,6 +4,15 @@ import type { MomentDto } from '@infinitelove/shared';
 import { api } from '../lib/api';
 import { HeroScene } from '../components/pixel/HeroScene';
 import { MomentCard } from '../components/MomentCard';
+import {
+  Timeline,
+  Letter,
+  Playlist,
+  MapSection,
+  Achievements,
+  Inventory,
+  FinalCard,
+} from '../components/pixel/StardewSections';
 
 export const Route = createFileRoute('/_authed/')({
   component: Home,
@@ -16,16 +25,16 @@ function Home() {
   });
 
   return (
-    <div className="flex flex-col gap-10">
+    <div className="stardew flex flex-col gap-4">
       <HeroScene />
 
-      <section>
-        <div className="flex items-end justify-between mb-6">
-          <div>
-            <span className="overline">nossa história</span>
-            <h2 className="font-serif">momentos que não esqueço</h2>
-          </div>
-          <Link to="/moments/new" className="btn btn-primary no-underline">
+      <section className="gallery-section" id="galeria">
+        <div className="section-label">NOSSA HISTÓRIA</div>
+        <div className="flex items-end justify-between mb-6 flex-wrap gap-3">
+          <h2 className="section-title" style={{ marginBottom: 0 }}>
+            momentos que não esqueço
+          </h2>
+          <Link to="/moments/new" className="pixel-btn no-underline">
             + novo momento
           </Link>
         </div>
@@ -48,6 +57,28 @@ function Home() {
           </div>
         )}
       </section>
+
+      <Timeline />
+      <Letter />
+      <Playlist />
+      <MapSection />
+      <Achievements />
+      <Inventory />
+      <FinalCard />
+
+      <footer
+        style={{
+          textAlign: 'center',
+          padding: '40px 20px 60px',
+          fontFamily: 'var(--pixel)',
+          fontSize: 14,
+          letterSpacing: 2,
+          color: 'var(--wood-dark)',
+          opacity: 0.7,
+        }}
+      >
+        ♥ feito com amor · save file v1.0 · {new Date().getFullYear()} ♥
+      </footer>
     </div>
   );
 }
@@ -67,7 +98,9 @@ function LoadingGrid() {
 function EmptyState() {
   return (
     <div className="card-elevated text-center py-12">
-      <div className="text-5xl mb-3" aria-hidden>🌱</div>
+      <div className="text-5xl mb-3" aria-hidden>
+        🌱
+      </div>
       <h3 className="font-serif text-2xl">ainda não plantamos nada aqui</h3>
       <p className="serif-body text-olive-gray max-w-sm mx-auto mt-2">
         que tal criar o primeiro momento? uma foto, uma historinha, aquele meme interno que só vocês

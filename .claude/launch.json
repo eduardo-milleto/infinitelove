@@ -1,0 +1,12 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "meu-amor-html",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8766", "--directory", "/tmp/meu_amor_unpack"],
+      "port": 8766,
+      "path": "/eduardo-isabella.html"
+    }
+  ]
+}

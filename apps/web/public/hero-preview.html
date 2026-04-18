@@ -1,0 +1,2907 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Eduardo e Isabella - 1 ano</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=VT323&family=Lora:ital,wght@0,400;0,500;0,600;1,400;1,500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+/* ============================================
+   STARDEW-INSPIRED LOVE SITE
+   Paleta: pôr do sol / noite estrelada
+   ============================================ */
+
+@font-face { font-family: 'placeholder'; src: local('Arial'); }
+
+:root {
+  --pixel: 'VT323', 'Courier New', monospace;
+  --serif: 'Lora', 'Georgia', serif;
+  --mono: 'JetBrains Mono', monospace;
+
+  --cream: #f4e4c1;
+  --cream-2: #ede0c3;
+  --wood: #8b5a2c;
+  --wood-dark: #4a2c1a;
+  --wood-light: #d9b08c;
+  --night: #2d1b3d;
+  --night-deep: #0d0a2e;
+  --sunset: #d97760;
+  --rose: #c94c4c;
+  --rose-light: #ff6b8a;
+  --gold: #f0c040;
+  --leaf: #5a8a3e;
+  --leaf-dark: #3d5c2a;
+  --firefly: #fff4a3;
+}
+
+* { box-sizing: border-box; }
+
+html, body {
+  margin: 0;
+  padding: 0;
+  background: var(--cream);
+  font-family: var(--serif);
+  color: var(--wood-dark);
+  overflow-x: hidden;
+}
+
+/* Faixa de grama com textura pixel */
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 30%, rgba(139, 90, 44, 0.04) 0 2px, transparent 2px),
+    radial-gradient(circle at 80% 70%, rgba(139, 90, 44, 0.04) 0 2px, transparent 2px);
+  background-size: 40px 40px;
+  pointer-events: none;
+  z-index: 0;
+}
+
+img, svg { image-rendering: pixelated; }
+
+/* ============================================
+   TIPOGRAFIA
+   ============================================ */
+h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01em; margin: 0; }
+.section-label {
+  font-family: var(--pixel);
+  font-size: 14px;
+  letter-spacing: 3px;
+  color: var(--sunset);
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.section-title {
+  font-size: clamp(36px, 5vw, 58px);
+  line-height: 1.05;
+  color: var(--wood-dark);
+  margin-bottom: 32px;
+  font-style: italic;
+  font-weight: 500;
+}
+
+/* ============================================
+   NAVBAR
+   ============================================ */
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 32px;
+  background: rgba(244, 228, 193, 0.95);
+  backdrop-filter: blur(10px);
+  border-bottom: 3px solid var(--wood-dark);
+  box-shadow: 0 4px 0 rgba(45, 26, 15, 0.1);
+}
+.navbar-brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--pixel);
+  font-size: 22px;
+  letter-spacing: 2px;
+  color: var(--wood-dark);
+}
+.navbar-links {
+  display: flex;
+  gap: 20px;
+}
+.nav-link {
+  font-family: var(--pixel);
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--wood-dark);
+  text-decoration: none;
+  padding: 4px 10px;
+  border-radius: 2px;
+  transition: all 0.15s;
+}
+.nav-link:hover {
+  background: var(--sunset);
+  color: var(--cream);
+  transform: translate(-1px, -1px);
+  box-shadow: 2px 2px 0 var(--wood-dark);
+}
+
+/* ============================================
+   BOTÕES / CARDS
+   ============================================ */
+.pixel-btn {
+  font-family: var(--pixel);
+  font-size: 18px;
+  letter-spacing: 2px;
+  background: var(--sunset);
+  color: var(--cream);
+  border: none;
+  padding: 12px 20px;
+  cursor: pointer;
+  box-shadow:
+    inset -4px -4px 0 rgba(0,0,0,0.2),
+    inset 4px 4px 0 rgba(255,255,255,0.2),
+    4px 4px 0 var(--wood-dark);
+  transition: all 0.1s;
+  text-transform: lowercase;
+}
+.pixel-btn:hover {
+  transform: translate(-2px, -2px);
+  box-shadow:
+    inset -4px -4px 0 rgba(0,0,0,0.2),
+    inset 4px 4px 0 rgba(255,255,255,0.2),
+    6px 6px 0 var(--wood-dark);
+}
+.pixel-btn:active {
+  transform: translate(2px, 2px);
+  box-shadow:
+    inset 4px 4px 0 rgba(0,0,0,0.2),
+    inset -4px -4px 0 rgba(255,255,255,0.2),
+    0 0 0 var(--wood-dark);
+}
+.pixel-btn-small { font-size: 14px; padding: 8px 14px; box-shadow: 3px 3px 0 var(--wood-dark); }
+
+.pixel-card {
+  background: var(--cream-2);
+  border: 4px solid var(--wood-dark);
+  padding: 32px;
+  box-shadow:
+    8px 8px 0 var(--wood-dark),
+    inset 0 0 0 2px var(--cream);
+  position: relative;
+}
+.pixel-card-header {
+  font-family: var(--pixel);
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-align: center;
+  color: var(--wood);
+  margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+}
+.pixel-card-header .dot {
+  width: 8px; height: 8px; background: var(--rose);
+}
+
+/* ============================================
+   COUNTER
+   ============================================ */
+.counter-section {
+  padding: 60px 32px;
+  position: relative;
+  z-index: 2;
+}
+.counter-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 12px;
+  margin: 20px 0 16px;
+}
+.counter-cell {
+  text-align: center;
+  padding: 16px 8px;
+  background: var(--cream);
+  border: 3px solid var(--wood-dark);
+  box-shadow: 4px 4px 0 rgba(45, 26, 15, 0.15);
+}
+.counter-num {
+  font-family: var(--pixel);
+  font-size: 54px;
+  line-height: 1;
+  color: var(--sunset);
+  text-shadow: 3px 3px 0 var(--wood-dark);
+}
+.counter-label {
+  font-family: var(--pixel);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--wood-dark);
+  margin-top: 4px;
+  text-transform: uppercase;
+}
+.counter-foot {
+  text-align: center;
+  font-style: italic;
+  color: var(--wood-dark);
+  opacity: 0.85;
+  font-size: 16px;
+}
+
+/* ============================================
+   GALERIA
+   ============================================ */
+.gallery-section, .timeline-section, .letter-section,
+.playlist-section, .map-section, .ach-section,
+.inv-section, .final-section {
+  padding: 80px 32px;
+  max-width: 1280px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 2;
+}
+.gallery-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 28px;
+}
+.memory-card {
+  background: var(--cream-2);
+  border: 4px solid var(--wood-dark);
+  box-shadow: 6px 6px 0 var(--wood-dark);
+  cursor: pointer;
+  transition: transform 0.15s;
+  overflow: hidden;
+}
+.memory-card:hover {
+  transform: translate(-3px, -3px);
+  box-shadow: 9px 9px 0 var(--wood-dark);
+}
+.memory-photo {
+  position: relative;
+  aspect-ratio: 4 / 3;
+  overflow: hidden;
+  border-bottom: 3px solid var(--wood-dark);
+}
+.photo-placeholder {
+  width: 100%; height: 100%;
+  background: linear-gradient(135deg, var(--sunset), var(--rose) 60%, var(--wood) 100%);
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.ph-pattern {
+  position: absolute; inset: 0;
+  background-image:
+    repeating-linear-gradient(45deg, rgba(255,255,255,0.08) 0 8px, transparent 8px 16px),
+    repeating-linear-gradient(-45deg, rgba(0,0,0,0.06) 0 8px, transparent 8px 16px);
+}
+.ph-label {
+  position: relative;
+  font-family: var(--pixel);
+  font-size: 16px;
+  color: var(--cream);
+  letter-spacing: 2px;
+  padding: 10px 16px;
+  background: rgba(45, 26, 15, 0.7);
+  border: 2px solid var(--cream);
+  text-transform: lowercase;
+}
+.memory-date-tag {
+  position: absolute;
+  top: 14px; left: 14px;
+  padding: 5px 10px;
+  background: var(--cream);
+  border: 2px solid var(--wood-dark);
+  font-family: var(--pixel);
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: var(--wood-dark);
+  box-shadow: 2px 2px 0 var(--wood-dark);
+}
+.memory-body { padding: 20px 22px; }
+.memory-body h3 {
+  font-size: 24px;
+  margin-bottom: 8px;
+  font-style: italic;
+  color: var(--wood-dark);
+}
+.memory-body p {
+  font-size: 15px;
+  line-height: 1.5;
+  color: var(--wood-dark);
+  opacity: 0.85;
+  margin: 0 0 14px;
+  text-wrap: pretty;
+}
+
+/* ============================================
+   TIMELINE
+   ============================================ */
+.timeline {
+  position: relative;
+  padding: 20px 0;
+}
+.timeline-line {
+  position: absolute;
+  left: 50%;
+  top: 0; bottom: 0;
+  width: 4px;
+  background: repeating-linear-gradient(to bottom, var(--wood-dark) 0 6px, transparent 6px 12px);
+  transform: translateX(-50%);
+}
+.timeline-item {
+  position: relative;
+  margin-bottom: 40px;
+  width: 50%;
+  padding: 0 40px;
+}
+.timeline-item.left { left: 0; text-align: right; }
+.timeline-item.right { left: 50%; }
+.timeline-node {
+  position: absolute;
+  top: 20px;
+  width: 16px; height: 16px;
+  background: var(--rose);
+  border: 3px solid var(--wood-dark);
+  box-shadow: 2px 2px 0 var(--wood-dark);
+}
+.timeline-item.left .timeline-node { right: -10px; }
+.timeline-item.right .timeline-node { left: -10px; }
+.timeline-card {
+  background: var(--cream-2);
+  border: 3px solid var(--wood-dark);
+  box-shadow: 5px 5px 0 var(--wood-dark);
+  padding: 18px 22px;
+}
+.timeline-date {
+  font-family: var(--pixel);
+  font-size: 14px;
+  letter-spacing: 2px;
+  color: var(--sunset);
+  margin-bottom: 4px;
+}
+.timeline-card h3 {
+  font-size: 22px;
+  font-style: italic;
+  margin-bottom: 6px;
+}
+.timeline-card p { margin: 0; font-size: 15px; line-height: 1.5; opacity: 0.88; }
+
+/* ============================================
+   LETTER
+   ============================================ */
+.letter-scroll {
+  max-width: 760px;
+  margin: 0 auto;
+  background: var(--cream-2);
+  border: 4px solid var(--wood-dark);
+  box-shadow: 10px 10px 0 var(--wood-dark);
+  padding: 48px 56px;
+  position: relative;
+}
+.letter-scroll::before, .letter-scroll::after {
+  content: '';
+  position: absolute;
+  left: 12px; right: 12px;
+  height: 6px;
+  background: var(--wood);
+}
+.letter-scroll::before { top: 12px; }
+.letter-scroll::after { bottom: 12px; }
+.letter-body p {
+  font-size: 19px;
+  line-height: 1.75;
+  text-wrap: pretty;
+  margin: 0 0 18px;
+  color: var(--wood-dark);
+}
+.letter-body p:first-child {
+  font-family: var(--pixel);
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  color: var(--sunset);
+  margin-bottom: 26px;
+}
+
+/* ============================================
+   PLAYLIST
+   ============================================ */
+.playlist-box {
+  max-width: 720px;
+  margin: 0 auto;
+  background: var(--cream-2);
+  border: 4px solid var(--wood-dark);
+  box-shadow: 8px 8px 0 var(--wood-dark);
+  padding: 24px 28px;
+}
+.playlist-header {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding-bottom: 16px;
+  margin-bottom: 16px;
+  border-bottom: 2px dashed var(--wood-dark);
+  color: var(--wood-dark);
+}
+.playlist-list {
+  list-style: none;
+  padding: 0; margin: 0;
+}
+.playlist-list li {
+  display: grid;
+  grid-template-columns: auto 1fr auto auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 12px 10px;
+  cursor: pointer;
+  border-bottom: 1px dotted rgba(74, 44, 26, 0.3);
+  transition: background 0.1s;
+}
+.playlist-list li:hover { background: rgba(217, 119, 96, 0.1); }
+.playlist-list li.active { background: rgba(217, 119, 96, 0.25); }
+.pl-num { font-family: var(--pixel); font-size: 16px; color: var(--sunset); min-width: 24px; }
+.pl-title { font-size: 16px; font-style: italic; }
+.pl-mood { font-family: var(--pixel); font-size: 12px; color: var(--wood); letter-spacing: 1px; }
+.pl-dur { font-family: var(--mono); font-size: 13px; opacity: 0.7; }
+.pl-play {
+  font-family: var(--pixel);
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  border: 2px solid var(--wood-dark);
+  background: var(--cream);
+  display: grid;
+  place-items: center;
+}
+.playlist-progress {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 2px dashed var(--wood-dark);
+}
+.pp-bar {
+  height: 10px;
+  background: var(--cream);
+  border: 2px solid var(--wood-dark);
+  position: relative;
+  overflow: hidden;
+}
+.pp-bar::after {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 40%;
+  background: repeating-linear-gradient(-45deg, var(--sunset) 0 6px, var(--rose) 6px 12px);
+  animation: pp-slide 8s linear infinite;
+}
+
+/* ============================================
+   MAP
+   ============================================ */
+.map-container {
+  border: 4px solid var(--wood-dark);
+  box-shadow: 8px 8px 0 var(--wood-dark);
+  background: #c8dcb0;
+  overflow: hidden;
+}
+.map-bg {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  background:
+    radial-gradient(ellipse at 25% 30%, #a8c88a 0 20%, transparent 21%),
+    radial-gradient(ellipse at 75% 60%, #9fc080 0 25%, transparent 26%),
+    linear-gradient(135deg, #c8dcb0, #a8c88a);
+}
+.map-grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(to right, rgba(74, 44, 26, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(74, 44, 26, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+.map-path {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+}
+.map-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+}
+.pin-heart {
+  animation: heart-pulse 1.5s ease-in-out infinite;
+  filter: drop-shadow(2px 2px 0 var(--wood-dark));
+}
+.map-pin:hover .pin-heart { transform: scale(1.3); }
+.pin-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--cream);
+  border: 3px solid var(--wood-dark);
+  box-shadow: 3px 3px 0 var(--wood-dark);
+  padding: 8px 12px;
+  white-space: nowrap;
+  font-size: 14px;
+  font-style: italic;
+  color: var(--wood-dark);
+}
+
+/* ============================================
+   ACHIEVEMENTS
+   ============================================ */
+.ach-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 18px;
+}
+.ach-card {
+  display: flex;
+  gap: 16px;
+  align-items: flex-start;
+  background: var(--cream-2);
+  border: 3px solid var(--wood-dark);
+  box-shadow: 4px 4px 0 var(--wood-dark);
+  padding: 16px 18px;
+  transition: transform 0.15s;
+}
+.ach-card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--wood-dark); }
+.ach-card.locked { opacity: 0.45; filter: grayscale(0.8); }
+.ach-icon {
+  font-size: 36px;
+  width: 56px; height: 56px;
+  display: grid; place-items: center;
+  background: var(--cream);
+  border: 2px solid var(--wood-dark);
+  flex-shrink: 0;
+}
+.ach-title {
+  font-size: 17px;
+  font-weight: 600;
+  font-style: italic;
+  margin-bottom: 2px;
+}
+.ach-desc { font-size: 13px; opacity: 0.85; line-height: 1.4; text-wrap: pretty; }
+.ach-rarity {
+  display: inline-block;
+  margin-top: 6px;
+  font-family: var(--pixel);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  padding: 2px 6px;
+  background: var(--wood-dark);
+  color: var(--cream);
+}
+.rarity-lendário .ach-rarity { background: var(--gold); color: var(--wood-dark); }
+.rarity-épico .ach-rarity { background: #8b4a9c; }
+.rarity-raro .ach-rarity { background: var(--sunset); }
+
+/* ============================================
+   INVENTORY
+   ============================================ */
+.inv-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  background: var(--cream-2);
+  border: 4px solid var(--wood-dark);
+  box-shadow: 8px 8px 0 var(--wood-dark);
+  padding: 20px;
+}
+.inv-grid {
+  display: grid;
+  grid-template-columns: repeat(8, 1fr);
+  gap: 6px;
+}
+.inv-slot {
+  aspect-ratio: 1;
+  background: var(--cream);
+  border: 3px solid var(--wood-dark);
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.1s;
+  padding: 0;
+  box-shadow: inset 2px 2px 0 rgba(255,255,255,0.5), inset -2px -2px 0 rgba(0,0,0,0.08);
+}
+.inv-slot:not(:disabled):hover { transform: scale(1.05); background: #fff6dd; }
+.inv-slot:disabled { cursor: default; opacity: 0.5; }
+.inv-slot.selected {
+  background: var(--gold);
+  box-shadow: inset 0 0 0 2px var(--wood-dark);
+}
+.inv-icon { font-size: 28px; }
+.inv-qty {
+  position: absolute;
+  bottom: 2px; right: 4px;
+  font-family: var(--pixel);
+  font-size: 14px;
+  color: var(--wood-dark);
+  text-shadow: 1px 1px 0 var(--cream);
+}
+.inv-detail {
+  background: var(--cream);
+  border: 3px solid var(--wood-dark);
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.inv-detail-icon { font-size: 56px; margin-bottom: 8px; }
+.inv-detail-name {
+  font-family: var(--pixel);
+  font-size: 20px;
+  letter-spacing: 1.5px;
+  color: var(--sunset);
+  margin-bottom: 8px;
+  text-align: center;
+}
+.inv-detail-desc {
+  font-size: 14px;
+  line-height: 1.5;
+  text-align: center;
+  opacity: 0.85;
+  text-wrap: pretty;
+}
+.inv-detail-qty {
+  margin-top: 8px;
+  font-family: var(--pixel);
+  color: var(--wood);
+}
+
+/* ============================================
+   FINAL CARD
+   ============================================ */
+.final-wrap {
+  text-align: center;
+  min-height: 420px;
+  display: grid;
+  place-items: center;
+  position: relative;
+}
+.gift-button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 18px;
+}
+.gift-label {
+  font-family: var(--pixel);
+  font-size: 22px;
+  letter-spacing: 3px;
+  color: var(--sunset);
+  text-shadow: 2px 2px 0 var(--wood-dark);
+}
+.final-open {
+  background: var(--cream-2);
+  border: 4px solid var(--rose);
+  box-shadow: 10px 10px 0 var(--wood-dark), 0 0 40px rgba(201, 76, 76, 0.3);
+  padding: 48px 32px;
+  max-width: 560px;
+  position: relative;
+}
+.final-hearts {
+  position: absolute;
+  inset: 0;
+  overflow: visible;
+  pointer-events: none;
+}
+.final-text p {
+  text-wrap: pretty;
+  font-style: italic;
+  color: var(--wood-dark);
+}
+
+/* ============================================
+   DIALOG BOX (NPC)
+   ============================================ */
+.dialog-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(13, 10, 46, 0.5);
+  display: grid;
+  place-items: end center;
+  z-index: 100;
+  padding: 0 0 40px;
+  cursor: pointer;
+}
+.dialog-box {
+  background: var(--cream);
+  border: 4px solid var(--wood-dark);
+  box-shadow: 8px 8px 0 rgba(0, 0, 0, 0.4);
+  padding: 24px 28px 18px;
+  width: min(680px, 90vw);
+  cursor: default;
+  position: relative;
+  animation: dialog-in 0.2s steps(3);
+}
+.dialog-who {
+  font-family: var(--pixel);
+  font-size: 16px;
+  letter-spacing: 2px;
+  color: var(--sunset);
+  margin-bottom: 10px;
+  text-transform: lowercase;
+}
+.dialog-who::before { content: '— '; }
+.dialog-text {
+  font-size: 19px;
+  line-height: 1.5;
+  color: var(--wood-dark);
+  min-height: 60px;
+  text-wrap: pretty;
+}
+.dialog-cursor {
+  display: inline-block;
+  animation: dialog-blink 0.6s steps(2) infinite;
+  color: var(--sunset);
+}
+.dialog-hint {
+  text-align: right;
+  margin-top: 10px;
+  font-family: var(--pixel);
+  font-size: 13px;
+  color: var(--wood);
+  letter-spacing: 1.5px;
+  cursor: pointer;
+}
+
+/* ============================================
+   INTRO CUTSCENE
+   ============================================ */
+.intro-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(ellipse at center, #2d1b3d, #0d0a2e 70%);
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  animation: intro-fade-in 0.3s;
+}
+.intro-stars {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+}
+.intro-star {
+  position: absolute;
+  width: 2px; height: 2px;
+  background: var(--firefly);
+  animation: star-twinkle 2s ease-in-out infinite;
+}
+.intro-inner {
+  text-align: center;
+  color: var(--cream);
+  font-family: var(--pixel);
+  position: relative;
+  padding: 30px;
+  max-width: 600px;
+}
+.intro-sub {
+  font-size: 16px;
+  letter-spacing: 3px;
+  color: var(--gold);
+  margin-bottom: 14px;
+  opacity: 0.8;
+}
+.intro-line {
+  font-size: 34px;
+  letter-spacing: 2px;
+  line-height: 1.3;
+  text-shadow: 3px 3px 0 var(--wood-dark);
+}
+.intro-dots {
+  margin-top: 32px;
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+}
+.intro-dots span {
+  width: 12px; height: 12px;
+  background: rgba(244, 228, 193, 0.2);
+  border: 2px solid var(--cream);
+}
+.intro-dots span.on { background: var(--rose); }
+
+/* ============================================
+   MUTE TOGGLE
+   ============================================ */
+.mute-btn {
+  position: fixed;
+  bottom: 18px;
+  right: 18px;
+  z-index: 60;
+  background: var(--wood-dark);
+  color: var(--cream);
+  border: 3px solid var(--cream);
+  padding: 8px 14px;
+  cursor: pointer;
+  box-shadow: 3px 3px 0 rgba(0,0,0,0.3);
+}
+.mute-btn:hover { transform: translate(-1px, -1px); box-shadow: 4px 4px 0 rgba(0,0,0,0.3); }
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@keyframes bob {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-3px); }
+}
+@keyframes sway {
+  0%, 100% { transform: rotate(-2deg); }
+  50% { transform: rotate(2deg); }
+}
+@keyframes chicken-walk {
+  0%, 100% { transform: translateX(0); }
+  50% { transform: translateX(-40px); }
+}
+@keyframes heart-pulse {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.15); }
+}
+/* === Animações dos personagens === */
+@keyframes char-breathe {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-2px) scale(1.015); }
+}
+@keyframes char-breathe-offset {
+  0%, 100% { transform: translateY(-1px) scale(1); }
+  50% { transform: translateY(-4px) scale(1.02); }
+}
+@keyframes dog-wag {
+  0%, 100% { transform: translateX(0) scaleX(1); }
+  20% { transform: translateX(0) scaleX(1.03); }
+  40% { transform: translateX(2px) scaleX(1); }
+  60% { transform: translateX(-2px) scaleX(1.03); }
+  80% { transform: translateX(0) scaleX(1); }
+}
+@keyframes cat-blink {
+  0%, 92%, 96%, 100% { filter: brightness(1); }
+  94% { filter: brightness(1.1) saturate(0.9); }
+}
+@keyframes cat-idle {
+  0%, 100% { transform: translateY(0) scaleX(1); }
+  50% { transform: translateY(-1px) scaleX(1.005); }
+}
+@keyframes heart-bump-couple {
+  0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.95; }
+  50% { transform: translate(-50%, -4px) scale(1.18); opacity: 1; }
+}
+@keyframes firefly-float {
+  0%, 100% { transform: translate(0, 0); opacity: 0.5; }
+  25% { transform: translate(15px, -20px); opacity: 1; }
+  50% { transform: translate(30px, 5px); opacity: 0.6; }
+  75% { transform: translate(10px, 20px); opacity: 1; }
+}
+@keyframes heart-fall {
+  0% { transform: translateY(-20px) rotate(0deg); opacity: 0; }
+  10% { opacity: 1; }
+  90% { opacity: 1; }
+  100% { transform: translateY(85vh) rotate(720deg); opacity: 0; }
+}
+@keyframes star-twinkle {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+@keyframes cloud-drift {
+  0% { transform: translateX(-20vw); }
+  100% { transform: translateX(120vw); }
+}
+@keyframes cloud-drift-2 {
+  0% { transform: translateX(120vw); }
+  100% { transform: translateX(-20vw); }
+}
+@keyframes pp-slide {
+  0% { background-position: 0 0; }
+  100% { background-position: 40px 0; }
+}
+@keyframes dialog-in {
+  from { transform: translateY(40px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+@keyframes dialog-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+@keyframes intro-fade-in {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+@keyframes gift-bounce {
+  0%, 100% { transform: translateY(0) rotate(-2deg); }
+  50% { transform: translateY(-12px) rotate(2deg); }
+}
+@keyframes heart-burst {
+  0% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(0);
+    opacity: 1;
+  }
+  100% {
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateY(-180px);
+    opacity: 0;
+  }
+}
+
+/* ============================================
+   RESPONSIVE
+   ============================================ */
+@media (max-width: 720px) {
+  .counter-grid { grid-template-columns: repeat(3, 1fr); }
+  .counter-num { font-size: 38px; }
+  .timeline-line { left: 20px; }
+  .timeline-item { width: 100%; left: 0 !important; text-align: left !important; padding-left: 50px; padding-right: 0; }
+  .timeline-item .timeline-node { left: 10px !important; right: auto !important; }
+  .letter-scroll { padding: 32px 24px; }
+  .inv-wrapper { grid-template-columns: 1fr; }
+  .inv-grid { grid-template-columns: repeat(6, 1fr); }
+  .navbar-links { display: none; }
+  .hero { height: 70vh !important; }
+}
+
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<script type="text/babel" data-presets="react">
+
+/* ==== components/PixelArt.jsx ==== */
+// Pixel art helpers - desenha sprites a partir de strings de caracteres
+// Cada caractere = 1 pixel. Use um mapa de cor por sprite.
+
+function PixelSprite({ data, palette, scale = 4, className = '', style = {} }) {
+  const rows = data.trim().split('\n').map(r => r.trim());
+  const h = rows.length;
+  const w = Math.max(...rows.map(r => r.length));
+  return (
+    <div
+      className={className}
+      style={{
+        position: 'relative',
+        width: w * scale,
+        height: h * scale,
+        imageRendering: 'pixelated',
+        ...style,
+      }}
+    >
+      <svg
+        width={w * scale}
+        height={h * scale}
+        viewBox={`0 0 ${w} ${h}`}
+        style={{ display: 'block', imageRendering: 'pixelated', shapeRendering: 'crispEdges' }}
+      >
+        {rows.map((row, y) =>
+          row.split('').map((ch, x) => {
+            const color = palette[ch];
+            if (!color) return null;
+            return <rect key={`${x}-${y}`} x={x} y={y} width={1} height={1} fill={color} />;
+          })
+        )}
+      </svg>
+    </div>
+  );
+}
+
+// ==========================================================
+// SPRITES
+// ==========================================================
+
+// Casinha estilo Stardew
+const HOUSE_DATA = `
+.......rrrrrrr.......
+......rRRRRRRRR......
+.....rRRRRRRRRRR.....
+....rRRRRRRRRRRRR....
+...rRRRRRRRRRRRRRR...
+..rRRRRRRRRRRRRRRRR..
+.rrrrrrrrrrrrrrrrrrr.
+.wwwwwwwwwwwwwwwwwww.
+.wwbbbwwwwwwwwwwbbbw.
+.wwbBBwwwdddwwwbBBbw.
+.wwbbbwwwdOdwwwbbbbw.
+.wwwwwwwwdddwwwwwwww.
+.wwwwwwwwdddwwwwwwww.
+.wwwwwwwwdddwwwwwwww.
+.ggggggggggggggggggg.
+`;
+const HOUSE_PALETTE = {
+  r: '#8b3a3a', R: '#c94c4c', // telhado
+  w: '#d9b08c', // parede
+  b: '#6b4226', B: '#a7d8f0', // janelas
+  d: '#4a2c1a', O: '#e8c86a', // porta + maçaneta
+  g: '#5a7a3e', // grama base
+};
+
+// Árvore
+const TREE_DATA = `
+...gggggg...
+..ggGGGGgg..
+.ggGGGGGGgg.
+ggGGGGGGGGgg
+ggGGGGGGGGgg
+.ggGGGGGGgg.
+..ggGGGGgg..
+...gggggg...
+......bb....
+......bb....
+......bb....
+.....bbbb...
+`;
+const TREE_PALETTE = {
+  g: '#3d5c2a', G: '#5a8a3e',
+  b: '#4a2c1a',
+};
+
+// Coração pixel
+const HEART_DATA = `
+.rr..rr.
+rRRrrRRr
+rRRRRRRr
+rRRRRRRr
+.rRRRRr.
+..rRRr..
+...rr...
+`;
+const HEART_PALETTE = {
+  r: '#a83250', R: '#ff6b8a',
+};
+
+// === Personagens high-res (pixel art stickers com fundo removido) ===
+// Servidos de ./assets/ — usar com `python3 -m http.server` nesta pasta
+const EDU_IMG = './assets/edu.png';
+const ISA_IMG = './assets/isa.png';
+const DOG_IMG = './assets/dog.png';
+const CAT_IMG = './assets/cat.png';
+
+// Personagem Eduardo (1.77m, cabelo escuro curto, barba leve, camisa branca)
+// 14x19 - mais alto que Isabella — [DEPRECATED, usar EDU_IMG]
+const EDU_DATA = `
+...bbbbbb.....
+..bbbbbbbb....
+..bssssssb....
+.bsSs..sSsb...
+.bssssssssb...
+..bs.mm.sb....
+..bsssssssb...
+...bbbbbb.....
+..wwwwwwww....
+.wwwwwwwwww...
+.wwwRwwwwww...
+.wwwwwwwwww...
+.wwwwwwwwww...
+..w.hhhh.w....
+...hhhhhh.....
+...hh..hh.....
+...hh..hh.....
+...hh..hh.....
+..dd....dd....
+`;
+const EDU_PALETTE = {
+  b: '#1f140a',  // cabelo escuro
+  s: '#e8c89a',  // rosto
+  S: '#2d1a0f',  // olhos
+  m: '#5a3a28',  // bigode/barba
+  w: '#f5f0e4',  // camisa branca (polo)
+  R: '#c94c4c',  // detalhe gola
+  h: '#1a1a22',  // calça jeans escura
+  d: '#1a1a1a',  // tênis
+};
+
+// Personagem Isabella (1.65m, cabelo longo castanho ondulado, mais baixa)
+// 14x17 - menor que Eduardo
+const ISA_DATA = `
+....bbbbbb....
+...bbbbbbbb...
+..bbsssssbb...
+..bsSs.sSsb...
+..bssssssbb...
+..bss...ssbb..
+...bssssssbb..
+....ssssssbb..
+....krrrrkbb..
+...krrrrrrkbb.
+..krrrrrrrrkb.
+..krrrrrrrrkb.
+..krrrrrrrrkb.
+...bbbbbbbb...
+....sss..sss..
+....sss..sss..
+....sss..sss..
+....dd....dd..
+`;
+const ISA_PALETTE = {
+  b: '#5a3820',  // cabelo castanho
+  s: '#f2d8b2',  // pele
+  S: '#3a2a1a',  // olhos
+  k: '#d48a6a',  // top / detalhes
+  r: '#e8a885',  // top caramelo
+  d: '#1a1a1a',  // tênis
+};
+
+// Chihuahua (caramelo)
+const DOG_DATA = `
+..oo...ooo
+.oooo.ooOo
+.oOooooooo
+.oooooooo.
+.oooooooo.
+oo.oo.oo..
+`;
+const DOG_PALETTE = { o: '#d4a574', O: '#1a1a1a' };
+
+// Gato cinza
+const GRAY_CAT_DATA = `
+g..g....
+gggg....
+gggggggg
+ggOggOgg
+gggPgggg
+.gggggg.
+..gggg..
+..g..g..
+`;
+const GRAY_CAT_PALETTE = { g: '#8a8a8a', O: '#6aaf6a', P: '#e8a0b0' };
+
+// Monitor / setup de programador
+const MONITOR_DATA = `
+mmmmmmmmmmmm
+mggggggggggm
+mgcc.cc.c.gm
+mg.c..c.ccgm
+mgcc.cc..cgm
+mg.c.c.c.cgm
+mggggggggggm
+mmmmmmmmmmmm
+....mmmm....
+...mmmmmm...
+`;
+const MONITOR_PALETTE = { m: '#2a2a2a', g: '#0a1a2e', c: '#4ade80' };
+
+// Halter / academia
+const DUMBBELL_DATA = `
+bb......bb
+bbb....bbb
+.bbkkkkbb.
+.bbkkkkbb.
+bbb....bbb
+bb......bb
+`;
+const DUMBBELL_PALETTE = { b: '#2a2a2a', k: '#4a4a4a' };
+
+// Maçã (nutri)
+const APPLE_DATA = `
+...gg...
+..rrrr..
+.rRRRRr.
+rRRRRRRr
+rRRRRRRr
+rRRRRRRr
+.rRRRRr.
+..rrrr..
+`;
+const APPLE_PALETTE = { r: '#8b2a2a', R: '#d94a4a', g: '#5a8a3e' };
+
+// Planta de apartamento (vaso)
+const PLANT_DATA = `
+..g.g.g..
+.gGgGgGg.
+gGGGgGGGg
+.gGgGgGg.
+..gGGGg..
+...ggg...
+..bbbbb..
+..bbbbb..
+...bbb...
+`;
+const PLANT_PALETTE = { g: '#3d6b2a', G: '#6aaf4a', b: '#8b5a3a' };
+
+// Galinha
+const CHICKEN_DATA = `
+..wwww..
+.wwwwww.
+.wwwwbw.
+.wyyyywr
+.wwwwwwr
+..w..w..
+`;
+const CHICKEN_PALETTE = {
+  w: '#faf3e0', b: '#2d1a0f', y: '#f0c040', r: '#c94c4c',
+};
+
+// Gato
+const CAT_DATA = `
+o..o....
+oooo....
+oooooooo
+ooOooOoo
+oooooooo
+.oooooo.
+..oooo..
+`;
+const CAT_PALETTE = {
+  o: '#4a3020', O: '#f0c040',
+};
+
+// Cogumelo
+const MUSHROOM_DATA = `
+..rrrr..
+.rRwRwRr
+rRRwRwwRr
+rRwwwwRRr
+.rrrrrr.
+..wwww..
+..wbbw..
+..wwww..
+`;
+const MUSHROOM_PALETTE = {
+  r: '#6b1a2c', R: '#c94c4c', w: '#faf3e0', b: '#4a2c1a',
+};
+
+// Flor
+const FLOWER_DATA = `
+.p.p.
+ppppp
+pPOPp
+ppppp
+.p.p.
+..g..
+..g..
+.ggg.
+`;
+const FLOWER_PALETTE = {
+  p: '#ff9cbe', P: '#ffc4d8', O: '#f0c040', g: '#5a8a3e',
+};
+
+// Mini coração pequeno (p/ chuva)
+const MINI_HEART_DATA = `
+rr.rr
+rRRRr
+.rRr.
+..r..
+`;
+const MINI_HEART_PALETTE = { r: '#c94c4c', R: '#ff6b8a' };
+
+// Vaga-lume (glow)
+const FIREFLY_DATA = `
+.yy.
+yYYy
+yYYy
+.yy.
+`;
+const FIREFLY_PALETTE = { y: '#fff4a3', Y: '#fff' };
+
+// Plantação
+const CROP_DATA = `
+.gg.
+gGGg
+.gg.
+.bb.
+`;
+const CROP_PALETTE = { g: '#5a8a3e', G: '#8bc24f', b: '#4a2c1a' };
+
+// Estrela
+const STAR_DATA = `
+..y..
+.yYy.
+yYYYy
+.yYy.
+..y..
+`;
+const STAR_PALETTE = { y: '#fff4a3', Y: '#fff' };
+
+// Lua
+const MOON_DATA = `
+..mmmm..
+.mMMMmm.
+mMMMMmmm
+mMMMmmmm
+mMMmmmmm
+mmmmmmmm
+.mmmmmm.
+..mmmm..
+`;
+const MOON_PALETTE = { m: '#e8d8a8', M: '#fff8d4' };
+
+// Sol
+const SUN_DATA = `
+..ssss..
+.ssSSss.
+ssSSSSss
+sSSSSSSs
+sSSSSSSs
+ssSSSSss
+.ssSSss.
+..ssss..
+`;
+const SUN_PALETTE = { s: '#ffb84a', S: '#ffd97a' };
+
+// Presente
+const GIFT_DATA = `
+..rRRRr..
+.rRrrrRr.
+rRRRRRRRr
+rRryyyRRr
+rRRyyyRRr
+rRRRRRRRr
+.rrrrrrr.
+`;
+const GIFT_PALETTE = { r: '#8b2a3a', R: '#c94c4c', y: '#f0c040' };
+
+// Nota musical
+const NOTE_DATA = `
+...NN
+...NN
+...NN
+..NNN
+nnNN.
+nnn..
+.n...
+`;
+const NOTE_PALETTE = { n: '#2d1b3d', N: '#5a3a6b' };
+
+// Expor no window para outros scripts
+Object.assign(window, {
+  PixelSprite,
+  HOUSE_DATA, HOUSE_PALETTE,
+  TREE_DATA, TREE_PALETTE,
+  HEART_DATA, HEART_PALETTE,
+  EDU_DATA, EDU_PALETTE,
+  ISA_DATA, ISA_PALETTE,
+  CHICKEN_DATA, CHICKEN_PALETTE,
+  CAT_DATA, CAT_PALETTE,
+  MUSHROOM_DATA, MUSHROOM_PALETTE,
+  FLOWER_DATA, FLOWER_PALETTE,
+  MINI_HEART_DATA, MINI_HEART_PALETTE,
+  FIREFLY_DATA, FIREFLY_PALETTE,
+  CROP_DATA, CROP_PALETTE,
+  STAR_DATA, STAR_PALETTE,
+  MOON_DATA, MOON_PALETTE,
+  SUN_DATA, SUN_PALETTE,
+  GIFT_DATA, GIFT_PALETTE,
+  NOTE_DATA, NOTE_PALETTE,
+  DOG_DATA, DOG_PALETTE,
+  GRAY_CAT_DATA, GRAY_CAT_PALETTE,
+  MONITOR_DATA, MONITOR_PALETTE,
+  DUMBBELL_DATA, DUMBBELL_PALETTE,
+  APPLE_DATA, APPLE_PALETTE,
+  PLANT_DATA, PLANT_PALETTE,
+});
+
+
+/* ==== components/Interactions.jsx ==== */
+// Diálogo NPC, cutscene intro, sound system, toggles
+const { useState: useStateU, useEffect: useEffectU, useRef: useRefU } = React;
+
+// --- SOUND SYSTEM (WebAudio 8-bit tones) ---
+const audioCtx = typeof window !== 'undefined' ? new (window.AudioContext || window.webkitAudioContext)() : null;
+
+function playTone(freq, dur = 0.08, type = 'square', vol = 0.05) {
+  if (!audioCtx || window.__muted) return;
+  const osc = audioCtx.createOscillator();
+  const gain = audioCtx.createGain();
+  osc.type = type; osc.frequency.value = freq;
+  gain.gain.setValueAtTime(vol, audioCtx.currentTime);
+  gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + dur);
+  osc.connect(gain).connect(audioCtx.destination);
+  osc.start(); osc.stop(audioCtx.currentTime + dur);
+}
+
+function playClick() { playTone(880, 0.04); setTimeout(() => playTone(1320, 0.04), 30); }
+function playDialog() { playTone(440, 0.03); setTimeout(() => playTone(660, 0.03), 30); }
+function playHeart() { playTone(660, 0.08); setTimeout(() => playTone(880, 0.08), 70); setTimeout(() => playTone(1100, 0.1), 140); }
+
+window.playClick = playClick;
+window.playDialog = playDialog;
+window.playHeart = playHeart;
+
+// --- DIALOG BOX ---
+function DialogBox({ dialog, onClose }) {
+  const [shown, setShown] = useStateU('');
+  const full = dialog ? dialog.text : '';
+  useEffectU(() => {
+    if (!dialog) return;
+    setShown('');
+    let i = 0;
+    const id = setInterval(() => {
+      i++;
+      setShown(full.slice(0, i));
+      if (i % 3 === 0) playTone(440 + Math.random() * 60, 0.02, 'square', 0.03);
+      if (i >= full.length) clearInterval(id);
+    }, 28);
+    return () => clearInterval(id);
+  }, [dialog]);
+  if (!dialog) return null;
+  return (
+    <div className="dialog-overlay" onClick={onClose}>
+      <div className="dialog-box" onClick={(e) => e.stopPropagation()}>
+        <div className="dialog-who">{dialog.who}</div>
+        <div className="dialog-text">{shown}<span className="dialog-cursor">▮</span></div>
+        <div className="dialog-hint" onClick={onClose}>clique ou pressione espaço ▸</div>
+      </div>
+    </div>
+  );
+}
+
+// --- INTRO CUTSCENE ---
+function Intro({ onDone }) {
+  const [step, setStep] = useStateU(0);
+  const scenes = [
+    { sub: 'carregando save file...', line: 'save "Eduardo & Isabella.dat"' },
+    { sub: 'dia 365 de 365', line: 'faz 1 ano hoje.' },
+    { sub: 'ativando modo amor...', line: 'pressione qualquer tecla para começar ♥' },
+  ];
+  useEffectU(() => {
+    const k = () => {
+      if (step < scenes.length - 1) {
+        setStep(s => s + 1);
+        playClick();
+      } else {
+        playHeart();
+        onDone();
+      }
+    };
+    const t = step < 2 ? setTimeout(() => setStep(step + 1), 1800) : null;
+    window.addEventListener('keydown', k);
+    window.addEventListener('click', k);
+    return () => { if (t) clearTimeout(t); window.removeEventListener('keydown', k); window.removeEventListener('click', k); };
+  }, [step]);
+
+  return (
+    <div className="intro-overlay">
+      <div className="intro-stars">
+        {Array.from({ length: 60 }).map((_, i) => (
+          <div key={i} className="intro-star" style={{ left: `${Math.random() * 100}%`, top: `${Math.random() * 100}%`, animationDelay: `${Math.random() * 2}s` }} />
+        ))}
+      </div>
+      <div className="intro-inner">
+        <div style={{ marginBottom: 24, animation: 'heart-pulse 1.2s ease-in-out infinite' }}>
+          <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={8} />
+        </div>
+        <div className="intro-sub">{scenes[step].sub}</div>
+        <div className="intro-line">{scenes[step].line}</div>
+        <div className="intro-dots">
+          {scenes.map((_, i) => <span key={i} className={i <= step ? 'on' : ''} />)}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// --- MUTE TOGGLE ---
+function MuteToggle() {
+  const [muted, setMuted] = useStateU(false);
+  useEffectU(() => { window.__muted = muted; }, [muted]);
+  return (
+    <button className="mute-btn" onClick={() => { setMuted(!muted); playClick(); }} aria-label="mute">
+      <span style={{ fontFamily: 'var(--pixel)', fontSize: 14 }}>{muted ? '🔇 MUTE' : '🔊 SOM'}</span>
+    </button>
+  );
+}
+
+Object.assign(window, { DialogBox, Intro, MuteToggle });
+
+
+/* ==== components/Hero.jsx ==== */
+// Cena hero: paisagem com casinha, árvores, personagens abraçados,
+// ciclo dia/noite, vagalumes, chuva de corações
+const { useState, useEffect, useRef } = React;
+
+function useTimeOfDay() {
+  // Retorna 0..1 representando hora do dia simulada (acelerada)
+  // Ciclo completo = 90s. Começa no pôr do sol (0.7).
+  const [t, setT] = useState(0.7);
+  useEffect(() => {
+    let raf;
+    const start = performance.now();
+    const loop = (now) => {
+      const elapsed = (now - start) / 1000;
+      const v = (0.7 + elapsed / 90) % 1;
+      setT(v);
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+  return t;
+}
+
+function skyGradient(t) {
+  // t: 0=meia-noite, 0.25=amanhecer, 0.5=meio-dia, 0.75=pôr do sol
+  const stops = [
+    { t: 0.00, top: '#0d0a2e', bot: '#2d1b3d' },   // noite profunda
+    { t: 0.20, top: '#3a2b5c', bot: '#c46b7a' },   // amanhecer
+    { t: 0.30, top: '#7ab8d9', bot: '#ffd4a3' },   // manhã
+    { t: 0.50, top: '#87ceeb', bot: '#f4e4c1' },   // dia
+    { t: 0.70, top: '#d97760', bot: '#f4c99c' },   // tarde/pôr do sol
+    { t: 0.80, top: '#9c4a6b', bot: '#ff8a6b' },   // pôr do sol
+    { t: 0.90, top: '#3a2b5c', bot: '#7a4a7c' },   // entardecer
+    { t: 1.00, top: '#0d0a2e', bot: '#2d1b3d' },
+  ];
+  for (let i = 0; i < stops.length - 1; i++) {
+    if (t >= stops[i].t && t <= stops[i + 1].t) {
+      const k = (t - stops[i].t) / (stops[i + 1].t - stops[i].t);
+      return { top: lerpColor(stops[i].top, stops[i + 1].top, k), bot: lerpColor(stops[i].bot, stops[i + 1].bot, k) };
+    }
+  }
+  return stops[0];
+}
+
+function lerpColor(a, b, k) {
+  const pa = parseInt(a.slice(1), 16), pb = parseInt(b.slice(1), 16);
+  const ar = (pa >> 16) & 255, ag = (pa >> 8) & 255, ab = pa & 255;
+  const br = (pb >> 16) & 255, bg = (pb >> 8) & 255, bb = pb & 255;
+  const r = Math.round(ar + (br - ar) * k);
+  const g = Math.round(ag + (bg - ag) * k);
+  const bl = Math.round(ab + (bb - ab) * k);
+  return '#' + ((r << 16) | (g << 8) | bl).toString(16).padStart(6, '0');
+}
+
+// Vagalume
+function Firefly({ delay, top, left, duration }) {
+  return (
+    <div
+      className="firefly"
+      style={{
+        position: 'absolute',
+        top: `${top}%`,
+        left: `${left}%`,
+        animation: `firefly-float ${duration}s ease-in-out ${delay}s infinite`,
+        filter: 'drop-shadow(0 0 8px #fff4a3) drop-shadow(0 0 14px #f0c040)',
+      }}
+    >
+      <PixelSprite data={FIREFLY_DATA} palette={FIREFLY_PALETTE} scale={3} />
+    </div>
+  );
+}
+
+// Coração caindo
+function FallingHeart({ delay, left, duration, size }) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: '-5%',
+        left: `${left}%`,
+        animation: `heart-fall ${duration}s linear ${delay}s infinite`,
+        opacity: 0.85,
+      }}
+    >
+      <PixelSprite data={MINI_HEART_DATA} palette={MINI_HEART_PALETTE} scale={size} />
+    </div>
+  );
+}
+
+// Estrela piscando
+function Star({ top, left, delay, size = 2 }) {
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        top: `${top}%`,
+        left: `${left}%`,
+        animation: `star-twinkle 3s ease-in-out ${delay}s infinite`,
+      }}
+    >
+      <PixelSprite data={STAR_DATA} palette={STAR_PALETTE} scale={size} />
+    </div>
+  );
+}
+
+// Personagem controlável com setas
+function Player({ boundaryRef }) {
+  const [pos, setPos] = useState({ x: 50, y: 50 });
+  const [facing, setFacing] = useState('right');
+  const [walking, setWalking] = useState(false);
+  const keys = useRef({});
+
+  useEffect(() => {
+    const onDown = (e) => {
+      if (['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'w', 'a', 's', 'd', 'W', 'A', 'S', 'D'].includes(e.key)) {
+        keys.current[e.key.toLowerCase()] = true;
+        setWalking(true);
+        e.preventDefault();
+      }
+    };
+    const onUp = (e) => {
+      keys.current[e.key.toLowerCase()] = false;
+      if (!Object.values(keys.current).some(Boolean)) setWalking(false);
+    };
+    window.addEventListener('keydown', onDown);
+    window.addEventListener('keyup', onUp);
+    return () => { window.removeEventListener('keydown', onDown); window.removeEventListener('keyup', onUp); };
+  }, []);
+
+  useEffect(() => {
+    let raf;
+    const loop = () => {
+      setPos(p => {
+        let { x, y } = p;
+        const step = 0.5;
+        if (keys.current.arrowup || keys.current.w) y -= step;
+        if (keys.current.arrowdown || keys.current.s) y += step;
+        if (keys.current.arrowleft || keys.current.a) { x -= step; setFacing('left'); }
+        if (keys.current.arrowright || keys.current.d) { x += step; setFacing('right'); }
+        x = Math.max(2, Math.min(96, x));
+        y = Math.max(40, Math.min(92, y));
+        return { x, y };
+      });
+      raf = requestAnimationFrame(loop);
+    };
+    raf = requestAnimationFrame(loop);
+    return () => cancelAnimationFrame(raf);
+  }, []);
+
+  return (
+    <div
+      style={{
+        position: 'absolute',
+        left: `${pos.x}%`,
+        top: `${pos.y}%`,
+        transform: `translate(-50%, -100%) scaleX(${facing === 'left' ? -1 : 1})`,
+        transition: 'left 0.05s linear, top 0.05s linear',
+        zIndex: 20,
+        filter: 'drop-shadow(0 4px 0 rgba(0,0,0,0.3))',
+      }}
+    >
+      <div style={{ animation: walking ? 'bob 0.3s steps(2) infinite' : 'none' }}>
+        <PixelSprite data={EDU_DATA} palette={EDU_PALETTE} scale={3} />
+      </div>
+      {walking && (
+        <div style={{ position: 'absolute', bottom: -4, left: '50%', transform: 'translateX(-50%)', width: 20, height: 3, background: 'rgba(0,0,0,0.2)', borderRadius: '50%' }} />
+      )}
+    </div>
+  );
+}
+
+function Hero({ onDialog }) {
+  const t = useTimeOfDay();
+  const sky = skyGradient(t);
+  const isNight = t < 0.22 || t > 0.82;
+  const heroRef = useRef(null);
+
+  // === Sistema de escala unificado ===
+  // Referência: casal sentado (sprite 24px * scale 9 = 216px = 1 HUMAN)
+  // Todo móvel é dimensionado relativo a HUMAN e ancorado em 3 "depth tiers"
+  const UNIT = 8;                 // 1 pixel de mundo = 8 telas px
+  const HUMAN = 216;              // altura humana canônica (Edu/Isa sentados scale 9)
+  const SCALE_HUMAN = 9;          // scale dos personagens principais
+  const SCALE_PET = 4;            // cachorro / gato
+  // Depth tiers (bottom %) — cria perspectiva 2.5D
+  const TIER_BACK = 20;           // objetos contra a parede (estante, TV, bancada, mesa)
+  const TIER_MID  = 12;           // sofá + casal
+  const TIER_FRONT = 3;           // piso frente (tapete, pets, mesinha, rádio, halteres)
+
+  // helper: sombra elipse no chão (ancora visualmente o objeto)
+  const GroundShadow = ({ width = 60, bottom = '2%', left = '50%', translate = true, opacity = 0.28 }) => (
+    <div style={{
+      position: 'absolute', bottom, left,
+      transform: translate ? 'translateX(-50%)' : 'none',
+      width, height: Math.max(6, width * 0.15),
+      background: `radial-gradient(ellipse at center, rgba(0,0,0,${opacity}) 0%, rgba(0,0,0,0) 70%)`,
+      pointerEvents: 'none', zIndex: 1,
+    }} />
+  );
+
+  // Vagalumes — só aparecem à noite
+  const fireflies = Array.from({ length: 14 }, (_, i) => ({
+    delay: i * 0.7,
+    top: 30 + Math.random() * 50,
+    left: Math.random() * 100,
+    duration: 6 + Math.random() * 4,
+  }));
+
+  // Estrelas — só de noite
+  const stars = Array.from({ length: 35 }, (_, i) => ({
+    top: Math.random() * 40,
+    left: Math.random() * 100,
+    delay: Math.random() * 3,
+    size: 1 + Math.floor(Math.random() * 2),
+  }));
+
+  // Chuva de corações
+  const hearts = Array.from({ length: 12 }, (_, i) => ({
+    delay: i * 1.1,
+    left: Math.random() * 100,
+    duration: 8 + Math.random() * 5,
+    size: 2 + Math.floor(Math.random() * 3),
+  }));
+
+  const nightOverlayOpacity = isNight ? 0.55 : (t < 0.3 || t > 0.75 ? 0.2 : 0);
+
+  return (
+    <div
+      ref={heroRef}
+      className="hero"
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '82vh',
+        minHeight: 620,
+        overflow: 'hidden',
+        background: `linear-gradient(to bottom, ${sky.top} 0%, ${sky.bot} 50%, ${isNight ? '#2a2028' : '#e8dcc4'} 50%, ${isNight ? '#1a1420' : '#c8b896'} 100%)`,
+        borderBottom: '6px solid #2d1a0f',
+        imageRendering: 'pixelated',
+        cursor: 'url("data:image/svg+xml;utf8,<svg xmlns=\'http://www.w3.org/2000/svg\' width=\'32\' height=\'32\' viewBox=\'0 0 16 16\' shape-rendering=\'crispEdges\'><rect x=\'4\' y=\'2\' width=\'8\' height=\'2\' fill=\'%238b4a2c\'/><rect x=\'2\' y=\'4\' width=\'12\' height=\'4\' fill=\'%23c97a4a\'/><rect x=\'3\' y=\'8\' width=\'10\' height=\'2\' fill=\'%238b4a2c\'/><rect x=\'6\' y=\'10\' width=\'4\' height=\'5\' fill=\'%234a2c1a\'/></svg>") 8 8, auto',
+      }}
+    >
+      {/* Sol/Lua */}
+      <div
+        style={{
+          position: 'absolute',
+          top: `${15 + Math.sin((t - 0.25) * Math.PI * 2) * -25}%`,
+          left: `${t * 100}%`,
+          transform: 'translateX(-50%)',
+          transition: 'none',
+          filter: isNight ? 'drop-shadow(0 0 20px #fff8d4)' : 'drop-shadow(0 0 30px #ffd97a)',
+        }}
+      >
+        {isNight
+          ? <PixelSprite data={MOON_DATA} palette={MOON_PALETTE} scale={6} />
+          : <PixelSprite data={SUN_DATA} palette={SUN_PALETTE} scale={6} />}
+      </div>
+
+      {/* Estrelas — só aparecem quando está anoitecendo/noite */}
+      <div style={{ position: 'absolute', inset: 0, opacity: isNight ? 1 : Math.max(0, (Math.abs(t - 0.5) - 0.3) * 5) }}>
+        {stars.map((s, i) => <Star key={i} {...s} />)}
+      </div>
+
+      {/* Nuvens pixel */}
+      <div style={{ position: 'absolute', top: '12%', left: '10%', opacity: isNight ? 0.3 : 0.9, animation: 'cloud-drift 120s linear infinite' }}>
+        <svg width="120" height="40" viewBox="0 0 30 10" shapeRendering="crispEdges">
+          <rect x="4" y="3" width="22" height="5" fill="#fff" opacity="0.85" />
+          <rect x="6" y="2" width="18" height="7" fill="#fff" opacity="0.85" />
+          <rect x="10" y="1" width="10" height="2" fill="#fff" opacity="0.85" />
+        </svg>
+      </div>
+      <div style={{ position: 'absolute', top: '22%', right: '15%', opacity: isNight ? 0.2 : 0.7, animation: 'cloud-drift-2 160s linear infinite' }}>
+        <svg width="90" height="30" viewBox="0 0 30 10" shapeRendering="crispEdges">
+          <rect x="4" y="3" width="22" height="5" fill="#fff" opacity="0.85" />
+          <rect x="6" y="2" width="18" height="7" fill="#fff" opacity="0.85" />
+        </svg>
+      </div>
+
+      {/* Overlay de noite (azul) */}
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'linear-gradient(to bottom, rgba(13, 10, 46, 0.5), rgba(45, 27, 61, 0.2))',
+        opacity: nightOverlayOpacity, pointerEvents: 'none', transition: 'opacity 1s',
+      }} />
+
+      {/* === APARTAMENTO COZY (ZOOM IN) === */}
+      {/* Parede superior (papel de parede com padrão sutil) */}
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, height: '78%',
+        background: isNight
+          ? 'linear-gradient(to bottom, #4a3a52 0%, #3a2d44 60%, #2d2236 100%)'
+          : 'linear-gradient(to bottom, #e4c8a0 0%, #d4b088 60%, #b8946a 100%)',
+        zIndex: 1,
+      }} />
+      {/* textura de parede - faixas horizontais sutis */}
+      {Array.from({ length: 10 }).map((_, i) => (
+        <div key={`wall${i}`} style={{ position: 'absolute', top: `${i * 7}%`, left: 0, right: 0, height: 1, background: isNight ? 'rgba(255,255,255,0.03)' : 'rgba(139,90,44,0.08)', zIndex: 1 }} />
+      ))}
+      {/* listras verticais sutis (papel de parede) */}
+      {Array.from({ length: 24 }).map((_, i) => (
+        <div key={`wallV${i}`} style={{ position: 'absolute', top: 0, left: `${i * 4.2}%`, width: 1, height: '74%', background: isNight ? 'rgba(255,255,255,0.025)' : 'rgba(139,90,44,0.06)', zIndex: 1 }} />
+      ))}
+      {/* moldura teto (crown molding) */}
+      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 6, background: isNight ? '#2a2028' : '#6a3a1a', zIndex: 1, boxShadow: '0 2px 0 rgba(0,0,0,0.2)' }} />
+      <div style={{ position: 'absolute', top: 6, left: 0, right: 0, height: 2, background: isNight ? '#3a2d44' : '#8b5a2c', zIndex: 1 }} />
+
+      {/* Rodapé entre parede e piso (baseboard) */}
+      <div style={{ position: 'absolute', top: '74%', left: 0, right: 0, height: 8, background: isNight ? '#1a1420' : '#5a3a1a', zIndex: 1, boxShadow: '0 2px 0 rgba(0,0,0,0.35)' }} />
+      <div style={{ position: 'absolute', top: '76%', left: 0, right: 0, height: 2, background: isNight ? '#2a2028' : '#8b5a2c', zIndex: 1 }} />
+
+      {/* Piso de madeira — ocupa 22% inferior, listras grossas com tábuas visíveis */}
+      <div style={{
+        position: 'absolute', bottom: 0, left: 0, right: 0, height: '22%',
+        background: isNight
+          ? 'linear-gradient(to bottom, #3a2818 0%, #2a1a0e 100%)'
+          : 'linear-gradient(to bottom, #a06a3a 0%, #7a4a24 100%)',
+        zIndex: 1,
+      }} />
+      {/* tábuas do piso */}
+      {Array.from({ length: 14 }).map((_, i) => (
+        <div key={`plank${i}`} style={{ position: 'absolute', bottom: 0, left: `${i * 7.5}%`, width: 2, height: '22%', background: isNight ? 'rgba(0,0,0,0.5)' : 'rgba(60,30,10,0.5)', zIndex: 1 }} />
+      ))}
+      {Array.from({ length: 4 }).map((_, i) => (
+        <div key={`plankH${i}`} style={{ position: 'absolute', bottom: `${i * 5.5}%`, left: 0, right: 0, height: 1, background: isNight ? 'rgba(0,0,0,0.35)' : 'rgba(60,30,10,0.25)', zIndex: 1 }} />
+      ))}
+      {/* "grão" da madeira — nós escuros aleatórios */}
+      {[[10, 8], [28, 14], [48, 6], [65, 18], [82, 10], [92, 16]].map(([x, yPct], i) => (
+        <div key={`knot${i}`} style={{ position: 'absolute', bottom: `${yPct}%`, left: `${x}%`, width: 8, height: 3, background: isNight ? 'rgba(0,0,0,0.4)' : 'rgba(50,20,5,0.35)', borderRadius: '50%', zIndex: 1 }} />
+      ))}
+
+      {/* === JANELA (canto direito) — proporção reduzida, peitoril destacado === */}
+      <div style={{
+        position: 'absolute', top: '12%', right: '8%', width: 220, height: 200,
+        background: isNight
+          ? 'linear-gradient(to bottom, #1a1640 0%, #3a2a5a 60%, #5a3a6a 100%)'
+          : 'linear-gradient(to bottom, #f5c8a0 0%, #e89a7a 50%, #c94c6a 100%)',
+        border: '10px solid #2a1812',
+        boxShadow: 'inset 0 0 0 2px #4a3a30, inset 0 -4px 0 rgba(0,0,0,0.3), 6px 6px 0 rgba(0,0,0,0.35)',
+        overflow: 'hidden',
+        zIndex: 2,
+      }}>
+        {/* sol/lua dentro da janela */}
+        <div style={{ position: 'absolute', top: isNight ? 26 : 44, left: '50%', transform: 'translateX(-50%)', width: 44, height: 44, borderRadius: '50%', background: isNight ? '#fff8d4' : '#fff6c0', boxShadow: isNight ? '0 0 30px #fff8d4' : '0 0 40px #ffd97a' }} />
+        {/* skyline dentro da janela */}
+        <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%' }} viewBox="0 0 220 110" preserveAspectRatio="none" shapeRendering="crispEdges">
+          <rect x="0" y="45" width="24" height="65" fill={isNight ? '#1a1530' : '#6a3a4a'} />
+          <rect x="24" y="25" width="32" height="85" fill={isNight ? '#211a38' : '#7a4a5a'} />
+          <rect x="56" y="52" width="22" height="58" fill={isNight ? '#1a1530' : '#6a3a4a'} />
+          <rect x="78" y="15" width="40" height="95" fill={isNight ? '#261e3e' : '#8b5a6a'} />
+          <rect x="118" y="38" width="28" height="72" fill={isNight ? '#1c1632' : '#6a3a4a'} />
+          <rect x="146" y="10" width="42" height="100" fill={isNight ? '#2a2345' : '#8b5a6a'} />
+          <rect x="188" y="40" width="32" height="70" fill={isNight ? '#1f1a36' : '#7a4a5a'} />
+          {/* janelinhas acesas */}
+          {Array.from({ length: 36 }).map((_, i) => {
+            const x = (i * 6.1) % 220;
+            const y = 22 + (i * 4.1) % 80;
+            return <rect key={i} x={x} y={y} width="2" height="2.5" fill={isNight ? '#ffd97a' : '#fff4c0'} opacity={0.5 + Math.random() * 0.5} />;
+          })}
+        </svg>
+        {/* cruz da janela */}
+        <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 5, background: '#2a1812', transform: 'translateY(-50%)' }} />
+        <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 5, background: '#2a1812', transform: 'translateX(-50%)' }} />
+      </div>
+      {/* Peitoril da janela (vaso de planta em cima) */}
+      <div style={{ position: 'absolute', top: 'calc(12% + 200px)', right: 'calc(8% - 6px)', width: 232, height: 10, background: isNight ? '#2a1812' : '#5a3a1a', zIndex: 3, boxShadow: '0 2px 0 rgba(0,0,0,0.35)' }} />
+      {/* vasinho de planta no peitoril */}
+      <div style={{ position: 'absolute', top: 'calc(12% + 184px)', right: 'calc(8% + 24px)', width: 18, height: 16, background: '#c27a5a', borderRadius: '0 0 4px 4px', zIndex: 3 }}>
+        <div style={{ position: 'absolute', top: -10, left: 3, width: 12, height: 12, background: '#5a8a3e', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', top: -12, left: 7, width: 8, height: 8, background: '#6a9a4e', borderRadius: '50%' }} />
+      </div>
+      {/* Cortinas — 3 dobras de cada lado pra dar textura */}
+      {[0, 7, 14].map((off, i) => (
+        <div key={`curtR${i}`} style={{ position: 'absolute', top: '10%', right: `calc(6% + ${off}px)`, width: 10, height: 230, background: `linear-gradient(to right, #7a2a4a, #c94c6a ${i * 10 + 20}%, #8b3a5a)`, animation: `sway 5s ease-in-out ${i * 0.15}s infinite`, zIndex: 2, opacity: 0.92 }} />
+      ))}
+      {[0, 7, 14].map((off, i) => (
+        <div key={`curtL${i}`} style={{ position: 'absolute', top: '10%', right: `calc(8% + 208px + ${off}px)`, width: 10, height: 230, background: `linear-gradient(to right, #8b3a5a, #c94c6a ${i * 10 + 20}%, #7a2a4a)`, animation: `sway 5s ease-in-out ${i * 0.15 + 0.3}s infinite`, zIndex: 2, opacity: 0.92 }} />
+      ))}
+      {/* barra de cortina (cortineiro) */}
+      <div style={{ position: 'absolute', top: '9%', right: '4%', width: 250, height: 6, background: isNight ? '#2a1812' : '#3a2418', borderRadius: 3, zIndex: 2, boxShadow: '0 2px 0 rgba(0,0,0,0.3)' }} />
+      <div style={{ position: 'absolute', top: 'calc(9% - 4px)', right: '3%', width: 10, height: 14, background: '#8b5a2c', borderRadius: '50%', zIndex: 2 }} />
+      <div style={{ position: 'absolute', top: 'calc(9% - 4px)', right: 'calc(4% + 244px)', width: 10, height: 14, background: '#8b5a2c', borderRadius: '50%', zIndex: 2 }} />
+
+      {/* === ESTANTE DE LIVROS (esquerda, altura humana 1.2x) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '5%', width: 180, height: 260, background: isNight ? '#2a1812' : '#6a3a1a', border: '4px solid #1a0e08', zIndex: 2, boxShadow: '4px 4px 0 rgba(0,0,0,0.35), inset 3px 3px 0 rgba(255,255,255,0.05)' }}>
+        {[0,1,2,3,4].map(i => (
+          <div key={`shelf${i}`} style={{ position: 'absolute', top: `${i*20}%`, left: 0, right: 0, height: '20%', borderBottom: '3px solid #1a0e08' }}>
+            {Array.from({length: 8}).map((_, j) => {
+              const colors = ['#c94c4c','#8b3a5a','#f0c040','#5a8a3e','#4a6a8a','#d97760','#6a3a8a','#e89a7a','#c27a5a'];
+              const c = colors[(i*3+j)%colors.length];
+              const h = 68 + ((i*2+j)%4)*9;
+              return <div key={j} style={{ position: 'absolute', bottom: 3, left: 5 + j*21, width: 17, height: h + '%', background: c, border: '1px solid rgba(0,0,0,0.4)', boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.2)' }} />;
+            })}
+            {/* item decorativo de prateleira (alternado) */}
+            {i === 1 && <div style={{ position: 'absolute', bottom: 3, right: 8, width: 12, height: 18, background: '#e8d4a0', borderRadius: '4px 4px 0 0' }} />}
+            {i === 3 && <div style={{ position: 'absolute', bottom: 3, right: 8, width: 14, height: 16, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }}>
+              <div style={{ position: 'absolute', bottom: 0, left: 2, right: 2, height: 4, background: '#c27a5a' }} />
+            </div>}
+          </div>
+        ))}
+        {/* topo da estante: vaso + caixa */}
+        <div style={{ position: 'absolute', top: -30, left: 14, width: 22, height: 24, background: '#8b5a3a', borderRadius: '0 0 2px 2px' }} />
+        <div style={{ position: 'absolute', top: -52, left: 12, width: 26, height: 24, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }}>
+          <div style={{ position: 'absolute', top: 2, left: 8, width: 3, height: 18, background: '#4a7a2e', transform: 'rotate(-10deg)' }} />
+        </div>
+        <div style={{ position: 'absolute', top: -24, left: 48, width: 34, height: 18, background: '#c27a5a', border: '2px solid #8b5a2c' }} />
+        <div style={{ position: 'absolute', top: -20, left: 92, width: 22, height: 14, background: '#f0c040', border: '2px solid #8b5a2c', borderRadius: '2px' }} />
+        <div style={{ position: 'absolute', top: -28, left: 128, width: 16, height: 22, background: isNight ? '#6a5a7c' : '#c94c4c', borderRadius: '50%' }} />
+      </div>
+      {/* sombra da estante no piso */}
+      <GroundShadow bottom="calc(22% - 4px)" left="calc(5% + 90px)" width={200} opacity={0.2} />
+
+      {/* === PRATELEIRA FLUTUANTE (parede central, entre quadros e bancada) === */}
+      <div style={{ position: 'absolute', top: '34%', left: '58%', width: 110, height: 8, background: isNight ? '#2a1812' : '#5a3a1a', zIndex: 2, boxShadow: '0 3px 0 rgba(0,0,0,0.35)' }}>
+        {/* livros deitados */}
+        <div style={{ position: 'absolute', top: -14, left: 4, width: 10, height: 14, background: '#c94c4c', border: '1px solid rgba(0,0,0,0.4)' }} />
+        <div style={{ position: 'absolute', top: -14, left: 16, width: 10, height: 14, background: '#4a6a8a', border: '1px solid rgba(0,0,0,0.4)' }} />
+        <div style={{ position: 'absolute', top: -14, left: 28, width: 10, height: 14, background: '#f0c040', border: '1px solid rgba(0,0,0,0.4)' }} />
+        {/* plantinha */}
+        <div style={{ position: 'absolute', top: -20, left: 52, width: 14, height: 20, background: '#8b5a3a', borderRadius: '0 0 50% 50%' }}>
+          <div style={{ position: 'absolute', top: -10, left: 2, width: 4, height: 14, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(-10deg)' }} />
+          <div style={{ position: 'absolute', top: -12, left: 6, width: 4, height: 16, background: '#6a9a4e', borderRadius: 2 }} />
+          <div style={{ position: 'absolute', top: -8, right: 2, width: 4, height: 12, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(10deg)' }} />
+        </div>
+        {/* porta-retrato */}
+        <div style={{ position: 'absolute', top: -18, left: 76, width: 18, height: 18, background: isNight ? '#2a1812' : '#8b5a2c', border: '2px solid #3a2418' }}>
+          <div style={{ position: 'absolute', inset: 2, background: isNight ? '#4a3a6a' : '#f5c8a0' }} />
+        </div>
+      </div>
+
+      {/* === LUZES DE CORDÃO (string lights) na parede === */}
+      <svg style={{ position: 'absolute', top: '4%', left: '2%', right: '2%', height: 60, pointerEvents: 'none', zIndex: 2 }} viewBox="0 0 1000 60" preserveAspectRatio="none">
+        <path d="M 0 10 Q 100 40 200 20 T 400 25 T 600 15 T 800 25 T 1000 10" stroke={isNight ? '#8b5a2c' : '#5a3a1a'} strokeWidth="1.5" fill="none" />
+      </svg>
+      {Array.from({ length: 18 }).map((_, i) => {
+        const x = 2 + i * 5.4;
+        const y = 5 + Math.sin(i*0.8) * 2;
+        return <div key={`light${i}`} style={{ position: 'absolute', top: `${y}%`, left: `${x}%`, width: 8, height: 10, background: '#ffd97a', borderRadius: '50% 50% 30% 30%', boxShadow: '0 0 10px #ffd97a, 0 0 20px rgba(255,217,122,0.5)', animation: `twinkle 2s ease-in-out ${i*0.15}s infinite`, zIndex: 2 }} />;
+      })}
+
+      {/* === MESA DO PROGRAMADOR (canto esquerdo-centro, atrás do sofá) === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '26%', cursor: 'pointer', zIndex: 2 }}
+        onClick={() => onDialog({ who: 'setup do Edu', text: 'mesa limpa. VSCode aberto. café preto. terminal no neovim. vida boa.' })}
+      >
+        {/* tampo da mesa */}
+        <div style={{ position: 'relative', width: 170, height: 10, background: '#3a2a1a', borderTop: '3px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
+        {/* pernas laterais */}
+        <div style={{ position: 'absolute', bottom: -60, left: 8, width: 6, height: 60, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: -60, right: 8, width: 6, height: 60, background: '#2a1a10' }} />
+        {/* travessa horizontal entre pernas */}
+        <div style={{ position: 'absolute', bottom: -28, left: 14, right: 14, height: 4, background: '#2a1a10' }} />
+        {/* gaveta */}
+        <div style={{ position: 'absolute', bottom: -18, left: 40, width: 90, height: 16, background: '#5a3a22', border: '2px solid #2a1a10' }}>
+          <div style={{ position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)', width: 12, height: 3, background: '#2a1a10', borderRadius: 2 }} />
+        </div>
+        {/* monitor (maior e mais detalhado) */}
+        <div style={{ position: 'absolute', bottom: 10, left: 24, transform: 'scale(2.4)', transformOrigin: 'bottom left' }}>
+          <PixelSprite data={MONITOR_DATA} palette={MONITOR_PALETTE} scale={2} />
+        </div>
+        {/* caneca de café */}
+        <div style={{ position: 'absolute', bottom: 10, right: 44, width: 14, height: 16, background: '#f4e4c1', border: '2px solid #8b5a2c', borderRadius: '2px 2px 4px 4px' }}>
+          <div style={{ position: 'absolute', top: 2, right: -5, width: 5, height: 8, border: '2px solid #8b5a2c', borderLeft: 'none', borderRadius: '0 50% 50% 0' }} />
+          <div style={{ position: 'absolute', top: 3, left: 2, right: 2, height: 3, background: '#3a2a1a' }} />
+          {/* vapor */}
+          <div style={{ position: 'absolute', top: -12, left: 3, fontSize: 10, color: '#aaa', opacity: 0.7, animation: 'sway 2s ease-in-out infinite' }}>~</div>
+          <div style={{ position: 'absolute', top: -14, left: 8, fontSize: 8, color: '#aaa', opacity: 0.5, animation: 'sway 2.3s ease-in-out 0.4s infinite' }}>~</div>
+        </div>
+        {/* laptop pequeno ao lado */}
+        <div style={{ position: 'absolute', bottom: 10, right: 14, width: 20, height: 14, background: '#fff', border: '2px solid #2a2a2a', borderRadius: '0 0 3px 3px' }}>
+          <div style={{ position: 'absolute', top: 2, left: 2, right: 2, height: 3, background: '#3a2a1a' }} />
+        </div>
+        {/* cadeira gamer atrás da mesa */}
+        <div style={{ position: 'absolute', bottom: -70, left: 62, width: 46, height: 90, zIndex: -1 }}>
+          <div style={{ position: 'absolute', top: 0, left: 4, right: 4, height: 52, background: '#2a1a20', border: '2px solid #1a0a10', borderRadius: '8px 8px 4px 4px' }}>
+            <div style={{ position: 'absolute', top: 6, left: 4, right: 4, height: 3, background: '#c94c4c' }} />
+            <div style={{ position: 'absolute', top: 14, left: 4, right: 4, height: 3, background: '#c94c4c' }} />
+          </div>
+          <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 4, height: 20, background: '#1a0a10' }} />
+          <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 28, height: 6, background: '#2a1a20', borderRadius: '50%' }} />
+        </div>
+      </div>
+      <GroundShadow bottom="calc(22% - 4px)" left="calc(26% + 85px)" width={200} opacity={0.2} />
+
+      {/* === CANTO NUTRI - bancada com pernas aterradas === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_BACK}%`, right: '4%', cursor: 'pointer', zIndex: 2 }}
+        onClick={() => onDialog({ who: 'bancada da Bella', text: 'tábua de frutas, iogurte grego, whey na prateleira. a nutri mandou.' })}
+      >
+        {/* tampo bancada */}
+        <div style={{ position: 'relative', width: 180, height: 12, background: '#e8e0d4', borderTop: '3px solid #fff', borderBottom: '2px solid #8b8070' }} />
+        {/* pernas maiores (altura bancada real) */}
+        <div style={{ position: 'absolute', bottom: -110, left: 10, width: 7, height: 110, background: '#d0c4b0' }} />
+        <div style={{ position: 'absolute', bottom: -110, right: 10, width: 7, height: 110, background: '#d0c4b0' }} />
+        {/* prateleira inferior */}
+        <div style={{ position: 'absolute', bottom: -60, left: 10, right: 10, height: 5, background: '#c0b498', boxShadow: '0 1px 0 rgba(0,0,0,0.2)' }} />
+        {/* gavetas embaixo */}
+        <div style={{ position: 'absolute', bottom: -34, left: 22, width: 136, height: 18, background: '#e8e0d4', border: '2px solid #b0a888' }}>
+          <div style={{ position: 'absolute', top: 7, left: '25%', width: 10, height: 3, background: '#8b8070' }} />
+          <div style={{ position: 'absolute', top: 7, right: '25%', width: 10, height: 3, background: '#8b8070' }} />
+        </div>
+        {/* maçã (em cima) */}
+        <div style={{ position: 'absolute', bottom: 12, left: 8, transform: 'scale(1.4)', transformOrigin: 'bottom left' }}>
+          <PixelSprite data={APPLE_DATA} palette={APPLE_PALETTE} scale={2} />
+        </div>
+        {/* tigela de frutas */}
+        <div style={{ position: 'absolute', bottom: 12, left: 46, width: 44, height: 10, background: '#fff', border: '2px solid #888', borderRadius: '50%' }}>
+          <div style={{ position: 'absolute', top: -5, left: 4, width: 8, height: 8, background: '#8bc24f', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -7, left: 14, width: 9, height: 9, background: '#d94a4a', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -5, left: 26, width: 7, height: 7, background: '#f0c040', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -3, left: 34, width: 5, height: 5, background: '#d97760', borderRadius: '50%' }} />
+        </div>
+        {/* garrafa de água */}
+        <div style={{ position: 'absolute', bottom: 12, left: 98, width: 14, height: 28, background: '#9ad8ff', border: '2px solid #4a6a8a', borderRadius: '3px 3px 2px 2px' }}>
+          <div style={{ position: 'absolute', top: -4, left: 3, width: 6, height: 4, background: '#4a6a8a' }} />
+          <div style={{ position: 'absolute', top: 14, left: 2, right: 2, height: 3, background: '#c4e8ff', opacity: 0.6 }} />
+        </div>
+        {/* lata WHEY */}
+        <div style={{ position: 'absolute', bottom: 12, left: 122, width: 22, height: 28, background: '#1a1a1a', border: '2px solid #000' }}>
+          <div style={{ position: 'absolute', top: 5, left: 2, right: 2, height: 5, background: '#c94c4c' }} />
+          <div style={{ position: 'absolute', top: 14, left: 2, fontSize: 7, color: '#fff', fontFamily: 'var(--pixel)', letterSpacing: -1 }}>WHEY</div>
+        </div>
+        {/* porta-retrato */}
+        <div style={{ position: 'absolute', bottom: 12, right: 6, width: 16, height: 20, background: '#8b5a2c', border: '2px solid #3a2418' }}>
+          <div style={{ position: 'absolute', inset: 2, background: isNight ? '#4a3a6a' : '#f5c8a0' }}>
+            <div style={{ position: 'absolute', top: 2, left: 3, width: 6, height: 6, background: '#d97760', borderRadius: '50%' }} />
+          </div>
+        </div>
+        {/* armário aéreo acima */}
+        <div style={{ position: 'absolute', bottom: 60, left: 0, width: 180, height: 54, background: '#e8e0d4', border: '3px solid #b0a888', boxShadow: '2px 2px 0 rgba(0,0,0,0.25)' }}>
+          <div style={{ position: 'absolute', top: 6, left: 6, right: '50%', bottom: 6, border: '2px solid #b0a888', marginRight: 2 }}>
+            <div style={{ position: 'absolute', top: '50%', left: 4, width: 3, height: 8, background: '#8b8070', borderRadius: 2 }} />
+          </div>
+          <div style={{ position: 'absolute', top: 6, left: '50%', right: 6, bottom: 6, border: '2px solid #b0a888', marginLeft: 2 }}>
+            <div style={{ position: 'absolute', top: '50%', right: 4, width: 3, height: 8, background: '#8b8070', borderRadius: 2 }} />
+          </div>
+        </div>
+      </div>
+      <GroundShadow bottom="calc(22% - 4px)" left="calc(100% - 4% - 90px)" width={190} opacity={0.22} />
+
+      {/* === TV + RACK (parede esquerda-centro) — maior e com detalhes === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '44%', zIndex: 2 }}>
+        {/* rack */}
+        <div style={{ position: 'relative', width: 160, height: 12, background: '#3a2418', borderTop: '2px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
+        {/* pernas */}
+        <div style={{ position: 'absolute', bottom: -30, left: 8, width: 5, height: 30, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: -30, right: 8, width: 5, height: 30, background: '#2a1810' }} />
+        {/* gavetinha do rack */}
+        <div style={{ position: 'absolute', bottom: -20, left: 28, width: 104, height: 14, background: '#5a3a22', border: '2px solid #2a1810' }}>
+          <div style={{ position: 'absolute', top: 5, left: '50%', transform: 'translateX(-50%)', width: 10, height: 3, background: '#1a1008', borderRadius: 2 }} />
+        </div>
+        {/* tv grande (70" cozy) */}
+        <div style={{ position: 'absolute', bottom: 12, left: 12, width: 136, height: 76, background: '#1a1a1a', border: '3px solid #2a2a2a', borderRadius: 4, boxShadow: '2px 2px 0 rgba(0,0,0,0.35)' }}>
+          <div style={{ position: 'absolute', inset: 3, background: isNight ? 'linear-gradient(135deg,#2a4a6a,#4a3a8a)' : 'linear-gradient(135deg,#ffd97a,#d97760)' }}>
+            {/* silhueta casal vendo */}
+            <div style={{ position: 'absolute', bottom: 4, left: 6, right: 6, height: 6, background: 'rgba(0,0,0,0.45)' }} />
+            <div style={{ position: 'absolute', bottom: 9, left: '30%', width: 8, height: 8, background: 'rgba(0,0,0,0.35)', borderRadius: '50% 50% 0 0' }} />
+            <div style={{ position: 'absolute', bottom: 9, left: '56%', width: 8, height: 8, background: 'rgba(0,0,0,0.35)', borderRadius: '50% 50% 0 0' }} />
+            {/* lua/sol na tela */}
+            <div style={{ position: 'absolute', top: 6, left: 10, width: 10, height: 10, background: isNight ? '#fff8d4' : '#fff6c0', borderRadius: '50%', opacity: 0.8 }} />
+            {/* nuvem */}
+            <div style={{ position: 'absolute', top: 12, right: 12, width: 18, height: 4, background: '#fff', opacity: 0.5 }} />
+          </div>
+        </div>
+        {/* plantinha em cima do rack */}
+        <div style={{ position: 'absolute', bottom: 12, right: 4, width: 8, height: 18, background: '#8b5a3a' }}>
+          <div style={{ position: 'absolute', top: -8, left: -3, width: 14, height: 10, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }} />
+        </div>
+        {/* controle remoto */}
+        <div style={{ position: 'absolute', bottom: 12, left: 4, width: 6, height: 16, background: '#2a1812', borderRadius: 1 }}>
+          <div style={{ position: 'absolute', top: 2, left: 1, right: 1, height: 2, background: '#c94c4c' }} />
+        </div>
+      </div>
+
+      {/* === LUMINÁRIA DE PÉ (altura humana) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '2%', zIndex: 3 }}>
+        {/* base */}
+        <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 32, height: 8, background: '#2a1810', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)', width: 20, height: 6, background: '#3a2418', borderRadius: 3 }} />
+        {/* haste alta */}
+        <div style={{ position: 'relative', width: 5, height: 180, background: 'linear-gradient(to right, #3a2418, #5a3a22 50%, #3a2418)', margin: '0 auto' }} />
+        {/* cúpula */}
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 48, height: 36, background: isNight ? '#f0c040' : '#d97760', borderRadius: '50% 50% 8px 8px', boxShadow: isNight ? '0 0 20px #ffd97a' : 'inset 0 -4px 0 rgba(0,0,0,0.2)' }} />
+        <div style={{ position: 'absolute', top: -2, left: '50%', transform: 'translateX(-50%)', width: 44, height: 4, background: '#2a1810', borderRadius: 2 }} />
+        {/* halo noturno */}
+        {isNight && <div style={{ position: 'absolute', top: 0, left: '-40px', width: 120, height: 120, background: 'radial-gradient(ellipse at center, rgba(255,217,122,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />}
+      </div>
+
+      {/* === GALERIA DE QUADROS (parede acima do sofá — 5 quadros alinhados) === */}
+      {/* Quadro 1 — coração */}
+      <div style={{ position: 'absolute', top: '18%', left: '30%', width: 62, height: 48, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
+        <div style={{ position: 'absolute', inset: 3, background: 'linear-gradient(135deg, #f5c8a0, #c94c6a)' }} />
+        <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)' }}>
+          <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={1.6} />
+        </div>
+      </div>
+      {/* Quadro 2 — E+I */}
+      <div style={{ position: 'absolute', top: '22%', left: '38%', width: 54, height: 40, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--pixel)', fontSize: 16, color: isNight ? '#ffd97a' : '#fff' }}>
+        E+I
+      </div>
+      {/* Quadro 3 — skyline */}
+      <div style={{ position: 'absolute', top: '16%', left: '46%', width: 72, height: 50, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
+        <div style={{ position: 'absolute', inset: 3, background: isNight ? 'linear-gradient(to bottom, #1a1530, #3a2a5a)' : 'linear-gradient(to bottom, #a8c8e4, #e89a7a)' }}>
+          {/* lua/sol */}
+          <div style={{ position: 'absolute', top: 6, right: 10, width: 8, height: 8, background: isNight ? '#fff8d4' : '#ffd97a', borderRadius: '50%' }} />
+          {/* estrelas pequenas */}
+          {isNight && [[10, 5], [22, 8], [46, 4]].map(([x, y], i) => (
+            <div key={i} style={{ position: 'absolute', top: y, left: x, width: 2, height: 2, background: '#fff', borderRadius: '50%' }} />
+          ))}
+          {/* skyline */}
+          <div style={{ position: 'absolute', bottom: 2, left: 2, right: 2, height: 14, background: isNight ? '#0a0820' : '#6a8ab4', clipPath: 'polygon(0 100%, 0 60%, 8% 40%, 16% 60%, 28% 30%, 40% 50%, 52% 20%, 64% 55%, 76% 40%, 88% 60%, 100% 50%, 100% 100%)' }} />
+        </div>
+      </div>
+      {/* Quadro 4 — pequeno, floral */}
+      <div style={{ position: 'absolute', top: '24%', left: '56%', width: 44, height: 44, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
+        <div style={{ position: 'absolute', inset: 3, background: isNight ? '#3a2d4a' : '#ede0c3' }}>
+          <div style={{ position: 'absolute', top: 8, left: 12, width: 6, height: 6, background: '#d94a4a', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: 14, left: 18, width: 6, height: 6, background: '#f0c040', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: 10, left: 22, width: 5, height: 5, background: '#8bc24f', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', bottom: 4, left: 4, right: 4, height: 4, background: '#5a8a3e' }} />
+        </div>
+      </div>
+
+      {/* === POLTRONA/PUFF (canto direito, maior — suporta 1 pessoa) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 2}%`, right: '2%', zIndex: 3 }}>
+        {/* almofada chão ao lado */}
+        <div style={{ position: 'absolute', bottom: -4, left: -28, width: 26, height: 14, background: isNight ? '#6a5a7c' : '#f0c040', borderRadius: '50%', opacity: 0.9 }} />
+        {/* corpo poltrona */}
+        <div style={{ position: 'relative', width: 90, height: 70, background: isNight ? '#5a4060' : '#8b4a3a', borderRadius: '40% 40% 10% 10%', boxShadow: 'inset 0 -8px 0 rgba(0,0,0,0.2), 0 4px 0 #2a1810' }}>
+          {/* almofada em cima */}
+          <div style={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', width: 48, height: 18, background: isNight ? '#7a5a8a' : '#d97760', borderRadius: 4 }} />
+          {/* manta jogada */}
+          <div style={{ position: 'absolute', top: 28, left: -4, width: 36, height: 24, background: isNight ? '#8b6ba8' : '#ede0c3', borderRadius: '4px 0 0 4px', opacity: 0.85, transform: 'rotate(-8deg)' }} />
+        </div>
+        {/* sombra */}
+        <div style={{ position: 'absolute', bottom: -6, left: '50%', transform: 'translateX(-50%)', width: 100, height: 10, background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%)', pointerEvents: 'none' }} />
+      </div>
+
+      {/* === RÁDIO no chão (com sombra) === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: '22%', cursor: 'pointer', zIndex: 3 }}
+        onClick={() => onDialog({ who: 'rádio', text: 'tocando aquela playlist quente. só lofi e brasileirada romântica.' })}
+      >
+        <div style={{ position: 'relative', width: 56, height: 34, background: '#3a2418', border: '2px solid #1a0e08', borderRadius: 2 }}>
+          <div style={{ position: 'absolute', top: 3, left: 3, right: 3, height: 16, background: '#1a0e08' }}>
+            <div style={{ position: 'absolute', top: 2, left: 2, right: 2, height: 12, background: 'repeating-linear-gradient(90deg,#5a4030 0,#5a4030 2px,#3a2418 2px,#3a2418 4px)' }} />
+          </div>
+          <div style={{ position: 'absolute', bottom: 4, left: 6, width: 7, height: 7, background: '#c94c4c', borderRadius: '50%', boxShadow: '0 0 4px rgba(201,76,76,0.6)' }} />
+          <div style={{ position: 'absolute', bottom: 4, left: 18, width: 7, height: 7, background: '#f0c040', borderRadius: '50%' }} />
+          {/* antena */}
+          <div style={{ position: 'absolute', top: -14, right: 6, width: 2, height: 14, background: '#1a0e08', transform: 'rotate(15deg)' }} />
+        </div>
+        <GroundShadow bottom="-4px" left="50%" width={70} opacity={0.3} />
+      </div>
+      {/* notas musicais */}
+      <div style={{ position: 'absolute', bottom: '14%', right: '18%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 16, animation: 'sway 2s ease-in-out infinite', zIndex: 3 }}>♪</div>
+      <div style={{ position: 'absolute', bottom: '18%', right: '15%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 13, animation: 'sway 2.5s ease-in-out 0.3s infinite', zIndex: 3 }}>♫</div>
+      <div style={{ position: 'absolute', bottom: '22%', right: '20%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 11, animation: 'sway 3s ease-in-out 0.6s infinite', zIndex: 3 }}>♩</div>
+
+      {/* === RELÓGIO DE PAREDE (maior, números visíveis) === */}
+      <div style={{ position: 'absolute', top: '8%', left: '22%', width: 52, height: 52, background: '#f4e4c1', border: '4px solid #3a2418', borderRadius: '50%', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '3px 3px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.3)' }}>
+        {/* marcas das horas */}
+        <div style={{ position: 'absolute', top: 3, left: '50%', transform: 'translateX(-50%)', width: 2, height: 4, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: 3, left: '50%', transform: 'translateX(-50%)', width: 2, height: 4, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', left: 3, top: '50%', transform: 'translateY(-50%)', width: 4, height: 2, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', right: 3, top: '50%', transform: 'translateY(-50%)', width: 4, height: 2, background: '#2a1810' }} />
+        {/* ponteiros */}
+        <div style={{ position: 'absolute', width: 2.5, height: 14, background: '#2a1810', top: 8, left: '50%', transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${t * 360}deg)` }} />
+        <div style={{ position: 'absolute', width: 2, height: 18, background: '#c94c4c', top: 4, left: '50%', transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${t * 360 * 12}deg)` }} />
+        <div style={{ width: 5, height: 5, background: '#2a1810', borderRadius: '50%', position: 'relative', zIndex: 2 }} />
+      </div>
+
+      {/* === PLANTA SUSPENSA DO TETO === */}
+      <div style={{ position: 'absolute', top: '2%', left: '50%', transform: 'translateX(-50%)', zIndex: 2, animation: 'sway 5s ease-in-out infinite' }}>
+        <div style={{ width: 2, height: 40, background: '#3a2418', margin: '0 auto' }} />
+        <div style={{ width: 36, height: 20, background: '#8b5a3a', borderRadius: '0 0 50% 50%' }}>
+          <div style={{ position: 'absolute', top: -6, left: 4, width: 3, height: 30, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(-15deg)' }} />
+          <div style={{ position: 'absolute', top: -8, left: 14, width: 3, height: 38, background: '#6a9a4e', borderRadius: 2 }} />
+          <div style={{ position: 'absolute', top: -6, right: 4, width: 3, height: 26, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(15deg)' }} />
+        </div>
+      </div>
+
+      {/* === SOFÁ central + casal (usando sprites high-res) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_MID}%`, left: '50%', transform: 'translateX(-50%)', zIndex: 4 }}>
+        {/* casal sentado atrás do sofá (busto visível acima do encosto) */}
+        <div style={{ position: 'absolute', bottom: 54, left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'flex-end', zIndex: 1 }}>
+          <img
+            src={EDU_IMG}
+            alt="Eduardo"
+            onClick={() => onDialog({ who: 'Edu', text: 'vem cá, senta aqui do meu lado que tá passando o nosso filme. trouxe pipoca, promise.' })}
+            style={{
+              width: 150, height: 'auto',
+              imageRendering: 'pixelated',
+              cursor: 'pointer',
+              animation: 'char-breathe 4s ease-in-out infinite',
+              filter: isNight ? 'brightness(0.78) saturate(0.9)' : 'none',
+              transition: 'filter 1.5s',
+              marginBottom: 0,
+            }}
+          />
+          <img
+            src={ISA_IMG}
+            alt="Isabella"
+            onClick={() => onDialog({ who: 'Bella', text: 'oi amor ♥ tô quase acabando esse episódio, fica aqui comigo que logo eu te presto atenção de novo.' })}
+            style={{
+              width: 160, height: 'auto',
+              imageRendering: 'pixelated',
+              cursor: 'pointer',
+              animation: 'char-breathe-offset 4.2s ease-in-out 0.4s infinite',
+              filter: isNight ? 'brightness(0.78) saturate(0.9)' : 'none',
+              transition: 'filter 1.5s',
+              marginLeft: -42,
+              marginBottom: 2,
+            }}
+          />
+          {/* coraçãozinho batendo acima do casal */}
+          <div style={{ position: 'absolute', top: -32, left: '50%', animation: 'heart-bump-couple 1.4s ease-in-out infinite', zIndex: 2 }}>
+            <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={3} />
+          </div>
+        </div>
+
+        {/* sofá proporcional (encosto cobre do quadril pra baixo) */}
+        <div style={{ position: 'relative', width: 360, height: 90, background: isNight ? '#4a3d5a' : '#c94c6a', borderRadius: '10px 10px 6px 6px', boxShadow: 'inset 0 -8px 0 rgba(0,0,0,0.22), 0 6px 0 #2a2220, inset 2px 2px 0 rgba(255,255,255,0.08)', zIndex: 2 }}>
+          {/* encosto (parte alta) */}
+          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 34, background: isNight ? 'linear-gradient(to bottom, #5a4d6a, #4a3d5a)' : 'linear-gradient(to bottom, #d95c7a, #b93c5a)', borderRadius: '10px 10px 0 0' }} />
+          {/* linha divisória encosto/assento */}
+          <div style={{ position: 'absolute', top: 34, left: 8, right: 8, height: 2, background: 'rgba(0,0,0,0.25)' }} />
+          {/* almofadas menores (3 espalhadas) */}
+          <div style={{ position: 'absolute', top: 40, left: 16, width: 44, height: 26, background: isNight ? '#8b6ba8' : '#f0c040', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
+          <div style={{ position: 'absolute', top: 40, left: '50%', transform: 'translateX(-50%)', width: 44, height: 26, background: isNight ? '#6a5a7c' : '#ede0c3', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
+          <div style={{ position: 'absolute', top: 40, right: 16, width: 44, height: 26, background: isNight ? '#8b5aa8' : '#d97760', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
+          {/* braços laterais */}
+          <div style={{ position: 'absolute', top: -6, left: -10, width: 16, height: 90, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6, boxShadow: 'inset 2px 0 0 rgba(255,255,255,0.08)' }} />
+          <div style={{ position: 'absolute', top: -6, right: -10, width: 16, height: 90, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6, boxShadow: 'inset -2px 0 0 rgba(255,255,255,0.08)' }} />
+          {/* pezinhos */}
+          <div style={{ position: 'absolute', bottom: -8, left: 20, width: 10, height: 8, background: '#2a2220' }} />
+          <div style={{ position: 'absolute', bottom: -8, right: 20, width: 10, height: 8, background: '#2a2220' }} />
+        </div>
+        {/* sombra do sofá */}
+        <GroundShadow bottom="-14px" left="50%" width={380} opacity={0.32} />
+      </div>
+
+      {/* === MESINHA DE CENTRO na frente do sofá === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 2}%`, left: '50%', transform: 'translateX(-50%)', width: 160, height: 36, zIndex: 3 }}>
+        {/* tampo */}
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, background: '#3a2418', borderTop: '2px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
+        {/* pernas */}
+        <div style={{ position: 'absolute', bottom: 0, left: 8, width: 6, height: 34, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: 0, right: 8, width: 6, height: 34, background: '#2a1810' }} />
+        {/* travessa inferior */}
+        <div style={{ position: 'absolute', bottom: 4, left: 14, right: 14, height: 3, background: '#2a1810' }} />
+        {/* livro aberto */}
+        <div style={{ position: 'absolute', top: -10, left: 20, width: 40, height: 14, background: '#f4e4c1', border: '2px solid #8b5a2c', transform: 'rotate(-6deg)' }}>
+          <div style={{ position: 'absolute', top: 4, left: 3, right: 3, height: 1, background: '#8b5a2c', opacity: 0.5 }} />
+          <div style={{ position: 'absolute', top: 7, left: 3, right: 3, height: 1, background: '#8b5a2c', opacity: 0.5 }} />
+        </div>
+        {/* vela acesa */}
+        <div style={{ position: 'absolute', top: -22, left: 72, width: 10, height: 18, background: '#ede0c3' }}>
+          <div style={{ position: 'absolute', top: -6, left: 3, width: 4, height: 8, background: '#ffd97a', borderRadius: '50% 50% 20% 20%', boxShadow: '0 0 10px #ffd97a', animation: 'twinkle 1.5s ease-in-out infinite' }} />
+        </div>
+        {/* caneca */}
+        <div style={{ position: 'absolute', top: -14, right: 18, width: 14, height: 14, background: '#c94c4c', border: '2px solid #8b2a2a', borderRadius: '2px 2px 4px 4px' }}>
+          <div style={{ position: 'absolute', top: 2, right: -4, width: 4, height: 7, border: '2px solid #8b2a2a', borderLeft: 'none', borderRadius: '0 50% 50% 0' }} />
+          <div style={{ position: 'absolute', top: -10, left: 3, fontSize: 9, color: '#aaa', opacity: 0.6, animation: 'sway 2s ease-in-out infinite' }}>~</div>
+        </div>
+      </div>
+      <GroundShadow bottom={`${TIER_FRONT}%`} left="50%" width={180} opacity={0.28} />
+
+      {/* === CHIHUAHUA (sprite high-res) === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '20%', cursor: 'pointer', zIndex: 5 }}
+        onClick={() => onDialog({ who: 'chihuahua', text: 'au au au! *chacoalha o corpinho todo* O-LÁ! vocês trouxeram petisco???' })}
+      >
+        <img
+          src={DOG_IMG}
+          alt="chihuahua"
+          style={{
+            width: 110, height: 'auto',
+            imageRendering: 'pixelated',
+            animation: 'dog-wag 3.2s ease-in-out infinite',
+            filter: isNight ? 'brightness(0.75) saturate(0.9)' : 'none',
+            transition: 'filter 1.5s',
+            display: 'block',
+          }}
+        />
+        <GroundShadow bottom="-4px" left="50%" width={110} opacity={0.35} />
+      </div>
+
+      {/* === GATO CINZA (sprite high-res) === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: '28%', cursor: 'pointer', zIndex: 5 }}
+        onClick={() => onDialog({ who: 'gato cinza', text: 'miau... *se espreguiça* pode passar, humanos. só não ocupem meu lugar no sofá.' })}
+      >
+        <img
+          src={CAT_IMG}
+          alt="gato"
+          style={{
+            width: 100, height: 'auto',
+            imageRendering: 'pixelated',
+            animation: 'cat-idle 5s ease-in-out infinite, cat-blink 6s ease-in-out infinite',
+            filter: isNight ? 'brightness(0.75) saturate(0.9)' : 'none',
+            transition: 'filter 1.5s',
+            display: 'block',
+          }}
+        />
+        <GroundShadow bottom="-4px" left="50%" width={92} opacity={0.35} />
+      </div>
+
+      {/* === TAPETE grande — fica atrás de tudo no chão (z-index baixo) === */}
+      <div style={{
+        position: 'absolute', bottom: `${TIER_FRONT - 1}%`, left: '18%', right: '18%', height: 32,
+        background: isNight
+          ? 'repeating-linear-gradient(90deg, #5a3a5a 0, #5a3a5a 18px, #8b5a8b 18px, #8b5a8b 36px)'
+          : 'repeating-linear-gradient(90deg, #c94c4c 0, #c94c4c 18px, #f0c040 18px, #f0c040 36px)',
+        borderRadius: 4,
+        opacity: 0.88,
+        border: '3px solid ' + (isNight ? '#3a1a3a' : '#8b2a2a'),
+        boxShadow: '0 3px 0 rgba(0,0,0,0.25)',
+        zIndex: 2,
+      }}>
+        {/* franjas do tapete */}
+        <div style={{ position: 'absolute', left: -6, top: 0, bottom: 0, width: 4, background: 'repeating-linear-gradient(0deg, transparent 0, transparent 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 5px)' }} />
+        <div style={{ position: 'absolute', right: -6, top: 0, bottom: 0, width: 4, background: 'repeating-linear-gradient(0deg, transparent 0, transparent 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 5px)' }} />
+      </div>
+
+      {/* === HALTERES === */}
+      <div
+        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '10%', cursor: 'pointer', zIndex: 4 }}
+        onClick={() => onDialog({ who: 'academia', text: 'PR novo hoje? vamos treinar perna, prometo que depois tem pizza. (mentira da nutri)' })}
+      >
+        <PixelSprite data={DUMBBELL_DATA} palette={DUMBBELL_PALETTE} scale={5} />
+        <GroundShadow bottom="-4px" left="50%" width={70} opacity={0.3} />
+      </div>
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT - 1}%`, left: '16%', zIndex: 4 }}>
+        <PixelSprite data={DUMBBELL_DATA} palette={DUMBBELL_PALETTE} scale={4} />
+        <GroundShadow bottom="-4px" left="50%" width={56} opacity={0.28} />
+      </div>
+
+      {/* === PLANTA DE CHÃO grande (canto direito, atrás da poltrona) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 4}%`, right: '16%', animation: 'sway 4s ease-in-out infinite', zIndex: 3, transformOrigin: 'bottom center' }}>
+        <PixelSprite data={PLANT_DATA} palette={PLANT_PALETTE} scale={5} />
+      </div>
+      {/* vaso abaixo da planta grande (acabamento) */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: 'calc(16% - 4px)', width: 54, height: 32, background: '#c27a5a', border: '3px solid #8b5a2c', borderRadius: '4px 4px 8px 8px', zIndex: 2 }}>
+        <div style={{ position: 'absolute', top: 4, left: 2, right: 2, height: 2, background: 'rgba(0,0,0,0.25)' }} />
+      </div>
+      <GroundShadow bottom={`${TIER_FRONT - 1}%`} left="calc(100% - 16% + 20px)" width={80} opacity={0.3} />
+
+      {/* === CESTO no canto esquerdo (preenche lado esquerdo) === */}
+      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '19%', zIndex: 3 }}>
+        <div style={{ position: 'relative', width: 46, height: 42, background: 'repeating-linear-gradient(45deg, #8b5a2c 0, #8b5a2c 3px, #a06a3a 3px, #a06a3a 6px)', border: '3px solid #5a3a1a', borderRadius: '4px 4px 10px 10px' }}>
+          <div style={{ position: 'absolute', top: -4, left: 2, right: 2, height: 6, background: '#5a3a1a', borderRadius: '50% 50% 2px 2px' }} />
+          {/* manta caindo */}
+          <div style={{ position: 'absolute', top: -8, right: -6, width: 20, height: 16, background: isNight ? '#8b6ba8' : '#ede0c3', borderRadius: '4px', transform: 'rotate(14deg)' }} />
+        </div>
+        <GroundShadow bottom="-4px" left="50%" width={56} opacity={0.28} />
+      </div>
+
+      {/* Luminária de chão à noite (halo) */}
+      {isNight && (
+        <>
+          <div style={{ position: 'absolute', bottom: '14%', left: '4%', width: 100, height: 130, background: 'radial-gradient(ellipse at center, rgba(255,217,122,0.35) 0%, transparent 70%)', zIndex: 1, pointerEvents: 'none' }} />
+          <div style={{ position: 'absolute', bottom: '14%', right: '4%', width: 100, height: 130, background: 'radial-gradient(ellipse at center, rgba(255,217,122,0.35) 0%, transparent 70%)', zIndex: 1, pointerEvents: 'none' }} />
+        </>
+      )}
+
+      {/* Vagalumes - à noite */}
+      <div style={{ position: 'absolute', inset: 0, opacity: isNight ? 1 : Math.max(0, (0.3 - Math.min(t, 1 - t)) * 3) }}>
+        {fireflies.map((f, i) => <Firefly key={i} {...f} />)}
+      </div>
+
+      {/* Chuva de corações */}
+      <div style={{ position: 'absolute', inset: 0, pointerEvents: 'none' }}>
+        {hearts.map((h, i) => <FallingHeart key={i} {...h} />)}
+      </div>
+
+      {/* Player controlável removido pra não quebrar composição */}
+
+      {/* HUD — título + indicador de tempo */}
+      <div style={{
+        position: 'absolute', top: 24, left: 32, zIndex: 30,
+        fontFamily: 'var(--pixel)',
+        color: '#faf3e0',
+        textShadow: '2px 2px 0 #2d1a0f, 4px 4px 0 rgba(0,0,0,0.3)',
+      }}>
+        <div style={{ fontSize: 13, letterSpacing: 3, opacity: 0.9 }}>NOSSO APÊ</div>
+        <div style={{ fontSize: 38, lineHeight: 1, marginTop: 4 }}>EDUARDO ♥ ISABELLA</div>
+      </div>
+
+      {/* HUD — relógio pixel no canto */}
+      <div style={{
+        position: 'absolute', top: 24, right: 32, zIndex: 30,
+        fontFamily: 'var(--pixel)', fontSize: 14, color: '#faf3e0',
+        background: 'rgba(45, 26, 15, 0.85)',
+        border: '3px solid #8b5a2c',
+        padding: '8px 14px',
+        imageRendering: 'pixelated',
+        boxShadow: '4px 4px 0 rgba(0,0,0,0.3)',
+      }}>
+        {isNight ? '🌙' : '☀'} {String(Math.floor(t * 24)).padStart(2, '0')}:{String(Math.floor((t * 24 % 1) * 60)).padStart(2, '0')}
+      </div>
+
+      {/* Instruções de controle */}
+      <div style={{
+        position: 'absolute', bottom: 18, left: 32, zIndex: 30,
+        fontFamily: 'var(--pixel)', fontSize: 12, color: '#faf3e0',
+        background: 'rgba(45, 26, 15, 0.8)',
+        border: '2px solid #8b5a2c',
+        padding: '6px 12px',
+        letterSpacing: 1.5,
+      }}>
+        ← ↑ ↓ → DESLIZE · CLIQUE NOS OBJETOS
+      </div>
+    </div>
+  );
+}
+
+Object.assign(window, { Hero });
+
+
+/* ==== components/Counter.jsx ==== */
+// Contador ao vivo
+const { useState: useStateC, useEffect: useEffectC } = React;
+
+const START_DATE = new Date('2025-04-18T00:00:00');
+
+function useCountdown() {
+  const [now, setNow] = useStateC(new Date());
+  useEffectC(() => {
+    const id = setInterval(() => setNow(new Date()), 1000);
+    return () => clearInterval(id);
+  }, []);
+  const diffMs = now - START_DATE;
+  const totalSec = Math.floor(diffMs / 1000);
+  const years = Math.floor(totalSec / (365.25 * 86400));
+  let rem = totalSec - Math.floor(years * 365.25 * 86400);
+  const months = Math.floor(rem / (30.44 * 86400));
+  rem -= Math.floor(months * 30.44 * 86400);
+  const days = Math.floor(rem / 86400);
+  rem -= days * 86400;
+  const hours = Math.floor(rem / 3600);
+  rem -= hours * 3600;
+  const mins = Math.floor(rem / 60);
+  const secs = rem - mins * 60;
+  return { years, months, days, hours, mins, secs, totalSec };
+}
+
+function PixelCounter() {
+  const c = useCountdown();
+  const cells = [
+    { n: c.years, l: 'anos' },
+    { n: c.months, l: 'meses' },
+    { n: c.days, l: 'dias' },
+    { n: c.hours, l: 'h' },
+    { n: c.mins, l: 'min' },
+    { n: c.secs, l: 'seg' },
+  ];
+  return (
+    <section className="counter-section" id="contador">
+      <div className="pixel-card" style={{ maxWidth: 920, margin: '0 auto' }}>
+        <div className="pixel-card-header">
+          <span className="dot" /> AMOR INFINITO · DESDE 18 ABR 2025 <span className="dot" />
+        </div>
+        <div className="counter-grid">
+          {cells.map((cell, i) => (
+            <div className="counter-cell" key={i}>
+              <div className="counter-num">{String(cell.n).padStart(2, '0')}</div>
+              <div className="counter-label">{cell.l}</div>
+            </div>
+          ))}
+        </div>
+        <div className="counter-foot">
+          <span style={{ fontFamily: 'var(--pixel)' }}>{c.totalSec.toLocaleString('pt-BR')}</span> segundos amando você.
+        </div>
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { PixelCounter });
+
+
+/* ==== components/Sections.jsx ==== */
+// Galeria, Timeline, Cartinha, Playlist, Mapa, Achievements, Inventário, Carta final
+
+// --- GALERIA ----------------------------------------------
+const GALLERY = [
+  { date: '17 de abril de 2026', title: 'O casal 10/10', note: 'Coloque aqui a história dessa foto. Ela vai virar uma memória pixelada eterna.' },
+  { date: '22 de dezembro de 2025', title: 'Natal juntos', note: 'A primeira ceia a dois — entre luzes, risadas e um filme que a gente nem assistiu.' },
+  { date: '08 de outubro de 2025', title: 'Primeira viagem', note: 'A gente descobriu que somos ótimos companheiros de estrada (e de mapas errados).' },
+  { date: '15 de julho de 2025', title: 'Aquele show', note: 'Cantei errado, você riu, e foi a coisa mais linda do mundo.' },
+  { date: '30 de maio de 2025', title: 'Nosso primeiro beijo', note: 'O mundo travou em 60fps e virou cutscene.' },
+  { date: '18 de abril de 2025', title: 'O começo', note: 'O dia em que a quest principal começou.' },
+];
+
+function Gallery({ onDialog }) {
+  const [idx, setIdx] = useStateC(0);
+  return (
+    <section className="gallery-section" id="galeria">
+      <div className="section-label">NOSSA HISTÓRIA</div>
+      <h2 className="section-title">momentos que não esqueço</h2>
+      <div className="gallery-grid">
+        {GALLERY.map((g, i) => (
+          <article key={i} className="memory-card" onClick={() => setIdx(i)}>
+            <div className="memory-photo">
+              <div className="photo-placeholder">
+                <div className="ph-pattern" />
+                <div className="ph-label">foto · {g.title}</div>
+              </div>
+              <div className="memory-date-tag">{g.date}</div>
+            </div>
+            <div className="memory-body">
+              <h3>{g.title}</h3>
+              <p>{g.note}</p>
+              <button className="pixel-btn pixel-btn-small" onClick={(e) => { e.stopPropagation(); onDialog({ who: g.title, text: g.note }); }}>
+                abrir memória →
+              </button>
+            </div>
+          </article>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// --- TIMELINE --------------------------------------------
+const TIMELINE = [
+  { date: '18/04/2025', title: 'Level 1 — O começo', body: 'A gente se olhou e a quest principal começou.' },
+  { date: '30/05/2025', title: 'Level 3 — Primeiro beijo', body: 'Cutscene em câmera lenta, com trilha sonora e tudo.' },
+  { date: '15/07/2025', title: 'Level 5 — Show juntos', body: 'Braços levantados, voz rouca, coração cheio.' },
+  { date: '08/10/2025', title: 'Level 7 — Primeira viagem', body: 'Dois achievements desbloqueados: "perder-se juntos" e "rir muito".' },
+  { date: '22/12/2025', title: 'Level 9 — Natal a dois', body: 'Ceia, pijama, filme pela metade.' },
+  { date: '18/04/2026', title: 'Boss final — 1 ano!', body: 'Você é a melhor recompensa deste jogo.' },
+];
+
+function Timeline() {
+  return (
+    <section className="timeline-section" id="linhadotempo">
+      <div className="section-label">LINHA DO TEMPO</div>
+      <h2 className="section-title">como a gente foi evoluindo</h2>
+      <div className="timeline">
+        <div className="timeline-line" />
+        {TIMELINE.map((t, i) => (
+          <div key={i} className={`timeline-item ${i % 2 === 0 ? 'left' : 'right'}`}>
+            <div className="timeline-node" />
+            <div className="timeline-card">
+              <div className="timeline-date">{t.date}</div>
+              <h3>{t.title}</h3>
+              <p>{t.body}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// --- CARTINHA ---------------------------------------------
+function Letter() {
+  return (
+    <section className="letter-section" id="cartinha">
+      <div className="section-label">CARTINHA</div>
+      <h2 className="section-title">pra você ler devagar</h2>
+      <div className="letter-scroll">
+        <div className="letter-body">
+          <p>Oi, meu amor.</p>
+          <p>Se eu tentasse escrever tudo que eu sinto, faltaria linha. Mas vou tentar em poucas palavras: você é minha pessoa favorita. A pessoa que me faz rir quando eu nem tô afim, que entende meus silêncios, que divide o último pedaço de qualquer coisa comigo.</p>
+          <p>Um ano parece pouco quando eu lembro de cada dia, e muito quando eu penso em tudo que a gente viveu. Você virou o lugar pra onde eu volto depois de qualquer dia difícil — meu save point.</p>
+          <p>Obrigado por cada olhar, cada mensagem boba de manhã, cada abraço que segura mais apertado quando sabe que eu preciso. Obrigado por ser você, do seu jeitinho que eu amo tanto.</p>
+          <p>Esse site é minha tentativa (meio nerd, meio apaixonada) de dizer: eu te escolheria de novo, em qualquer timeline, em qualquer save, em qualquer vale.</p>
+          <p style={{ textAlign: 'right', fontStyle: 'italic' }}>— seu, pra sempre</p>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- PLAYLIST ---------------------------------------------
+const PLAYLIST = [
+  { title: 'a primeira música nossa', artist: '—', mood: 'suave', dur: '3:42' },
+  { title: 'essa a gente cantou junto', artist: '—', mood: 'animada', dur: '4:18' },
+  { title: 'aquela do carro', artist: '—', mood: 'noturna', dur: '3:55' },
+  { title: 'a que eu lembro de você', artist: '—', mood: 'chorosa', dur: '4:02' },
+  { title: 'a do domingo de manhã', artist: '—', mood: 'tranquila', dur: '3:30' },
+];
+
+function Playlist() {
+  const [playing, setPlaying] = useStateC(null);
+  return (
+    <section className="playlist-section" id="playlist">
+      <div className="section-label">TRILHA SONORA</div>
+      <h2 className="section-title">nossas músicas</h2>
+      <div className="playlist-box">
+        <div className="playlist-header">
+          <PixelSprite data={NOTE_DATA} palette={NOTE_PALETTE} scale={3} />
+          <div>
+            <div style={{ fontFamily: 'var(--pixel)', fontSize: 14, letterSpacing: 2 }}>NOSSAS MÚSICAS.MP3</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>{PLAYLIST.length} faixas · edite depois</div>
+          </div>
+        </div>
+        <ul className="playlist-list">
+          {PLAYLIST.map((p, i) => (
+            <li key={i} className={playing === i ? 'active' : ''} onClick={() => setPlaying(playing === i ? null : i)}>
+              <span className="pl-num">{String(i + 1).padStart(2, '0')}</span>
+              <span className="pl-title">{p.title}</span>
+              <span className="pl-mood">[{p.mood}]</span>
+              <span className="pl-dur">{p.dur}</span>
+              <span className="pl-play">{playing === i ? '▮▮' : '▶'}</span>
+            </li>
+          ))}
+        </ul>
+        {playing !== null && (
+          <div className="playlist-progress">
+            <div className="pp-bar" />
+            <div style={{ fontSize: 11, fontFamily: 'var(--pixel)', marginTop: 6, opacity: 0.7 }}>♪ tocando: {PLAYLIST[playing].title}</div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+// --- MAPA -------------------------------------------------
+const PLACES = [
+  { x: 22, y: 30, label: 'onde a gente se conheceu', date: 'mar/2025' },
+  { x: 55, y: 42, label: 'primeiro encontro', date: 'abr/2025' },
+  { x: 38, y: 65, label: 'primeira viagem', date: 'out/2025' },
+  { x: 72, y: 28, label: 'show inesquecível', date: 'jul/2025' },
+  { x: 65, y: 72, label: 'nosso restaurante', date: 'todo mês' },
+  { x: 20, y: 75, label: 'praia do aniversário', date: 'abr/2026' },
+];
+
+function MapSection() {
+  const [active, setActive] = useStateC(null);
+  return (
+    <section className="map-section" id="mapa">
+      <div className="section-label">CARTOGRAFIA</div>
+      <h2 className="section-title">lugares que a gente marcou</h2>
+      <div className="map-container">
+        <div className="map-bg">
+          {/* Grade de terreno pixel */}
+          <div className="map-grid" />
+          {/* Caminho */}
+          <svg className="map-path" viewBox="0 0 100 100" preserveAspectRatio="none">
+            <path d="M 22 30 Q 40 35, 55 42 T 72 28" stroke="#8b5a2c" strokeWidth="0.6" strokeDasharray="1 1.5" fill="none" />
+            <path d="M 55 42 Q 50 55, 38 65 T 20 75" stroke="#8b5a2c" strokeWidth="0.6" strokeDasharray="1 1.5" fill="none" />
+            <path d="M 38 65 Q 55 70, 65 72" stroke="#8b5a2c" strokeWidth="0.6" strokeDasharray="1 1.5" fill="none" />
+          </svg>
+          {PLACES.map((p, i) => (
+            <button
+              key={i}
+              className={`map-pin ${active === i ? 'active' : ''}`}
+              style={{ left: `${p.x}%`, top: `${p.y}%` }}
+              onClick={() => setActive(active === i ? null : i)}
+              aria-label={p.label}
+            >
+              <div className="pin-heart">
+                <PixelSprite data={MINI_HEART_DATA} palette={MINI_HEART_PALETTE} scale={3} />
+              </div>
+              {active === i && (
+                <div className="pin-tooltip">
+                  <div style={{ fontFamily: 'var(--pixel)', fontSize: 10, letterSpacing: 1, opacity: 0.7 }}>{p.date.toUpperCase()}</div>
+                  <div>{p.label}</div>
+                </div>
+              )}
+            </button>
+          ))}
+          {/* Árvores decorativas */}
+          <div style={{ position: 'absolute', top: '12%', left: '72%', transform: 'scale(0.7)' }}>
+            <PixelSprite data={TREE_DATA} palette={TREE_PALETTE} scale={3} />
+          </div>
+          <div style={{ position: 'absolute', top: '55%', left: '8%', transform: 'scale(0.7)' }}>
+            <PixelSprite data={TREE_DATA} palette={TREE_PALETTE} scale={3} />
+          </div>
+          <div style={{ position: 'absolute', top: '20%', left: '40%', transform: 'scale(0.6)' }}>
+            <PixelSprite data={FLOWER_DATA} palette={FLOWER_PALETTE} scale={3} />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- ACHIEVEMENTS ----------------------------------------
+const ACHIEVEMENTS = [
+  { icon: '💌', title: 'primeira mensagem', desc: 'Você mandou um "oi" que mudou tudo.', unlocked: true, rarity: 'comum' },
+  { icon: '👀', title: 'primeiro olhar', desc: 'O tempo desacelerou.', unlocked: true, rarity: 'raro' },
+  { icon: '💋', title: 'primeiro beijo', desc: 'Cutscene desbloqueada.', unlocked: true, rarity: 'épico' },
+  { icon: '🎤', title: 'cantoria no chuveiro', desc: 'Você me viu no meu pior momento vocal.', unlocked: true, rarity: 'raro' },
+  { icon: '🚗', title: 'road trip', desc: '500km de playlist e risada.', unlocked: true, rarity: 'épico' },
+  { icon: '🛌', title: 'domingo preguiçoso', desc: 'O combo supremo: você + cobertor + pão.', unlocked: true, rarity: 'comum' },
+  { icon: '🎂', title: '1 ano juntos', desc: 'Boss principal derrotado com louvor.', unlocked: true, rarity: 'lendário' },
+  { icon: '💍', title: 'próximo nível', desc: '???', unlocked: false, rarity: 'lendário' },
+];
+
+function Achievements() {
+  return (
+    <section className="ach-section" id="achievements">
+      <div className="section-label">CONQUISTAS</div>
+      <h2 className="section-title">achievements desbloqueados</h2>
+      <div className="ach-grid">
+        {ACHIEVEMENTS.map((a, i) => (
+          <div key={i} className={`ach-card ${a.unlocked ? '' : 'locked'} rarity-${a.rarity}`}>
+            <div className="ach-icon">{a.unlocked ? a.icon : '🔒'}</div>
+            <div>
+              <div className="ach-title">{a.unlocked ? a.title : '???'}</div>
+              <div className="ach-desc">{a.desc}</div>
+              <div className="ach-rarity">{a.rarity}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+// --- INVENTÁRIO ------------------------------------------
+const INVENTORY = [
+  { icon: '🌹', name: 'rosa murchinha', qty: 1, desc: 'Aquela do primeiro encontro. Prensada num livro.' },
+  { icon: '🎫', name: 'ingresso do cinema', qty: 2, desc: 'Filme esquecido, mão dada gravada na memória.' },
+  { icon: '📷', name: 'polaroid', qty: 7, desc: 'Cada uma vale mil emojis.' },
+  { icon: '🧸', name: 'ursinho', qty: 1, desc: 'Ganhou nome no segundo dia.' },
+  { icon: '✉️', name: 'bilhete secreto', qty: 3, desc: '"Boa sorte hoje" dentro da mochila.' },
+  { icon: '🍫', name: 'embalagem guardada', qty: 1, desc: 'Do primeiro chocolate que a gente dividiu.' },
+  { icon: '🔑', name: 'chave extra', qty: 1, desc: 'A da sua casa. Significa tudo.' },
+  { icon: '⭐', name: 'estrela de memória', qty: 99, desc: 'Coletável infinito.' },
+];
+
+function Inventory() {
+  const [selected, setSelected] = useStateC(null);
+  return (
+    <section className="inv-section" id="inventario">
+      <div className="section-label">INVENTÁRIO</div>
+      <h2 className="section-title">coisas que eu guardo de você</h2>
+      <div className="inv-wrapper">
+        <div className="inv-grid">
+          {Array.from({ length: 24 }).map((_, i) => {
+            const item = INVENTORY[i];
+            return (
+              <button
+                key={i}
+                className={`inv-slot ${selected === i ? 'selected' : ''}`}
+                onClick={() => item && setSelected(selected === i ? null : i)}
+                disabled={!item}
+              >
+                {item && (
+                  <>
+                    <div className="inv-icon">{item.icon}</div>
+                    {item.qty > 1 && <div className="inv-qty">{item.qty}</div>}
+                  </>
+                )}
+              </button>
+            );
+          })}
+        </div>
+        <div className="inv-detail">
+          {selected !== null && INVENTORY[selected] ? (
+            <>
+              <div className="inv-detail-icon">{INVENTORY[selected].icon}</div>
+              <div className="inv-detail-name">{INVENTORY[selected].name}</div>
+              <div className="inv-detail-desc">{INVENTORY[selected].desc}</div>
+              {INVENTORY[selected].qty > 1 && <div className="inv-detail-qty">× {INVENTORY[selected].qty}</div>}
+            </>
+          ) : (
+            <div style={{ opacity: 0.5, textAlign: 'center', padding: 20, fontSize: 13 }}>
+              Clique num item pra ler a história dele.
+            </div>
+          )}
+        </div>
+      </div>
+    </section>
+  );
+}
+
+// --- CARTA FINAL -----------------------------------------
+function FinalCard() {
+  const [opened, setOpened] = useStateC(false);
+  return (
+    <section className="final-section" id="final">
+      <div className="section-label">CARTA FINAL</div>
+      <h2 className="section-title">uma surpresa</h2>
+      <div className="final-wrap">
+        {!opened ? (
+          <button className="gift-button" onClick={() => setOpened(true)}>
+            <div style={{ animation: 'gift-bounce 1.5s ease-in-out infinite' }}>
+              <PixelSprite data={GIFT_DATA} palette={GIFT_PALETTE} scale={8} />
+            </div>
+            <div className="gift-label">abrir presente</div>
+          </button>
+        ) : (
+          <div className="final-open">
+            <div className="final-hearts">
+              {Array.from({ length: 8 }).map((_, i) => (
+                <div key={i} style={{ animation: `heart-burst 1.2s ease-out ${i * 0.05}s forwards`, position: 'absolute', left: '50%', top: '50%', transform: 'translate(-50%, -50%)', '--angle': `${i * 45}deg` }}>
+                  <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={3} />
+                </div>
+              ))}
+            </div>
+            <div className="final-text">
+              <div style={{ fontFamily: 'var(--pixel)', fontSize: 20, letterSpacing: 3, color: '#c94c4c', marginBottom: 16 }}>
+                ★ RECOMPENSA FINAL ★
+              </div>
+              <p style={{ fontSize: 22, lineHeight: 1.5 }}>
+                Feliz 1 ano, meu amor. Que venham mais mil saves juntos.
+              </p>
+              <div style={{ display: 'flex', justifyContent: 'center', gap: 8, marginTop: 24 }}>
+                <div style={{ animation: 'heart-pulse 1.2s ease-in-out infinite' }}><PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={5} /></div>
+                <div style={{ animation: 'heart-pulse 1.2s ease-in-out 0.2s infinite' }}><PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={5} /></div>
+                <div style={{ animation: 'heart-pulse 1.2s ease-in-out 0.4s infinite' }}><PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={5} /></div>
+              </div>
+              <button className="pixel-btn" style={{ marginTop: 32 }} onClick={() => setOpened(false)}>fechar</button>
+            </div>
+          </div>
+        )}
+      </div>
+    </section>
+  );
+}
+
+Object.assign(window, { Gallery, Timeline, Letter, Playlist, MapSection, Achievements, Inventory, FinalCard });
+
+
+/* ==== components/App.jsx ==== */
+// App principal — expõe Navbar e monta tudo
+const { useState: useStateA, useEffect: useEffectA } = React;
+
+function Navbar() {
+  return (
+    <nav className="navbar">
+      <div className="navbar-brand">
+        <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={3} />
+        <span>EDUARDO ♥ ISABELLA</span>
+      </div>
+      <div className="navbar-links">
+        <a className="nav-link" href="#contador" onClick={() => window.playClick()}>contador</a>
+        <a className="nav-link" href="#galeria" onClick={() => window.playClick()}>momentos</a>
+        <a className="nav-link" href="#linhadotempo" onClick={() => window.playClick()}>timeline</a>
+        <a className="nav-link" href="#cartinha" onClick={() => window.playClick()}>cartinha</a>
+        <a className="nav-link" href="#playlist" onClick={() => window.playClick()}>músicas</a>
+        <a className="nav-link" href="#mapa" onClick={() => window.playClick()}>mapa</a>
+        <a className="nav-link" href="#achievements" onClick={() => window.playClick()}>conquistas</a>
+        <a className="nav-link" href="#inventario" onClick={() => window.playClick()}>inventário</a>
+        <a className="nav-link" href="#final" onClick={() => window.playClick()}>♥</a>
+      </div>
+    </nav>
+  );
+}
+
+function App() {
+  const [showIntro, setShowIntro] = useStateA(() => !sessionStorage.getItem('intro_seen'));
+  const [dialog, setDialog] = useStateA(null);
+
+  useEffectA(() => {
+    const onKey = (e) => {
+      if (e.key === ' ' || e.key === 'Escape') {
+        if (dialog) { setDialog(null); window.playClick(); }
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [dialog]);
+
+  const handleDialog = (d) => { setDialog(d); window.playDialog(); };
+  const closeIntro = () => { sessionStorage.setItem('intro_seen', '1'); setShowIntro(false); };
+
+  return (
+    <>
+      {showIntro && <Intro onDone={closeIntro} />}
+      <Navbar />
+      <Hero onDialog={handleDialog} />
+      <PixelCounter />
+      <Gallery onDialog={handleDialog} />
+      <Timeline />
+      <Letter />
+      <Playlist />
+      <MapSection />
+      <Achievements />
+      <Inventory />
+      <FinalCard />
+      <footer style={{
+        textAlign: 'center',
+        padding: '40px 20px 60px',
+        fontFamily: 'var(--pixel)',
+        fontSize: 14,
+        letterSpacing: 2,
+        color: 'var(--wood-dark)',
+        opacity: 0.7,
+      }}>
+        ♥ feito com amor · save file v1.0 · {new Date().getFullYear()} ♥
+      </footer>
+      <DialogBox dialog={dialog} onClose={() => setDialog(null)} />
+      <MuteToggle />
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+
+
+</script>
+</body>
+</html>

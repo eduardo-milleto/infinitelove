@@ -859,34 +859,6 @@ h1, h2, h3 { font-family: var(--serif); font-weight: 600; letter-spacing: -0.01e
   0%, 100% { transform: scale(1); }
   50% { transform: scale(1.15); }
 }
-/* === Animações dos personagens === */
-@keyframes char-breathe {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-2px) scale(1.015); }
-}
-@keyframes char-breathe-offset {
-  0%, 100% { transform: translateY(-1px) scale(1); }
-  50% { transform: translateY(-4px) scale(1.02); }
-}
-@keyframes dog-wag {
-  0%, 100% { transform: translateX(0) scaleX(1); }
-  20% { transform: translateX(0) scaleX(1.03); }
-  40% { transform: translateX(2px) scaleX(1); }
-  60% { transform: translateX(-2px) scaleX(1.03); }
-  80% { transform: translateX(0) scaleX(1); }
-}
-@keyframes cat-blink {
-  0%, 92%, 96%, 100% { filter: brightness(1); }
-  94% { filter: brightness(1.1) saturate(0.9); }
-}
-@keyframes cat-idle {
-  0%, 100% { transform: translateY(0) scaleX(1); }
-  50% { transform: translateY(-1px) scaleX(1.005); }
-}
-@keyframes heart-bump-couple {
-  0%, 100% { transform: translate(-50%, 0) scale(1); opacity: 0.95; }
-  50% { transform: translate(-50%, -4px) scale(1.18); opacity: 1; }
-}
 @keyframes firefly-float {
   0%, 100% { transform: translate(0, 0); opacity: 0.5; }
   25% { transform: translate(15px, -20px); opacity: 1; }
@@ -1068,15 +1040,8 @@ const HEART_PALETTE = {
   r: '#a83250', R: '#ff6b8a',
 };
 
-// === Personagens high-res (pixel art stickers com fundo removido) ===
-// Servidos de ./assets/ — usar com `python3 -m http.server` nesta pasta
-const EDU_IMG = './assets/edu.png';
-const ISA_IMG = './assets/isa.png';
-const DOG_IMG = './assets/dog.png';
-const CAT_IMG = './assets/cat.png';
-
 // Personagem Eduardo (1.77m, cabelo escuro curto, barba leve, camisa branca)
-// 14x19 - mais alto que Isabella — [DEPRECATED, usar EDU_IMG]
+// 14x19 - mais alto que Isabella
 const EDU_DATA = `
 ...bbbbbb.....
 ..bbbbbbbb....
@@ -1681,29 +1646,6 @@ function Hero({ onDialog }) {
   const isNight = t < 0.22 || t > 0.82;
   const heroRef = useRef(null);
 
-  // === Sistema de escala unificado ===
-  // Referência: casal sentado (sprite 24px * scale 9 = 216px = 1 HUMAN)
-  // Todo móvel é dimensionado relativo a HUMAN e ancorado em 3 "depth tiers"
-  const UNIT = 8;                 // 1 pixel de mundo = 8 telas px
-  const HUMAN = 216;              // altura humana canônica (Edu/Isa sentados scale 9)
-  const SCALE_HUMAN = 9;          // scale dos personagens principais
-  const SCALE_PET = 4;            // cachorro / gato
-  // Depth tiers (bottom %) — cria perspectiva 2.5D
-  const TIER_BACK = 20;           // objetos contra a parede (estante, TV, bancada, mesa)
-  const TIER_MID  = 12;           // sofá + casal
-  const TIER_FRONT = 3;           // piso frente (tapete, pets, mesinha, rádio, halteres)
-
-  // helper: sombra elipse no chão (ancora visualmente o objeto)
-  const GroundShadow = ({ width = 60, bottom = '2%', left = '50%', translate = true, opacity = 0.28 }) => (
-    <div style={{
-      position: 'absolute', bottom, left,
-      transform: translate ? 'translateX(-50%)' : 'none',
-      width, height: Math.max(6, width * 0.15),
-      background: `radial-gradient(ellipse at center, rgba(0,0,0,${opacity}) 0%, rgba(0,0,0,0) 70%)`,
-      pointerEvents: 'none', zIndex: 1,
-    }} />
-  );
-
   // Vagalumes — só aparecem à noite
   const fireflies = Array.from({ length: 14 }, (_, i) => ({
     delay: i * 0.7,
@@ -1790,7 +1732,7 @@ function Hero({ onDialog }) {
       }} />
 
       {/* === APARTAMENTO COZY (ZOOM IN) === */}
-      {/* Parede superior (papel de parede com padrão sutil) */}
+      {/* Parede de fundo — ocupa 75% da altura, zoom maior no interior */}
       <div style={{
         position: 'absolute', top: 0, left: 0, right: 0, height: '78%',
         background: isNight
@@ -1802,17 +1744,9 @@ function Hero({ onDialog }) {
       {Array.from({ length: 10 }).map((_, i) => (
         <div key={`wall${i}`} style={{ position: 'absolute', top: `${i * 7}%`, left: 0, right: 0, height: 1, background: isNight ? 'rgba(255,255,255,0.03)' : 'rgba(139,90,44,0.08)', zIndex: 1 }} />
       ))}
-      {/* listras verticais sutis (papel de parede) */}
-      {Array.from({ length: 24 }).map((_, i) => (
-        <div key={`wallV${i}`} style={{ position: 'absolute', top: 0, left: `${i * 4.2}%`, width: 1, height: '74%', background: isNight ? 'rgba(255,255,255,0.025)' : 'rgba(139,90,44,0.06)', zIndex: 1 }} />
-      ))}
-      {/* moldura teto (crown molding) */}
-      <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 6, background: isNight ? '#2a2028' : '#6a3a1a', zIndex: 1, boxShadow: '0 2px 0 rgba(0,0,0,0.2)' }} />
-      <div style={{ position: 'absolute', top: 6, left: 0, right: 0, height: 2, background: isNight ? '#3a2d44' : '#8b5a2c', zIndex: 1 }} />
 
-      {/* Rodapé entre parede e piso (baseboard) */}
-      <div style={{ position: 'absolute', top: '74%', left: 0, right: 0, height: 8, background: isNight ? '#1a1420' : '#5a3a1a', zIndex: 1, boxShadow: '0 2px 0 rgba(0,0,0,0.35)' }} />
-      <div style={{ position: 'absolute', top: '76%', left: 0, right: 0, height: 2, background: isNight ? '#2a2028' : '#8b5a2c', zIndex: 1 }} />
+      {/* Rodapé */}
+      <div style={{ position: 'absolute', top: '74%', left: 0, right: 0, height: 10, background: isNight ? '#2a2028' : '#8b5a2c', zIndex: 1, boxShadow: '0 2px 0 rgba(0,0,0,0.3)' }} />
 
       {/* Piso de madeira — ocupa 22% inferior, listras grossas com tábuas visíveis */}
       <div style={{
@@ -1829,14 +1763,10 @@ function Hero({ onDialog }) {
       {Array.from({ length: 4 }).map((_, i) => (
         <div key={`plankH${i}`} style={{ position: 'absolute', bottom: `${i * 5.5}%`, left: 0, right: 0, height: 1, background: isNight ? 'rgba(0,0,0,0.35)' : 'rgba(60,30,10,0.25)', zIndex: 1 }} />
       ))}
-      {/* "grão" da madeira — nós escuros aleatórios */}
-      {[[10, 8], [28, 14], [48, 6], [65, 18], [82, 10], [92, 16]].map(([x, yPct], i) => (
-        <div key={`knot${i}`} style={{ position: 'absolute', bottom: `${yPct}%`, left: `${x}%`, width: 8, height: 3, background: isNight ? 'rgba(0,0,0,0.4)' : 'rgba(50,20,5,0.35)', borderRadius: '50%', zIndex: 1 }} />
-      ))}
 
-      {/* === JANELA (canto direito) — proporção reduzida, peitoril destacado === */}
+      {/* === JANELA MENOR (quadrada, no canto direito) — o céu aparece por ela === */}
       <div style={{
-        position: 'absolute', top: '12%', right: '8%', width: 220, height: 200,
+        position: 'absolute', top: '8%', right: '6%', width: 260, height: 220,
         background: isNight
           ? 'linear-gradient(to bottom, #1a1640 0%, #3a2a5a 60%, #5a3a6a 100%)'
           : 'linear-gradient(to bottom, #f5c8a0 0%, #e89a7a 50%, #c94c6a 100%)',
@@ -1846,91 +1776,47 @@ function Hero({ onDialog }) {
         zIndex: 2,
       }}>
         {/* sol/lua dentro da janela */}
-        <div style={{ position: 'absolute', top: isNight ? 26 : 44, left: '50%', transform: 'translateX(-50%)', width: 44, height: 44, borderRadius: '50%', background: isNight ? '#fff8d4' : '#fff6c0', boxShadow: isNight ? '0 0 30px #fff8d4' : '0 0 40px #ffd97a' }} />
+        <div style={{ position: 'absolute', top: isNight ? 30 : 50, left: '50%', transform: 'translateX(-50%)', width: 50, height: 50, borderRadius: '50%', background: isNight ? '#fff8d4' : '#fff6c0', boxShadow: isNight ? '0 0 30px #fff8d4' : '0 0 40px #ffd97a' }} />
         {/* skyline dentro da janela */}
-        <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%' }} viewBox="0 0 220 110" preserveAspectRatio="none" shapeRendering="crispEdges">
-          <rect x="0" y="45" width="24" height="65" fill={isNight ? '#1a1530' : '#6a3a4a'} />
-          <rect x="24" y="25" width="32" height="85" fill={isNight ? '#211a38' : '#7a4a5a'} />
-          <rect x="56" y="52" width="22" height="58" fill={isNight ? '#1a1530' : '#6a3a4a'} />
-          <rect x="78" y="15" width="40" height="95" fill={isNight ? '#261e3e' : '#8b5a6a'} />
-          <rect x="118" y="38" width="28" height="72" fill={isNight ? '#1c1632' : '#6a3a4a'} />
-          <rect x="146" y="10" width="42" height="100" fill={isNight ? '#2a2345' : '#8b5a6a'} />
-          <rect x="188" y="40" width="32" height="70" fill={isNight ? '#1f1a36' : '#7a4a5a'} />
+        <svg style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: '55%' }} viewBox="0 0 260 120" preserveAspectRatio="none" shapeRendering="crispEdges">
+          <rect x="0" y="50" width="28" height="70" fill={isNight ? '#1a1530' : '#6a3a4a'} />
+          <rect x="28" y="30" width="36" height="90" fill={isNight ? '#211a38' : '#7a4a5a'} />
+          <rect x="64" y="55" width="24" height="65" fill={isNight ? '#1a1530' : '#6a3a4a'} />
+          <rect x="88" y="20" width="44" height="100" fill={isNight ? '#261e3e' : '#8b5a6a'} />
+          <rect x="132" y="40" width="32" height="80" fill={isNight ? '#1c1632' : '#6a3a4a'} />
+          <rect x="164" y="15" width="48" height="105" fill={isNight ? '#2a2345' : '#8b5a6a'} />
+          <rect x="212" y="45" width="48" height="75" fill={isNight ? '#1f1a36' : '#7a4a5a'} />
           {/* janelinhas acesas */}
-          {Array.from({ length: 36 }).map((_, i) => {
-            const x = (i * 6.1) % 220;
-            const y = 22 + (i * 4.1) % 80;
+          {Array.from({ length: 40 }).map((_, i) => {
+            const x = (i * 6.3) % 260;
+            const y = 30 + (i * 4.1) % 80;
             return <rect key={i} x={x} y={y} width="2" height="2.5" fill={isNight ? '#ffd97a' : '#fff4c0'} opacity={0.5 + Math.random() * 0.5} />;
           })}
         </svg>
         {/* cruz da janela */}
         <div style={{ position: 'absolute', top: '50%', left: 0, right: 0, height: 5, background: '#2a1812', transform: 'translateY(-50%)' }} />
         <div style={{ position: 'absolute', left: '50%', top: 0, bottom: 0, width: 5, background: '#2a1812', transform: 'translateX(-50%)' }} />
+        {/* peitoril */}
+        <div style={{ position: 'absolute', bottom: -6, left: -4, right: -4, height: 8, background: '#3a2418', zIndex: 3 }} />
       </div>
-      {/* Peitoril da janela (vaso de planta em cima) */}
-      <div style={{ position: 'absolute', top: 'calc(12% + 200px)', right: 'calc(8% - 6px)', width: 232, height: 10, background: isNight ? '#2a1812' : '#5a3a1a', zIndex: 3, boxShadow: '0 2px 0 rgba(0,0,0,0.35)' }} />
-      {/* vasinho de planta no peitoril */}
-      <div style={{ position: 'absolute', top: 'calc(12% + 184px)', right: 'calc(8% + 24px)', width: 18, height: 16, background: '#c27a5a', borderRadius: '0 0 4px 4px', zIndex: 3 }}>
-        <div style={{ position: 'absolute', top: -10, left: 3, width: 12, height: 12, background: '#5a8a3e', borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', top: -12, left: 7, width: 8, height: 8, background: '#6a9a4e', borderRadius: '50%' }} />
-      </div>
-      {/* Cortinas — 3 dobras de cada lado pra dar textura */}
-      {[0, 7, 14].map((off, i) => (
-        <div key={`curtR${i}`} style={{ position: 'absolute', top: '10%', right: `calc(6% + ${off}px)`, width: 10, height: 230, background: `linear-gradient(to right, #7a2a4a, #c94c6a ${i * 10 + 20}%, #8b3a5a)`, animation: `sway 5s ease-in-out ${i * 0.15}s infinite`, zIndex: 2, opacity: 0.92 }} />
-      ))}
-      {[0, 7, 14].map((off, i) => (
-        <div key={`curtL${i}`} style={{ position: 'absolute', top: '10%', right: `calc(8% + 208px + ${off}px)`, width: 10, height: 230, background: `linear-gradient(to right, #8b3a5a, #c94c6a ${i * 10 + 20}%, #7a2a4a)`, animation: `sway 5s ease-in-out ${i * 0.15 + 0.3}s infinite`, zIndex: 2, opacity: 0.92 }} />
-      ))}
-      {/* barra de cortina (cortineiro) */}
-      <div style={{ position: 'absolute', top: '9%', right: '4%', width: 250, height: 6, background: isNight ? '#2a1812' : '#3a2418', borderRadius: 3, zIndex: 2, boxShadow: '0 2px 0 rgba(0,0,0,0.3)' }} />
-      <div style={{ position: 'absolute', top: 'calc(9% - 4px)', right: '3%', width: 10, height: 14, background: '#8b5a2c', borderRadius: '50%', zIndex: 2 }} />
-      <div style={{ position: 'absolute', top: 'calc(9% - 4px)', right: 'calc(4% + 244px)', width: 10, height: 14, background: '#8b5a2c', borderRadius: '50%', zIndex: 2 }} />
+      {/* Cortina na janela */}
+      <div style={{ position: 'absolute', top: '7%', right: '4%', width: 20, height: 230, background: 'linear-gradient(to right, #8b3a5a, #c94c6a)', animation: 'sway 5s ease-in-out infinite', zIndex: 2, opacity: 0.9 }} />
+      <div style={{ position: 'absolute', top: '7%', right: 'calc(6% + 250px)', width: 20, height: 230, background: 'linear-gradient(to left, #8b3a5a, #c94c6a)', animation: 'sway 5s ease-in-out 0.3s infinite', zIndex: 2, opacity: 0.9 }} />
 
-      {/* === ESTANTE DE LIVROS (esquerda, altura humana 1.2x) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '5%', width: 180, height: 260, background: isNight ? '#2a1812' : '#6a3a1a', border: '4px solid #1a0e08', zIndex: 2, boxShadow: '4px 4px 0 rgba(0,0,0,0.35), inset 3px 3px 0 rgba(255,255,255,0.05)' }}>
-        {[0,1,2,3,4].map(i => (
-          <div key={`shelf${i}`} style={{ position: 'absolute', top: `${i*20}%`, left: 0, right: 0, height: '20%', borderBottom: '3px solid #1a0e08' }}>
-            {Array.from({length: 8}).map((_, j) => {
-              const colors = ['#c94c4c','#8b3a5a','#f0c040','#5a8a3e','#4a6a8a','#d97760','#6a3a8a','#e89a7a','#c27a5a'];
+      {/* === ESTANTE DE LIVROS (esquerda, mais estreita, altura de pessoa) === */}
+      <div style={{ position: 'absolute', bottom: '22%', left: '5%', width: 120, height: 190, background: isNight ? '#2a1812' : '#6a3a1a', border: '4px solid #1a0e08', zIndex: 2, boxShadow: '4px 4px 0 rgba(0,0,0,0.3)' }}>
+        {[0,1,2,3].map(i => (
+          <div key={`shelf${i}`} style={{ position: 'absolute', top: `${i*25}%`, left: 0, right: 0, height: '25%', borderBottom: '3px solid #1a0e08' }}>
+            {Array.from({length: 5}).map((_, j) => {
+              const colors = ['#c94c4c','#8b3a5a','#f0c040','#5a8a3e','#4a6a8a','#d97760','#6a3a8a','#e89a7a'];
               const c = colors[(i*3+j)%colors.length];
-              const h = 68 + ((i*2+j)%4)*9;
-              return <div key={j} style={{ position: 'absolute', bottom: 3, left: 5 + j*21, width: 17, height: h + '%', background: c, border: '1px solid rgba(0,0,0,0.4)', boxShadow: 'inset -1px 0 0 rgba(0,0,0,0.2)' }} />;
+              const h = 70 + (j%3)*10;
+              return <div key={j} style={{ position: 'absolute', bottom: 3, left: 4 + j*22, width: 18, height: h + '%', background: c, border: '1px solid rgba(0,0,0,0.4)' }} />;
             })}
-            {/* item decorativo de prateleira (alternado) */}
-            {i === 1 && <div style={{ position: 'absolute', bottom: 3, right: 8, width: 12, height: 18, background: '#e8d4a0', borderRadius: '4px 4px 0 0' }} />}
-            {i === 3 && <div style={{ position: 'absolute', bottom: 3, right: 8, width: 14, height: 16, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }}>
-              <div style={{ position: 'absolute', bottom: 0, left: 2, right: 2, height: 4, background: '#c27a5a' }} />
-            </div>}
           </div>
         ))}
-        {/* topo da estante: vaso + caixa */}
-        <div style={{ position: 'absolute', top: -30, left: 14, width: 22, height: 24, background: '#8b5a3a', borderRadius: '0 0 2px 2px' }} />
-        <div style={{ position: 'absolute', top: -52, left: 12, width: 26, height: 24, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }}>
-          <div style={{ position: 'absolute', top: 2, left: 8, width: 3, height: 18, background: '#4a7a2e', transform: 'rotate(-10deg)' }} />
-        </div>
-        <div style={{ position: 'absolute', top: -24, left: 48, width: 34, height: 18, background: '#c27a5a', border: '2px solid #8b5a2c' }} />
-        <div style={{ position: 'absolute', top: -20, left: 92, width: 22, height: 14, background: '#f0c040', border: '2px solid #8b5a2c', borderRadius: '2px' }} />
-        <div style={{ position: 'absolute', top: -28, left: 128, width: 16, height: 22, background: isNight ? '#6a5a7c' : '#c94c4c', borderRadius: '50%' }} />
-      </div>
-      {/* sombra da estante no piso */}
-      <GroundShadow bottom="calc(22% - 4px)" left="calc(5% + 90px)" width={200} opacity={0.2} />
-
-      {/* === PRATELEIRA FLUTUANTE (parede central, entre quadros e bancada) === */}
-      <div style={{ position: 'absolute', top: '34%', left: '58%', width: 110, height: 8, background: isNight ? '#2a1812' : '#5a3a1a', zIndex: 2, boxShadow: '0 3px 0 rgba(0,0,0,0.35)' }}>
-        {/* livros deitados */}
-        <div style={{ position: 'absolute', top: -14, left: 4, width: 10, height: 14, background: '#c94c4c', border: '1px solid rgba(0,0,0,0.4)' }} />
-        <div style={{ position: 'absolute', top: -14, left: 16, width: 10, height: 14, background: '#4a6a8a', border: '1px solid rgba(0,0,0,0.4)' }} />
-        <div style={{ position: 'absolute', top: -14, left: 28, width: 10, height: 14, background: '#f0c040', border: '1px solid rgba(0,0,0,0.4)' }} />
-        {/* plantinha */}
-        <div style={{ position: 'absolute', top: -20, left: 52, width: 14, height: 20, background: '#8b5a3a', borderRadius: '0 0 50% 50%' }}>
-          <div style={{ position: 'absolute', top: -10, left: 2, width: 4, height: 14, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(-10deg)' }} />
-          <div style={{ position: 'absolute', top: -12, left: 6, width: 4, height: 16, background: '#6a9a4e', borderRadius: 2 }} />
-          <div style={{ position: 'absolute', top: -8, right: 2, width: 4, height: 12, background: '#5a8a3e', borderRadius: 2, transform: 'rotate(10deg)' }} />
-        </div>
-        {/* porta-retrato */}
-        <div style={{ position: 'absolute', top: -18, left: 76, width: 18, height: 18, background: isNight ? '#2a1812' : '#8b5a2c', border: '2px solid #3a2418' }}>
-          <div style={{ position: 'absolute', inset: 2, background: isNight ? '#4a3a6a' : '#f5c8a0' }} />
-        </div>
+        <div style={{ position: 'absolute', top: -22, left: 14, width: 20, height: 18, background: '#8b5a3a' }} />
+        <div style={{ position: 'absolute', top: -38, left: 12, width: 24, height: 20, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }} />
       </div>
 
       {/* === LUZES DE CORDÃO (string lights) na parede === */}
@@ -1943,236 +1829,114 @@ function Hero({ onDialog }) {
         return <div key={`light${i}`} style={{ position: 'absolute', top: `${y}%`, left: `${x}%`, width: 8, height: 10, background: '#ffd97a', borderRadius: '50% 50% 30% 30%', boxShadow: '0 0 10px #ffd97a, 0 0 20px rgba(255,217,122,0.5)', animation: `twinkle 2s ease-in-out ${i*0.15}s infinite`, zIndex: 2 }} />;
       })}
 
-      {/* === MESA DO PROGRAMADOR (canto esquerdo-centro, atrás do sofá) === */}
+      {/* === MESA DO PROGRAMADOR (atrás-esquerda, menor, trás do sofá) === */}
       <div
-        style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '26%', cursor: 'pointer', zIndex: 2 }}
+        style={{ position: 'absolute', bottom: '38%', left: '20%', cursor: 'pointer', zIndex: 2 }}
         onClick={() => onDialog({ who: 'setup do Edu', text: 'mesa limpa. VSCode aberto. café preto. terminal no neovim. vida boa.' })}
       >
-        {/* tampo da mesa */}
-        <div style={{ position: 'relative', width: 170, height: 10, background: '#3a2a1a', borderTop: '3px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
-        {/* pernas laterais */}
-        <div style={{ position: 'absolute', bottom: -60, left: 8, width: 6, height: 60, background: '#2a1a10' }} />
-        <div style={{ position: 'absolute', bottom: -60, right: 8, width: 6, height: 60, background: '#2a1a10' }} />
-        {/* travessa horizontal entre pernas */}
-        <div style={{ position: 'absolute', bottom: -28, left: 14, right: 14, height: 4, background: '#2a1a10' }} />
-        {/* gaveta */}
-        <div style={{ position: 'absolute', bottom: -18, left: 40, width: 90, height: 16, background: '#5a3a22', border: '2px solid #2a1a10' }}>
-          <div style={{ position: 'absolute', top: 6, left: '50%', transform: 'translateX(-50%)', width: 12, height: 3, background: '#2a1a10', borderRadius: 2 }} />
-        </div>
-        {/* monitor (maior e mais detalhado) */}
-        <div style={{ position: 'absolute', bottom: 10, left: 24, transform: 'scale(2.4)', transformOrigin: 'bottom left' }}>
+        <div style={{ position: 'relative', width: 140, height: 8, background: '#3a2a1a', borderTop: '3px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
+        <div style={{ position: 'absolute', bottom: -40, left: 8, width: 5, height: 40, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: -40, left: 127, width: 5, height: 40, background: '#2a1a10' }} />
+        <div style={{ position: 'absolute', bottom: 8, left: 20, transform: 'scale(2)', transformOrigin: 'bottom left' }}>
           <PixelSprite data={MONITOR_DATA} palette={MONITOR_PALETTE} scale={2} />
         </div>
-        {/* caneca de café */}
-        <div style={{ position: 'absolute', bottom: 10, right: 44, width: 14, height: 16, background: '#f4e4c1', border: '2px solid #8b5a2c', borderRadius: '2px 2px 4px 4px' }}>
-          <div style={{ position: 'absolute', top: 2, right: -5, width: 5, height: 8, border: '2px solid #8b5a2c', borderLeft: 'none', borderRadius: '0 50% 50% 0' }} />
-          <div style={{ position: 'absolute', top: 3, left: 2, right: 2, height: 3, background: '#3a2a1a' }} />
-          {/* vapor */}
-          <div style={{ position: 'absolute', top: -12, left: 3, fontSize: 10, color: '#aaa', opacity: 0.7, animation: 'sway 2s ease-in-out infinite' }}>~</div>
-          <div style={{ position: 'absolute', top: -14, left: 8, fontSize: 8, color: '#aaa', opacity: 0.5, animation: 'sway 2.3s ease-in-out 0.4s infinite' }}>~</div>
-        </div>
-        {/* laptop pequeno ao lado */}
-        <div style={{ position: 'absolute', bottom: 10, right: 14, width: 20, height: 14, background: '#fff', border: '2px solid #2a2a2a', borderRadius: '0 0 3px 3px' }}>
+        <div style={{ position: 'absolute', bottom: 8, right: 14, width: 12, height: 14, background: '#fff', border: '2px solid #2a2a2a', borderRadius: '0 0 3px 3px' }}>
           <div style={{ position: 'absolute', top: 2, left: 2, right: 2, height: 3, background: '#3a2a1a' }} />
-        </div>
-        {/* cadeira gamer atrás da mesa */}
-        <div style={{ position: 'absolute', bottom: -70, left: 62, width: 46, height: 90, zIndex: -1 }}>
-          <div style={{ position: 'absolute', top: 0, left: 4, right: 4, height: 52, background: '#2a1a20', border: '2px solid #1a0a10', borderRadius: '8px 8px 4px 4px' }}>
-            <div style={{ position: 'absolute', top: 6, left: 4, right: 4, height: 3, background: '#c94c4c' }} />
-            <div style={{ position: 'absolute', top: 14, left: 4, right: 4, height: 3, background: '#c94c4c' }} />
-          </div>
-          <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)', width: 4, height: 20, background: '#1a0a10' }} />
-          <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 28, height: 6, background: '#2a1a20', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -10, left: 3, fontSize: 9, color: '#aaa', animation: 'sway 2s ease-in-out infinite' }}>~</div>
         </div>
       </div>
-      <GroundShadow bottom="calc(22% - 4px)" left="calc(26% + 85px)" width={200} opacity={0.2} />
 
       {/* === CANTO NUTRI - bancada com pernas aterradas === */}
       <div
-        style={{ position: 'absolute', bottom: `${TIER_BACK}%`, right: '4%', cursor: 'pointer', zIndex: 2 }}
+        style={{ position: 'absolute', bottom: '24%', right: '4%', cursor: 'pointer', zIndex: 2 }}
         onClick={() => onDialog({ who: 'bancada da Bella', text: 'tábua de frutas, iogurte grego, whey na prateleira. a nutri mandou.' })}
       >
-        {/* tampo bancada */}
-        <div style={{ position: 'relative', width: 180, height: 12, background: '#e8e0d4', borderTop: '3px solid #fff', borderBottom: '2px solid #8b8070' }} />
-        {/* pernas maiores (altura bancada real) */}
-        <div style={{ position: 'absolute', bottom: -110, left: 10, width: 7, height: 110, background: '#d0c4b0' }} />
-        <div style={{ position: 'absolute', bottom: -110, right: 10, width: 7, height: 110, background: '#d0c4b0' }} />
-        {/* prateleira inferior */}
-        <div style={{ position: 'absolute', bottom: -60, left: 10, right: 10, height: 5, background: '#c0b498', boxShadow: '0 1px 0 rgba(0,0,0,0.2)' }} />
-        {/* gavetas embaixo */}
-        <div style={{ position: 'absolute', bottom: -34, left: 22, width: 136, height: 18, background: '#e8e0d4', border: '2px solid #b0a888' }}>
-          <div style={{ position: 'absolute', top: 7, left: '25%', width: 10, height: 3, background: '#8b8070' }} />
-          <div style={{ position: 'absolute', top: 7, right: '25%', width: 10, height: 3, background: '#8b8070' }} />
-        </div>
-        {/* maçã (em cima) */}
-        <div style={{ position: 'absolute', bottom: 12, left: 8, transform: 'scale(1.4)', transformOrigin: 'bottom left' }}>
+        <div style={{ position: 'relative', width: 150, height: 10, background: '#e8e0d4', borderTop: '3px solid #fff', borderBottom: '2px solid #8b8070' }} />
+        <div style={{ position: 'absolute', bottom: -90, left: 8, width: 6, height: 90, background: '#d0c4b0' }} />
+        <div style={{ position: 'absolute', bottom: -90, right: 8, width: 6, height: 90, background: '#d0c4b0' }} />
+        <div style={{ position: 'absolute', bottom: -90, left: 8, right: 8, height: 6, background: '#b8a898', top: 40 }} />
+        <div style={{ position: 'absolute', bottom: 10, left: 8, transform: 'scale(1.4)', transformOrigin: 'bottom left' }}>
           <PixelSprite data={APPLE_DATA} palette={APPLE_PALETTE} scale={2} />
         </div>
-        {/* tigela de frutas */}
-        <div style={{ position: 'absolute', bottom: 12, left: 46, width: 44, height: 10, background: '#fff', border: '2px solid #888', borderRadius: '50%' }}>
-          <div style={{ position: 'absolute', top: -5, left: 4, width: 8, height: 8, background: '#8bc24f', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', top: -7, left: 14, width: 9, height: 9, background: '#d94a4a', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', top: -5, left: 26, width: 7, height: 7, background: '#f0c040', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', top: -3, left: 34, width: 5, height: 5, background: '#d97760', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: 10, left: 46, width: 36, height: 8, background: '#fff', border: '2px solid #888', borderRadius: '50%' }}>
+          <div style={{ position: 'absolute', top: -5, left: 4, width: 7, height: 7, background: '#8bc24f', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -6, left: 13, width: 8, height: 8, background: '#d94a4a', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: -4, left: 22, width: 6, height: 6, background: '#f0c040', borderRadius: '50%' }} />
         </div>
-        {/* garrafa de água */}
-        <div style={{ position: 'absolute', bottom: 12, left: 98, width: 14, height: 28, background: '#9ad8ff', border: '2px solid #4a6a8a', borderRadius: '3px 3px 2px 2px' }}>
-          <div style={{ position: 'absolute', top: -4, left: 3, width: 6, height: 4, background: '#4a6a8a' }} />
-          <div style={{ position: 'absolute', top: 14, left: 2, right: 2, height: 3, background: '#c4e8ff', opacity: 0.6 }} />
+        <div style={{ position: 'absolute', bottom: 10, left: 90, width: 12, height: 24, background: '#9ad8ff', border: '2px solid #4a6a8a', borderRadius: '3px 3px 2px 2px' }}>
+          <div style={{ position: 'absolute', top: -4, left: 2, width: 6, height: 4, background: '#4a6a8a' }} />
         </div>
-        {/* lata WHEY */}
-        <div style={{ position: 'absolute', bottom: 12, left: 122, width: 22, height: 28, background: '#1a1a1a', border: '2px solid #000' }}>
-          <div style={{ position: 'absolute', top: 5, left: 2, right: 2, height: 5, background: '#c94c4c' }} />
-          <div style={{ position: 'absolute', top: 14, left: 2, fontSize: 7, color: '#fff', fontFamily: 'var(--pixel)', letterSpacing: -1 }}>WHEY</div>
-        </div>
-        {/* porta-retrato */}
-        <div style={{ position: 'absolute', bottom: 12, right: 6, width: 16, height: 20, background: '#8b5a2c', border: '2px solid #3a2418' }}>
-          <div style={{ position: 'absolute', inset: 2, background: isNight ? '#4a3a6a' : '#f5c8a0' }}>
-            <div style={{ position: 'absolute', top: 2, left: 3, width: 6, height: 6, background: '#d97760', borderRadius: '50%' }} />
-          </div>
-        </div>
-        {/* armário aéreo acima */}
-        <div style={{ position: 'absolute', bottom: 60, left: 0, width: 180, height: 54, background: '#e8e0d4', border: '3px solid #b0a888', boxShadow: '2px 2px 0 rgba(0,0,0,0.25)' }}>
-          <div style={{ position: 'absolute', top: 6, left: 6, right: '50%', bottom: 6, border: '2px solid #b0a888', marginRight: 2 }}>
-            <div style={{ position: 'absolute', top: '50%', left: 4, width: 3, height: 8, background: '#8b8070', borderRadius: 2 }} />
-          </div>
-          <div style={{ position: 'absolute', top: 6, left: '50%', right: 6, bottom: 6, border: '2px solid #b0a888', marginLeft: 2 }}>
-            <div style={{ position: 'absolute', top: '50%', right: 4, width: 3, height: 8, background: '#8b8070', borderRadius: 2 }} />
-          </div>
+        <div style={{ position: 'absolute', bottom: 10, left: 112, width: 20, height: 24, background: '#1a1a1a', border: '2px solid #000' }}>
+          <div style={{ position: 'absolute', top: 5, left: 2, right: 2, height: 4, background: '#c94c4c' }} />
+          <div style={{ position: 'absolute', top: 12, left: 2, fontSize: 6, color: '#fff', fontFamily: 'var(--pixel)', letterSpacing: -1 }}>WHEY</div>
         </div>
       </div>
-      <GroundShadow bottom="calc(22% - 4px)" left="calc(100% - 4% - 90px)" width={190} opacity={0.22} />
 
-      {/* === TV + RACK (parede esquerda-centro) — maior e com detalhes === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_BACK}%`, left: '44%', zIndex: 2 }}>
-        {/* rack */}
-        <div style={{ position: 'relative', width: 160, height: 12, background: '#3a2418', borderTop: '2px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
-        {/* pernas */}
-        <div style={{ position: 'absolute', bottom: -30, left: 8, width: 5, height: 30, background: '#2a1810' }} />
-        <div style={{ position: 'absolute', bottom: -30, right: 8, width: 5, height: 30, background: '#2a1810' }} />
-        {/* gavetinha do rack */}
-        <div style={{ position: 'absolute', bottom: -20, left: 28, width: 104, height: 14, background: '#5a3a22', border: '2px solid #2a1810' }}>
-          <div style={{ position: 'absolute', top: 5, left: '50%', transform: 'translateX(-50%)', width: 10, height: 3, background: '#1a1008', borderRadius: 2 }} />
-        </div>
-        {/* tv grande (70" cozy) */}
-        <div style={{ position: 'absolute', bottom: 12, left: 12, width: 136, height: 76, background: '#1a1a1a', border: '3px solid #2a2a2a', borderRadius: 4, boxShadow: '2px 2px 0 rgba(0,0,0,0.35)' }}>
+      {/* === TV + ESTANTE DE TV (parede esquerda) === */}
+      <div style={{ position: 'absolute', bottom: '26%', left: '28%', zIndex: 2 }}>
+        <div style={{ position: 'relative', width: 120, height: 8, background: '#3a2418' }} />
+        <div style={{ position: 'absolute', bottom: -50, left: 6, width: 5, height: 50, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: -50, right: 6, width: 5, height: 50, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: 8, left: 16, width: 88, height: 54, background: '#1a1a1a', border: '3px solid #2a2a2a', borderRadius: 3 }}>
           <div style={{ position: 'absolute', inset: 3, background: isNight ? 'linear-gradient(135deg,#2a4a6a,#4a3a8a)' : 'linear-gradient(135deg,#ffd97a,#d97760)' }}>
-            {/* silhueta casal vendo */}
-            <div style={{ position: 'absolute', bottom: 4, left: 6, right: 6, height: 6, background: 'rgba(0,0,0,0.45)' }} />
-            <div style={{ position: 'absolute', bottom: 9, left: '30%', width: 8, height: 8, background: 'rgba(0,0,0,0.35)', borderRadius: '50% 50% 0 0' }} />
-            <div style={{ position: 'absolute', bottom: 9, left: '56%', width: 8, height: 8, background: 'rgba(0,0,0,0.35)', borderRadius: '50% 50% 0 0' }} />
-            {/* lua/sol na tela */}
-            <div style={{ position: 'absolute', top: 6, left: 10, width: 10, height: 10, background: isNight ? '#fff8d4' : '#fff6c0', borderRadius: '50%', opacity: 0.8 }} />
-            {/* nuvem */}
-            <div style={{ position: 'absolute', top: 12, right: 12, width: 18, height: 4, background: '#fff', opacity: 0.5 }} />
+            <div style={{ position: 'absolute', bottom: 3, left: 3, right: 3, height: 4, background: 'rgba(0,0,0,0.4)' }} />
+            <div style={{ position: 'absolute', bottom: 8, left: 10, width: 4, height: 4, background: '#fff', opacity: 0.6 }} />
+            <div style={{ position: 'absolute', bottom: 8, left: 20, width: 4, height: 4, background: '#fff', opacity: 0.6 }} />
           </div>
         </div>
-        {/* plantinha em cima do rack */}
-        <div style={{ position: 'absolute', bottom: 12, right: 4, width: 8, height: 18, background: '#8b5a3a' }}>
-          <div style={{ position: 'absolute', top: -8, left: -3, width: 14, height: 10, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }} />
-        </div>
-        {/* controle remoto */}
-        <div style={{ position: 'absolute', bottom: 12, left: 4, width: 6, height: 16, background: '#2a1812', borderRadius: 1 }}>
-          <div style={{ position: 'absolute', top: 2, left: 1, right: 1, height: 2, background: '#c94c4c' }} />
+        <div style={{ position: 'absolute', bottom: 8, left: 112, width: 6, height: 14, background: '#8b5a3a' }}>
+          <div style={{ position: 'absolute', top: -6, left: -2, width: 10, height: 8, background: '#5a8a3e', borderRadius: '50% 50% 0 0' }} />
         </div>
       </div>
 
-      {/* === LUMINÁRIA DE PÉ (altura humana) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '2%', zIndex: 3 }}>
-        {/* base */}
-        <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 32, height: 8, background: '#2a1810', borderRadius: '50%' }} />
-        <div style={{ position: 'absolute', bottom: 4, left: '50%', transform: 'translateX(-50%)', width: 20, height: 6, background: '#3a2418', borderRadius: 3 }} />
-        {/* haste alta */}
-        <div style={{ position: 'relative', width: 5, height: 180, background: 'linear-gradient(to right, #3a2418, #5a3a22 50%, #3a2418)', margin: '0 auto' }} />
-        {/* cúpula */}
-        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 48, height: 36, background: isNight ? '#f0c040' : '#d97760', borderRadius: '50% 50% 8px 8px', boxShadow: isNight ? '0 0 20px #ffd97a' : 'inset 0 -4px 0 rgba(0,0,0,0.2)' }} />
-        <div style={{ position: 'absolute', top: -2, left: '50%', transform: 'translateX(-50%)', width: 44, height: 4, background: '#2a1810', borderRadius: 2 }} />
-        {/* halo noturno */}
-        {isNight && <div style={{ position: 'absolute', top: 0, left: '-40px', width: 120, height: 120, background: 'radial-gradient(ellipse at center, rgba(255,217,122,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />}
+      {/* === LUMINÁRIA DE PÉ === */}
+      <div style={{ position: 'absolute', bottom: '24%', left: '1%', zIndex: 2 }}>
+        <div style={{ position: 'relative', width: 5, height: 140, background: '#3a2418', margin: '0 auto' }} />
+        <div style={{ position: 'absolute', top: 0, left: '50%', transform: 'translateX(-50%)', width: 36, height: 30, background: isNight ? '#f0c040' : '#d97760', borderRadius: '50% 50% 8px 8px', boxShadow: isNight ? '0 0 20px #ffd97a' : 'none' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: '50%', transform: 'translateX(-50%)', width: 26, height: 6, background: '#2a1810', borderRadius: 3 }} />
+        {isNight && <div style={{ position: 'absolute', top: 10, left: '-30px', width: 90, height: 90, background: 'radial-gradient(ellipse at center, rgba(255,217,122,0.35) 0%, transparent 70%)', pointerEvents: 'none' }} />}
       </div>
 
-      {/* === GALERIA DE QUADROS (parede acima do sofá — 5 quadros alinhados) === */}
-      {/* Quadro 1 — coração */}
-      <div style={{ position: 'absolute', top: '18%', left: '30%', width: 62, height: 48, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
+      {/* === QUADROS NA PAREDE === */}
+      <div style={{ position: 'absolute', top: '14%', left: '32%', width: 50, height: 38, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '2px 2px 0 rgba(0,0,0,0.3)' }}>
         <div style={{ position: 'absolute', inset: 3, background: 'linear-gradient(135deg, #f5c8a0, #c94c6a)' }} />
-        <div style={{ position: 'absolute', bottom: 8, left: '50%', transform: 'translateX(-50%)' }}>
-          <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={1.6} />
+        <div style={{ position: 'absolute', bottom: 6, left: '50%', transform: 'translateX(-50%)' }}>
+          <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={1.2} />
         </div>
       </div>
-      {/* Quadro 2 — E+I */}
-      <div style={{ position: 'absolute', top: '22%', left: '38%', width: 54, height: 40, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--pixel)', fontSize: 16, color: isNight ? '#ffd97a' : '#fff' }}>
+      <div style={{ position: 'absolute', top: '18%', left: '42%', width: 40, height: 30, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', fontFamily: 'var(--pixel)', fontSize: 13, color: isNight ? '#ffd97a' : '#fff' }}>
         E+I
       </div>
-      {/* Quadro 3 — skyline */}
-      <div style={{ position: 'absolute', top: '16%', left: '46%', width: 72, height: 50, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
-        <div style={{ position: 'absolute', inset: 3, background: isNight ? 'linear-gradient(to bottom, #1a1530, #3a2a5a)' : 'linear-gradient(to bottom, #a8c8e4, #e89a7a)' }}>
-          {/* lua/sol */}
-          <div style={{ position: 'absolute', top: 6, right: 10, width: 8, height: 8, background: isNight ? '#fff8d4' : '#ffd97a', borderRadius: '50%' }} />
-          {/* estrelas pequenas */}
-          {isNight && [[10, 5], [22, 8], [46, 4]].map(([x, y], i) => (
-            <div key={i} style={{ position: 'absolute', top: y, left: x, width: 2, height: 2, background: '#fff', borderRadius: '50%' }} />
-          ))}
-          {/* skyline */}
-          <div style={{ position: 'absolute', bottom: 2, left: 2, right: 2, height: 14, background: isNight ? '#0a0820' : '#6a8ab4', clipPath: 'polygon(0 100%, 0 60%, 8% 40%, 16% 60%, 28% 30%, 40% 50%, 52% 20%, 64% 55%, 76% 40%, 88% 60%, 100% 50%, 100% 100%)' }} />
-        </div>
-      </div>
-      {/* Quadro 4 — pequeno, floral */}
-      <div style={{ position: 'absolute', top: '24%', left: '56%', width: 44, height: 44, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2, boxShadow: '3px 3px 0 rgba(0,0,0,0.3)' }}>
-        <div style={{ position: 'absolute', inset: 3, background: isNight ? '#3a2d4a' : '#ede0c3' }}>
-          <div style={{ position: 'absolute', top: 8, left: 12, width: 6, height: 6, background: '#d94a4a', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', top: 14, left: 18, width: 6, height: 6, background: '#f0c040', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', top: 10, left: 22, width: 5, height: 5, background: '#8bc24f', borderRadius: '50%' }} />
-          <div style={{ position: 'absolute', bottom: 4, left: 4, right: 4, height: 4, background: '#5a8a3e' }} />
+      <div style={{ position: 'absolute', top: '12%', left: '52%', width: 42, height: 32, background: isNight ? '#2a1812' : '#8b5a2c', border: '3px solid #3a2418', zIndex: 2 }}>
+        <div style={{ position: 'absolute', inset: 3, background: isNight ? '#1a1530' : '#a8c8e4' }}>
+          <div style={{ position: 'absolute', top: 4, left: 6, width: 4, height: 4, background: '#ffd97a', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', top: 4, left: 14, width: 3, height: 3, background: '#ffd97a', borderRadius: '50%' }} />
+          <div style={{ position: 'absolute', bottom: 2, left: 2, right: 2, height: 6, background: isNight ? '#0a0820' : '#6a8ab4' }} />
         </div>
       </div>
 
-      {/* === POLTRONA/PUFF (canto direito, maior — suporta 1 pessoa) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 2}%`, right: '2%', zIndex: 3 }}>
-        {/* almofada chão ao lado */}
-        <div style={{ position: 'absolute', bottom: -4, left: -28, width: 26, height: 14, background: isNight ? '#6a5a7c' : '#f0c040', borderRadius: '50%', opacity: 0.9 }} />
-        {/* corpo poltrona */}
-        <div style={{ position: 'relative', width: 90, height: 70, background: isNight ? '#5a4060' : '#8b4a3a', borderRadius: '40% 40% 10% 10%', boxShadow: 'inset 0 -8px 0 rgba(0,0,0,0.2), 0 4px 0 #2a1810' }}>
-          {/* almofada em cima */}
-          <div style={{ position: 'absolute', top: 14, left: '50%', transform: 'translateX(-50%)', width: 48, height: 18, background: isNight ? '#7a5a8a' : '#d97760', borderRadius: 4 }} />
-          {/* manta jogada */}
-          <div style={{ position: 'absolute', top: 28, left: -4, width: 36, height: 24, background: isNight ? '#8b6ba8' : '#ede0c3', borderRadius: '4px 0 0 4px', opacity: 0.85, transform: 'rotate(-8deg)' }} />
-        </div>
-        {/* sombra */}
-        <div style={{ position: 'absolute', bottom: -6, left: '50%', transform: 'translateX(-50%)', width: 100, height: 10, background: 'radial-gradient(ellipse at center, rgba(0,0,0,0.3) 0%, rgba(0,0,0,0) 70%)', pointerEvents: 'none' }} />
+      {/* === POLTRONA/PUFF === */}
+      <div style={{ position: 'absolute', bottom: '8%', right: '8%', zIndex: 3 }}>
+        <div style={{ position: 'relative', width: 70, height: 50, background: isNight ? '#5a4060' : '#8b4a3a', borderRadius: '40% 40% 10% 10%', boxShadow: 'inset 0 -6px 0 rgba(0,0,0,0.2), 0 4px 0 #2a1810' }} />
       </div>
 
-      {/* === RÁDIO no chão (com sombra) === */}
-      <div
-        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: '22%', cursor: 'pointer', zIndex: 3 }}
-        onClick={() => onDialog({ who: 'rádio', text: 'tocando aquela playlist quente. só lofi e brasileirada romântica.' })}
-      >
-        <div style={{ position: 'relative', width: 56, height: 34, background: '#3a2418', border: '2px solid #1a0e08', borderRadius: 2 }}>
-          <div style={{ position: 'absolute', top: 3, left: 3, right: 3, height: 16, background: '#1a0e08' }}>
-            <div style={{ position: 'absolute', top: 2, left: 2, right: 2, height: 12, background: 'repeating-linear-gradient(90deg,#5a4030 0,#5a4030 2px,#3a2418 2px,#3a2418 4px)' }} />
-          </div>
-          <div style={{ position: 'absolute', bottom: 4, left: 6, width: 7, height: 7, background: '#c94c4c', borderRadius: '50%', boxShadow: '0 0 4px rgba(201,76,76,0.6)' }} />
-          <div style={{ position: 'absolute', bottom: 4, left: 18, width: 7, height: 7, background: '#f0c040', borderRadius: '50%' }} />
-          {/* antena */}
-          <div style={{ position: 'absolute', top: -14, right: 6, width: 2, height: 14, background: '#1a0e08', transform: 'rotate(15deg)' }} />
+      {/* === RÁDIO/TOCA-DISCOS no chão === */}
+      <div style={{ position: 'absolute', bottom: '3%', right: '18%', width: 50, height: 30, background: '#3a2418', border: '2px solid #1a0e08', zIndex: 3 }}>
+        <div style={{ position: 'absolute', top: 3, left: 3, right: 3, height: 14, background: '#1a0e08' }}>
+          <div style={{ position: 'absolute', top: 2, left: 2, right: 2, height: 10, background: 'repeating-linear-gradient(90deg,#5a4030 0,#5a4030 2px,#3a2418 2px,#3a2418 4px)' }} />
         </div>
-        <GroundShadow bottom="-4px" left="50%" width={70} opacity={0.3} />
+        <div style={{ position: 'absolute', bottom: 4, left: 6, width: 6, height: 6, background: '#c94c4c', borderRadius: '50%' }} />
+        <div style={{ position: 'absolute', bottom: 4, left: 16, width: 6, height: 6, background: '#f0c040', borderRadius: '50%' }} />
       </div>
       {/* notas musicais */}
-      <div style={{ position: 'absolute', bottom: '14%', right: '18%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 16, animation: 'sway 2s ease-in-out infinite', zIndex: 3 }}>♪</div>
-      <div style={{ position: 'absolute', bottom: '18%', right: '15%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 13, animation: 'sway 2.5s ease-in-out 0.3s infinite', zIndex: 3 }}>♫</div>
-      <div style={{ position: 'absolute', bottom: '22%', right: '20%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 11, animation: 'sway 3s ease-in-out 0.6s infinite', zIndex: 3 }}>♩</div>
+      <div style={{ position: 'absolute', bottom: '14%', right: '14%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 16, animation: 'sway 2s ease-in-out infinite', zIndex: 3 }}>♪</div>
+      <div style={{ position: 'absolute', bottom: '18%', right: '11%', color: isNight ? '#ffd97a' : '#c94c4c', fontSize: 13, animation: 'sway 2.5s ease-in-out 0.3s infinite', zIndex: 3 }}>♫</div>
 
-      {/* === RELÓGIO DE PAREDE (maior, números visíveis) === */}
-      <div style={{ position: 'absolute', top: '8%', left: '22%', width: 52, height: 52, background: '#f4e4c1', border: '4px solid #3a2418', borderRadius: '50%', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center', boxShadow: '3px 3px 0 rgba(0,0,0,0.3), inset 2px 2px 0 rgba(255,255,255,0.3)' }}>
-        {/* marcas das horas */}
-        <div style={{ position: 'absolute', top: 3, left: '50%', transform: 'translateX(-50%)', width: 2, height: 4, background: '#2a1810' }} />
-        <div style={{ position: 'absolute', bottom: 3, left: '50%', transform: 'translateX(-50%)', width: 2, height: 4, background: '#2a1810' }} />
-        <div style={{ position: 'absolute', left: 3, top: '50%', transform: 'translateY(-50%)', width: 4, height: 2, background: '#2a1810' }} />
-        <div style={{ position: 'absolute', right: 3, top: '50%', transform: 'translateY(-50%)', width: 4, height: 2, background: '#2a1810' }} />
-        {/* ponteiros */}
-        <div style={{ position: 'absolute', width: 2.5, height: 14, background: '#2a1810', top: 8, left: '50%', transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${t * 360}deg)` }} />
-        <div style={{ position: 'absolute', width: 2, height: 18, background: '#c94c4c', top: 4, left: '50%', transformOrigin: 'bottom center', transform: `translateX(-50%) rotate(${t * 360 * 12}deg)` }} />
-        <div style={{ width: 5, height: 5, background: '#2a1810', borderRadius: '50%', position: 'relative', zIndex: 2 }} />
+      {/* === RELOGIO DE PAREDE === */}
+      <div style={{ position: 'absolute', top: '8%', right: '32%', width: 38, height: 38, background: '#f4e4c1', border: '4px solid #3a2418', borderRadius: '50%', zIndex: 2, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div style={{ position: 'absolute', width: 2, height: 10, background: '#2a1810', top: 6, transformOrigin: 'bottom center', transform: 'rotate(40deg)' }} />
+        <div style={{ position: 'absolute', width: 1.5, height: 13, background: '#c94c4c', bottom: 14, transformOrigin: 'bottom center', transform: 'rotate(-30deg)' }} />
+        <div style={{ width: 4, height: 4, background: '#2a1810', borderRadius: '50%' }} />
       </div>
 
       {/* === PLANTA SUSPENSA DO TETO === */}
@@ -2185,180 +1949,90 @@ function Hero({ onDialog }) {
         </div>
       </div>
 
-      {/* === SOFÁ central + casal (usando sprites high-res) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_MID}%`, left: '50%', transform: 'translateX(-50%)', zIndex: 4 }}>
-        {/* casal sentado atrás do sofá (busto visível acima do encosto) */}
-        <div style={{ position: 'absolute', bottom: 54, left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'flex-end', zIndex: 1 }}>
-          <img
-            src={EDU_IMG}
-            alt="Eduardo"
-            onClick={() => onDialog({ who: 'Edu', text: 'vem cá, senta aqui do meu lado que tá passando o nosso filme. trouxe pipoca, promise.' })}
-            style={{
-              width: 150, height: 'auto',
-              imageRendering: 'pixelated',
-              cursor: 'pointer',
-              animation: 'char-breathe 4s ease-in-out infinite',
-              filter: isNight ? 'brightness(0.78) saturate(0.9)' : 'none',
-              transition: 'filter 1.5s',
-              marginBottom: 0,
-            }}
-          />
-          <img
-            src={ISA_IMG}
-            alt="Isabella"
-            onClick={() => onDialog({ who: 'Bella', text: 'oi amor ♥ tô quase acabando esse episódio, fica aqui comigo que logo eu te presto atenção de novo.' })}
-            style={{
-              width: 160, height: 'auto',
-              imageRendering: 'pixelated',
-              cursor: 'pointer',
-              animation: 'char-breathe-offset 4.2s ease-in-out 0.4s infinite',
-              filter: isNight ? 'brightness(0.78) saturate(0.9)' : 'none',
-              transition: 'filter 1.5s',
-              marginLeft: -42,
-              marginBottom: 2,
-            }}
-          />
-          {/* coraçãozinho batendo acima do casal */}
-          <div style={{ position: 'absolute', top: -32, left: '50%', animation: 'heart-bump-couple 1.4s ease-in-out infinite', zIndex: 2 }}>
-            <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={3} />
-          </div>
+      {/* === SOFÁ pequeno no centro + casal GRANDE (casal é a estrela) === */}
+      <div style={{ position: 'absolute', bottom: '15%', left: '50%', transform: 'translateX(-50%)', zIndex: 4 }}>
+        {/* sofá baixo e proporcional */}
+        <div style={{ position: 'relative', width: 320, height: 60, background: isNight ? '#4a3d5a' : '#c94c6a', borderRadius: '8px 8px 4px 4px', boxShadow: 'inset 0 -6px 0 rgba(0,0,0,0.2), 0 6px 0 #2a2220' }}>
+          {/* almofadas */}
+          <div style={{ position: 'absolute', top: 8, left: 16, width: 54, height: 32, background: isNight ? '#8b6ba8' : '#f0c040', borderRadius: 5 }} />
+          <div style={{ position: 'absolute', top: 8, left: 102, width: 54, height: 32, background: isNight ? '#6a5a7c' : '#ede0c3', borderRadius: 5 }} />
+          <div style={{ position: 'absolute', top: 8, right: 16, width: 54, height: 32, background: isNight ? '#8b5aa8' : '#d97760', borderRadius: 5 }} />
+          <div style={{ position: 'absolute', top: -4, left: -8, width: 14, height: 60, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6 }} />
+          <div style={{ position: 'absolute', top: -4, right: -8, width: 14, height: 60, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6 }} />
         </div>
 
-        {/* sofá proporcional (encosto cobre do quadril pra baixo) */}
-        <div style={{ position: 'relative', width: 360, height: 90, background: isNight ? '#4a3d5a' : '#c94c6a', borderRadius: '10px 10px 6px 6px', boxShadow: 'inset 0 -8px 0 rgba(0,0,0,0.22), 0 6px 0 #2a2220, inset 2px 2px 0 rgba(255,255,255,0.08)', zIndex: 2 }}>
-          {/* encosto (parte alta) */}
-          <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 34, background: isNight ? 'linear-gradient(to bottom, #5a4d6a, #4a3d5a)' : 'linear-gradient(to bottom, #d95c7a, #b93c5a)', borderRadius: '10px 10px 0 0' }} />
-          {/* linha divisória encosto/assento */}
-          <div style={{ position: 'absolute', top: 34, left: 8, right: 8, height: 2, background: 'rgba(0,0,0,0.25)' }} />
-          {/* almofadas menores (3 espalhadas) */}
-          <div style={{ position: 'absolute', top: 40, left: 16, width: 44, height: 26, background: isNight ? '#8b6ba8' : '#f0c040', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
-          <div style={{ position: 'absolute', top: 40, left: '50%', transform: 'translateX(-50%)', width: 44, height: 26, background: isNight ? '#6a5a7c' : '#ede0c3', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
-          <div style={{ position: 'absolute', top: 40, right: 16, width: 44, height: 26, background: isNight ? '#8b5aa8' : '#d97760', borderRadius: 5, boxShadow: 'inset -2px -2px 0 rgba(0,0,0,0.18)' }} />
-          {/* braços laterais */}
-          <div style={{ position: 'absolute', top: -6, left: -10, width: 16, height: 90, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6, boxShadow: 'inset 2px 0 0 rgba(255,255,255,0.08)' }} />
-          <div style={{ position: 'absolute', top: -6, right: -10, width: 16, height: 90, background: isNight ? '#3a2d4a' : '#8b3a5a', borderRadius: 6, boxShadow: 'inset -2px 0 0 rgba(255,255,255,0.08)' }} />
-          {/* pezinhos */}
-          <div style={{ position: 'absolute', bottom: -8, left: 20, width: 10, height: 8, background: '#2a2220' }} />
-          <div style={{ position: 'absolute', bottom: -8, right: 20, width: 10, height: 8, background: '#2a2220' }} />
+        {/* Casal sentado no sofá — ESCALA HUMANA (scale 9) */}
+        <div style={{ position: 'absolute', bottom: 10, left: '50%', transform: 'translateX(-50%)', display: 'flex', alignItems: 'flex-end' }}>
+          <div style={{ animation: 'bob 3s ease-in-out infinite', zIndex: 2 }}>
+            <PixelSprite data={EDU_DATA} palette={EDU_PALETTE} scale={9} />
+          </div>
+          <div style={{ animation: 'bob 3s ease-in-out 0.15s infinite', marginLeft: -30, marginBottom: 16 }}>
+            <PixelSprite data={ISA_DATA} palette={ISA_PALETTE} scale={9} />
+          </div>
+          <div style={{ position: 'absolute', top: -56, left: '50%', transform: 'translateX(-50%)', animation: 'heart-pulse 1.5s ease-in-out infinite' }}>
+            <PixelSprite data={HEART_DATA} palette={HEART_PALETTE} scale={4} />
+          </div>
         </div>
-        {/* sombra do sofá */}
-        <GroundShadow bottom="-14px" left="50%" width={380} opacity={0.32} />
       </div>
 
       {/* === MESINHA DE CENTRO na frente do sofá === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 2}%`, left: '50%', transform: 'translateX(-50%)', width: 160, height: 36, zIndex: 3 }}>
-        {/* tampo */}
-        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, background: '#3a2418', borderTop: '2px solid #5a3a22', borderBottom: '2px solid #1a1008' }} />
-        {/* pernas */}
-        <div style={{ position: 'absolute', bottom: 0, left: 8, width: 6, height: 34, background: '#2a1810' }} />
-        <div style={{ position: 'absolute', bottom: 0, right: 8, width: 6, height: 34, background: '#2a1810' }} />
-        {/* travessa inferior */}
-        <div style={{ position: 'absolute', bottom: 4, left: 14, right: 14, height: 3, background: '#2a1810' }} />
+      <div style={{ position: 'absolute', bottom: '6%', left: '50%', transform: 'translateX(-50%)', width: 180, height: 40, zIndex: 3 }}>
+        <div style={{ position: 'absolute', top: 0, left: 0, right: 0, height: 8, background: '#3a2418' }} />
+        <div style={{ position: 'absolute', bottom: 0, left: 8, width: 6, height: 36, background: '#2a1810' }} />
+        <div style={{ position: 'absolute', bottom: 0, right: 8, width: 6, height: 36, background: '#2a1810' }} />
         {/* livro aberto */}
-        <div style={{ position: 'absolute', top: -10, left: 20, width: 40, height: 14, background: '#f4e4c1', border: '2px solid #8b5a2c', transform: 'rotate(-6deg)' }}>
+        <div style={{ position: 'absolute', top: -10, left: 30, width: 40, height: 14, background: '#f4e4c1', border: '2px solid #8b5a2c', transform: 'rotate(-6deg)' }}>
           <div style={{ position: 'absolute', top: 4, left: 3, right: 3, height: 1, background: '#8b5a2c', opacity: 0.5 }} />
           <div style={{ position: 'absolute', top: 7, left: 3, right: 3, height: 1, background: '#8b5a2c', opacity: 0.5 }} />
         </div>
         {/* vela acesa */}
-        <div style={{ position: 'absolute', top: -22, left: 72, width: 10, height: 18, background: '#ede0c3' }}>
+        <div style={{ position: 'absolute', top: -22, right: 30, width: 10, height: 18, background: '#ede0c3' }}>
           <div style={{ position: 'absolute', top: -6, left: 3, width: 4, height: 8, background: '#ffd97a', borderRadius: '50% 50% 20% 20%', boxShadow: '0 0 10px #ffd97a', animation: 'twinkle 1.5s ease-in-out infinite' }} />
         </div>
-        {/* caneca */}
-        <div style={{ position: 'absolute', top: -14, right: 18, width: 14, height: 14, background: '#c94c4c', border: '2px solid #8b2a2a', borderRadius: '2px 2px 4px 4px' }}>
-          <div style={{ position: 'absolute', top: 2, right: -4, width: 4, height: 7, border: '2px solid #8b2a2a', borderLeft: 'none', borderRadius: '0 50% 50% 0' }} />
-          <div style={{ position: 'absolute', top: -10, left: 3, fontSize: 9, color: '#aaa', opacity: 0.6, animation: 'sway 2s ease-in-out infinite' }}>~</div>
-        </div>
       </div>
-      <GroundShadow bottom={`${TIER_FRONT}%`} left="50%" width={180} opacity={0.28} />
 
-      {/* === CHIHUAHUA (sprite high-res) === */}
+      {/* === CHIHUAHUA (caramelo) no tapete === */}
       <div
-        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '20%', cursor: 'pointer', zIndex: 5 }}
+        style={{ position: 'absolute', bottom: '4%', left: '22%', cursor: 'pointer', animation: 'chicken-walk 8s ease-in-out infinite', zIndex: 5 }}
         onClick={() => onDialog({ who: 'chihuahua', text: 'au au au! *chacoalha o corpinho todo* O-LÁ! vocês trouxeram petisco???' })}
       >
-        <img
-          src={DOG_IMG}
-          alt="chihuahua"
-          style={{
-            width: 110, height: 'auto',
-            imageRendering: 'pixelated',
-            animation: 'dog-wag 3.2s ease-in-out infinite',
-            filter: isNight ? 'brightness(0.75) saturate(0.9)' : 'none',
-            transition: 'filter 1.5s',
-            display: 'block',
-          }}
-        />
-        <GroundShadow bottom="-4px" left="50%" width={110} opacity={0.35} />
+        <PixelSprite data={DOG_DATA} palette={DOG_PALETTE} scale={5} />
       </div>
 
-      {/* === GATO CINZA (sprite high-res) === */}
+      {/* === GATO CINZA === */}
       <div
-        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: '28%', cursor: 'pointer', zIndex: 5 }}
+        style={{ position: 'absolute', bottom: '4%', right: '22%', cursor: 'pointer', zIndex: 5 }}
         onClick={() => onDialog({ who: 'gato cinza', text: 'miau... *se espreguiça* pode passar, humanos. só não ocupem meu lugar no sofá.' })}
       >
-        <img
-          src={CAT_IMG}
-          alt="gato"
-          style={{
-            width: 100, height: 'auto',
-            imageRendering: 'pixelated',
-            animation: 'cat-idle 5s ease-in-out infinite, cat-blink 6s ease-in-out infinite',
-            filter: isNight ? 'brightness(0.75) saturate(0.9)' : 'none',
-            transition: 'filter 1.5s',
-            display: 'block',
-          }}
-        />
-        <GroundShadow bottom="-4px" left="50%" width={92} opacity={0.35} />
-      </div>
-
-      {/* === TAPETE grande — fica atrás de tudo no chão (z-index baixo) === */}
-      <div style={{
-        position: 'absolute', bottom: `${TIER_FRONT - 1}%`, left: '18%', right: '18%', height: 32,
-        background: isNight
-          ? 'repeating-linear-gradient(90deg, #5a3a5a 0, #5a3a5a 18px, #8b5a8b 18px, #8b5a8b 36px)'
-          : 'repeating-linear-gradient(90deg, #c94c4c 0, #c94c4c 18px, #f0c040 18px, #f0c040 36px)',
-        borderRadius: 4,
-        opacity: 0.88,
-        border: '3px solid ' + (isNight ? '#3a1a3a' : '#8b2a2a'),
-        boxShadow: '0 3px 0 rgba(0,0,0,0.25)',
-        zIndex: 2,
-      }}>
-        {/* franjas do tapete */}
-        <div style={{ position: 'absolute', left: -6, top: 0, bottom: 0, width: 4, background: 'repeating-linear-gradient(0deg, transparent 0, transparent 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 5px)' }} />
-        <div style={{ position: 'absolute', right: -6, top: 0, bottom: 0, width: 4, background: 'repeating-linear-gradient(0deg, transparent 0, transparent 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 3px, ' + (isNight ? '#8b5a8b' : '#f0c040') + ' 5px)' }} />
+        <PixelSprite data={GRAY_CAT_DATA} palette={GRAY_CAT_PALETTE} scale={5} />
       </div>
 
       {/* === HALTERES === */}
       <div
-        style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '10%', cursor: 'pointer', zIndex: 4 }}
+        style={{ position: 'absolute', bottom: '3%', left: '8%', cursor: 'pointer', zIndex: 4 }}
         onClick={() => onDialog({ who: 'academia', text: 'PR novo hoje? vamos treinar perna, prometo que depois tem pizza. (mentira da nutri)' })}
       >
         <PixelSprite data={DUMBBELL_DATA} palette={DUMBBELL_PALETTE} scale={5} />
-        <GroundShadow bottom="-4px" left="50%" width={70} opacity={0.3} />
       </div>
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT - 1}%`, left: '16%', zIndex: 4 }}>
+      <div style={{ position: 'absolute', bottom: '2%', left: '14%', zIndex: 4 }}>
         <PixelSprite data={DUMBBELL_DATA} palette={DUMBBELL_PALETTE} scale={4} />
-        <GroundShadow bottom="-4px" left="50%" width={56} opacity={0.28} />
       </div>
 
-      {/* === PLANTA DE CHÃO grande (canto direito, atrás da poltrona) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT + 4}%`, right: '16%', animation: 'sway 4s ease-in-out infinite', zIndex: 3, transformOrigin: 'bottom center' }}>
-        <PixelSprite data={PLANT_DATA} palette={PLANT_PALETTE} scale={5} />
-      </div>
-      {/* vaso abaixo da planta grande (acabamento) */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, right: 'calc(16% - 4px)', width: 54, height: 32, background: '#c27a5a', border: '3px solid #8b5a2c', borderRadius: '4px 4px 8px 8px', zIndex: 2 }}>
-        <div style={{ position: 'absolute', top: 4, left: 2, right: 2, height: 2, background: 'rgba(0,0,0,0.25)' }} />
-      </div>
-      <GroundShadow bottom={`${TIER_FRONT - 1}%`} left="calc(100% - 16% + 20px)" width={80} opacity={0.3} />
+      {/* === TAPETE grande === */}
+      <div style={{
+        position: 'absolute', bottom: '2%', left: '22%', right: '22%', height: 22,
+        background: isNight
+          ? 'repeating-linear-gradient(90deg, #5a3a5a 0, #5a3a5a 14px, #8b5a8b 14px, #8b5a8b 28px)'
+          : 'repeating-linear-gradient(90deg, #c94c4c 0, #c94c4c 14px, #f0c040 14px, #f0c040 28px)',
+        borderRadius: 3,
+        opacity: 0.85,
+        border: '2px solid ' + (isNight ? '#3a1a3a' : '#8b2a2a'),
+        zIndex: 2,
+      }} />
 
-      {/* === CESTO no canto esquerdo (preenche lado esquerdo) === */}
-      <div style={{ position: 'absolute', bottom: `${TIER_FRONT}%`, left: '19%', zIndex: 3 }}>
-        <div style={{ position: 'relative', width: 46, height: 42, background: 'repeating-linear-gradient(45deg, #8b5a2c 0, #8b5a2c 3px, #a06a3a 3px, #a06a3a 6px)', border: '3px solid #5a3a1a', borderRadius: '4px 4px 10px 10px' }}>
-          <div style={{ position: 'absolute', top: -4, left: 2, right: 2, height: 6, background: '#5a3a1a', borderRadius: '50% 50% 2px 2px' }} />
-          {/* manta caindo */}
-          <div style={{ position: 'absolute', top: -8, right: -6, width: 20, height: 16, background: isNight ? '#8b6ba8' : '#ede0c3', borderRadius: '4px', transform: 'rotate(14deg)' }} />
-        </div>
-        <GroundShadow bottom="-4px" left="50%" width={56} opacity={0.28} />
+      {/* === PLANTA DE CHÃO grande (canto esquerdo) === */}
+      <div style={{ position: 'absolute', bottom: '4%', left: '2%', animation: 'sway 4s ease-in-out infinite', zIndex: 3, transform: 'scale(1.5)', transformOrigin: 'bottom left' }}>
+        <PixelSprite data={PLANT_DATA} palette={PLANT_PALETTE} scale={4} />
       </div>
 
       {/* Luminária de chão à noite (halo) */}

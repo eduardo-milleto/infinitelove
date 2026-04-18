@@ -1,4 +1,4 @@
-import { createFileRoute, redirect, useNavigate } from '@tanstack/react-router';
+import { createFileRoute, redirect } from '@tanstack/react-router';
 import { useState } from 'react';
 import { Form } from 'react-aria-components';
 import { authClient, signIn } from '../lib/auth-client';
@@ -9,7 +9,11 @@ import { InfiniteCounter } from '../components/InfiniteCounter';
 export const Route = createFileRoute('/login')({
   beforeLoad: async () => {
     const { data } = await authClient.getSession();
-    if (data?.user) throw redirect({ to: '/' });
+    if (data?.user) {
+      window.location.replace('/app.html');
+      // Lança redirect pra satisfazer o router enquanto o browser navega
+      throw redirect({ to: '/' });
+    }
   },
   component: LoginPage,
 });
@@ -23,7 +27,6 @@ function usernameToEmail(raw: string): string {
 }
 
 function LoginPage() {
-  const navigate = useNavigate();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
@@ -39,7 +42,7 @@ function LoginPage() {
       setError('usuário ou senha inválidos');
       return;
     }
-    navigate({ to: '/' });
+    window.location.replace('/app.html');
   };
 
   return (

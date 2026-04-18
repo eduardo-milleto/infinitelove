@@ -1918,35 +1918,201 @@ Object.assign(window, { PixelCounter });
 // Galeria, Timeline, Cartinha, Playlist, Mapa, Achievements, Inventário, Carta final
 
 // --- GALERIA ----------------------------------------------
-const GALLERY = [
+const DEFAULT_GALLERY = [
   {
+    id: 'meme-drake',
+    date: 'desde sempre',
+    title: 'Sempre foi assim ♥',
+    photo: '/photos/meme-drake.png',
+    note: 'O casal 10/10 do universo. Drake aprovou.',
+  },
+  {
+    id: 'reveillon-2025',
     date: '31 de dezembro de 2025',
     title: 'Réveillon em Celso Ramos',
     photo: '/photos/reveillon-2025.jpg',
     note: 'Nossa primeira virada juntos, em Governador Celso Ramos (SC). Começou com um perrengue clássico — endereço errado no Airbnb e a imobiliária sumida, o coração gelou de todo mundo. Mas a praia estava linda, a gente curtiu cada dia e, pra completar o roteiro, faltou luz uns minutos antes da meia-noite. Abrimos 2026 rindo no escuro, juntos.',
   },
-  { date: '22 de dezembro de 2025', title: 'Natal juntos', note: 'A primeira ceia a dois — entre luzes, risadas e um filme que a gente nem assistiu.' },
+  { id: 'natal-2025', date: '22 de dezembro de 2025', title: 'Natal juntos', note: 'A primeira ceia a dois — entre luzes, risadas e um filme que a gente nem assistiu.' },
   {
+    id: 'camaqua-2025',
     date: 'novembro de 2025',
     title: 'Quadriciclo em Camaquã',
     photo: '/photos/camaqua-2.jpg',
     note: 'Na casa do namorado da irmã da Bella, em Camaquã. A gente pegou o quadriciclo e saiu rodando por aí — paisagem, sol, vento. Clássico meu: volta e meia eu acelerava sem avisar, e a Bella gritava agarrada em mim. Ela morria de medo e rachava o bico no mesmo segundo. Um dos dias mais gostosos.',
   },
-  { date: '08 de outubro de 2025', title: 'Primeira viagem', note: 'A gente descobriu que somos ótimos companheiros de estrada (e de mapas errados).' },
-  { date: '15 de julho de 2025', title: 'Aquele show', note: 'Cantei errado, você riu, e foi a coisa mais linda do mundo.' },
-  { date: '30 de maio de 2025', title: 'Nosso primeiro beijo', note: 'O mundo travou em 60fps e virou cutscene.' },
-  { date: '18 de abril de 2025', title: 'O começo', note: 'O dia em que a quest principal começou.' },
+  { id: 'primeira-viagem', date: '08 de outubro de 2025', title: 'Primeira viagem', note: 'A gente descobriu que somos ótimos companheiros de estrada (e de mapas errados).' },
+  { id: 'show', date: '15 de julho de 2025', title: 'Aquele show', note: 'Cantei errado, você riu, e foi a coisa mais linda do mundo.' },
+  { id: 'primeiro-beijo', date: '30 de maio de 2025', title: 'Nosso primeiro beijo', note: 'O mundo travou em 60fps e virou cutscene.' },
+  { id: 'comeco', date: '18 de abril de 2025', title: 'O começo', note: 'O dia em que a quest principal começou.' },
 ];
 
+const MEMORIES_KEY = 'infinitelove:memories:v1';
+
+function loadMemories() {
+  try {
+    const raw = localStorage.getItem(MEMORIES_KEY);
+    if (!raw) return DEFAULT_GALLERY;
+    const saved = JSON.parse(raw);
+    if (!Array.isArray(saved) || saved.length === 0) return DEFAULT_GALLERY;
+    return saved;
+  } catch {
+    return DEFAULT_GALLERY;
+  }
+}
+
+function saveMemories(list) {
+  try { localStorage.setItem(MEMORIES_KEY, JSON.stringify(list)); } catch {}
+}
+
+function fileToDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+function MemoryEditor({ initial, onSave, onCancel, onDelete }) {
+  const [title, setTitle] = useStateC(initial?.title || '');
+  const [date, setDate] = useStateC(initial?.date || '');
+  const [note, setNote] = useStateC(initial?.note || '');
+  const [photo, setPhoto] = useStateC(initial?.photo || '');
+  const isNew = !initial?.id;
+
+  const handleFile = async (e) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    const dataUrl = await fileToDataURL(file);
+    setPhoto(dataUrl);
+  };
+
+  const handleSave = () => {
+    if (!title.trim() || !note.trim() || !date.trim()) {
+      alert('preenche data, título e descrição pelo menos.');
+      return;
+    }
+    onSave({
+      id: initial?.id || ('custom-' + Date.now()),
+      title: title.trim(),
+      date: date.trim(),
+      note: note.trim(),
+      photo: photo || undefined,
+    });
+  };
+
+  return (
+    <div className="dialog-overlay" onClick={onCancel}>
+      <div className="dialog-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 560, width: 'min(560px, 92vw)', padding: 24 }}>
+        <div className="dialog-who">{isNew ? 'nova memória' : 'editar memória'}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontFamily: 'var(--serif)' }}>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>DATA</span>
+            <input
+              type="text"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              placeholder="ex: 12 de agosto de 2025"
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15 }}
+            />
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>TÍTULO</span>
+            <input
+              type="text"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              placeholder="ex: praia de manhã"
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15 }}
+            />
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>DESCRIÇÃO</span>
+            <textarea
+              value={note}
+              onChange={(e) => setNote(e.target.value)}
+              rows={4}
+              placeholder="conta a história dessa foto..."
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15, resize: 'vertical' }}
+            />
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>FOTO</span>
+            <input type="file" accept="image/*" onChange={handleFile} style={{ fontFamily: 'var(--serif)' }} />
+            {photo && (
+              <div style={{ marginTop: 8, maxHeight: 160, overflow: 'hidden', border: '2px solid var(--wood-dark)' }}>
+                <img src={photo} alt="preview" style={{ width: '100%', display: 'block' }} />
+              </div>
+            )}
+          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
+            {!isNew && onDelete && (
+              <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood-dark)' }} onClick={() => { if (confirm('apagar essa memória?')) onDelete(initial.id); }}>
+                apagar
+              </button>
+            )}
+            <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+              <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood)' }} onClick={onCancel}>cancelar</button>
+              <button className="pixel-btn pixel-btn-small" onClick={handleSave}>salvar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 function Gallery({ onDialog }) {
-  const [idx, setIdx] = useStateC(0);
+  const [memories, setMemories] = useStateC(loadMemories);
+  const [editing, setEditing] = useStateC(null); // null | 'new' | id
+  useEffectC(() => { saveMemories(memories); }, [memories]);
+
+  const editingItem = editing && editing !== 'new' ? memories.find((m) => m.id === editing) : null;
+
+  const handleCardClick = (m) => {
+    if (m.photo) {
+      onDialog({ who: m.title, text: m.note });
+    } else {
+      setEditing(m.id);
+    }
+  };
+
+  const handleSave = (item) => {
+    setMemories((prev) => {
+      const idx = prev.findIndex((m) => m.id === item.id);
+      if (idx === -1) return [item, ...prev];
+      const copy = prev.slice();
+      copy[idx] = item;
+      return copy;
+    });
+    setEditing(null);
+  };
+
+  const handleDelete = (id) => {
+    setMemories((prev) => prev.filter((m) => m.id !== id));
+    setEditing(null);
+  };
+
+  const handleReset = () => {
+    if (confirm('voltar pra lista padrão e apagar suas memórias adicionadas?')) {
+      setMemories(DEFAULT_GALLERY);
+    }
+  };
+
   return (
     <section className="gallery-section" id="galeria">
       <div className="section-label">NOSSA HISTÓRIA</div>
-      <h2 className="section-title">momentos que não esqueço</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap', marginBottom: 24 }}>
+        <h2 className="section-title" style={{ marginBottom: 0 }}>momentos que não esqueço</h2>
+        <div style={{ display: 'flex', gap: 8 }}>
+          <button className="pixel-btn pixel-btn-small" onClick={() => setEditing('new')}>+ novo momento</button>
+          <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood)' }} onClick={handleReset}>resetar</button>
+        </div>
+      </div>
       <div className="gallery-grid">
-        {GALLERY.map((g, i) => (
-          <article key={i} className="memory-card" onClick={() => setIdx(i)}>
+        {memories.map((g) => (
+          <article key={g.id} className="memory-card" onClick={() => handleCardClick(g)} style={{ cursor: 'pointer' }}>
             <div className="memory-photo">
               {g.photo ? (
                 <img
@@ -1957,7 +2123,7 @@ function Gallery({ onDialog }) {
               ) : (
                 <div className="photo-placeholder">
                   <div className="ph-pattern" />
-                  <div className="ph-label">foto · {g.title}</div>
+                  <div className="ph-label">+ adicionar foto</div>
                 </div>
               )}
               <div className="memory-date-tag">{g.date}</div>
@@ -1965,13 +2131,26 @@ function Gallery({ onDialog }) {
             <div className="memory-body">
               <h3>{g.title}</h3>
               <p>{g.note}</p>
-              <button className="pixel-btn pixel-btn-small" onClick={(e) => { e.stopPropagation(); onDialog({ who: g.title, text: g.note }); }}>
-                abrir memória →
-              </button>
+              <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+                <button className="pixel-btn pixel-btn-small" onClick={(e) => { e.stopPropagation(); onDialog({ who: g.title, text: g.note }); }}>
+                  abrir memória →
+                </button>
+                <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood)' }} onClick={(e) => { e.stopPropagation(); setEditing(g.id); }}>
+                  editar
+                </button>
+              </div>
             </div>
           </article>
         ))}
       </div>
+      {editing && (
+        <MemoryEditor
+          initial={editingItem || null}
+          onSave={handleSave}
+          onCancel={() => setEditing(null)}
+          onDelete={editingItem ? handleDelete : null}
+        />
+      )}
     </section>
   );
 }

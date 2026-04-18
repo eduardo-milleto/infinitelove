@@ -85,3 +85,17 @@ export const momentRelations = relations(moment, ({ many, one }) => ({
 export const photoRelations = relations(photo, ({ one }) => ({
   moment: one(moment, { fields: [photo.momentId], references: [moment.id] }),
 }));
+
+export const track = pgTable('track', {
+  id: uuid('id').primaryKey().defaultRandom(),
+  spotifyTrackId: text('spotify_track_id').notNull(),
+  title: text('title').notNull(),
+  artist: text('artist').notNull(),
+  mood: text('mood'),
+  position: integer('position').notNull().default(0),
+  createdBy: text('created_by')
+    .notNull()
+    .references(() => user.id, { onDelete: 'restrict' }),
+  createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+});

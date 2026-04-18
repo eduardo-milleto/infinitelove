@@ -7,6 +7,7 @@ import { auth } from './auth.js';
 import { env, isProd } from './env.js';
 import { momentsRoute } from './routes/moments.js';
 import { photosRoute } from './routes/photos.js';
+import { tracksRoute } from './routes/tracks.js';
 import { ensurePhotosRoot } from './lib/storage.js';
 
 process.on('uncaughtException', (err) => {
@@ -43,6 +44,7 @@ app.get('/', (c) => c.json({ name: 'infinitelove api', ok: true }));
 app.on(['GET', 'POST'], '/api/auth/*', (c) => auth.handler(c.req.raw));
 
 app.route('/api/moments', momentsRoute);
+app.route('/api/tracks', tracksRoute);
 app.route('/api', photosRoute);
 
 app.onError((err, c) => {

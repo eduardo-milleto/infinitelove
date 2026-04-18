@@ -40,3 +40,29 @@ export type MomentDto = z.infer<typeof MomentDto>;
 
 export const ALLOWED_IMAGE_MIME = ['image/jpeg', 'image/png', 'image/webp'] as const;
 export const MAX_UPLOAD_BYTES = 20 * 1024 * 1024;
+
+export const TrackCreateInput = z.object({
+  spotifyTrackId: z.string().trim().min(10).max(64),
+  title: z.string().trim().min(1).max(200),
+  artist: z.string().trim().min(1).max(200),
+  mood: z.string().trim().max(40).optional().nullable(),
+});
+export type TrackCreateInput = z.infer<typeof TrackCreateInput>;
+
+export const TrackUpdateInput = TrackCreateInput.partial().extend({
+  position: z.number().int().nonnegative().optional(),
+});
+export type TrackUpdateInput = z.infer<typeof TrackUpdateInput>;
+
+export const TrackDto = z.object({
+  id: z.string().uuid(),
+  spotifyTrackId: z.string(),
+  title: z.string(),
+  artist: z.string(),
+  mood: z.string().nullable(),
+  position: z.number().int().nonnegative(),
+  createdBy: z.string(),
+  createdAt: z.string().datetime(),
+  updatedAt: z.string().datetime(),
+});
+export type TrackDto = z.infer<typeof TrackDto>;

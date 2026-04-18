@@ -1667,6 +1667,95 @@ function Player({ boundaryRef }) {
   );
 }
 
+function CityScape({ isNight }) {
+  // Layout estável de prédios pixel — silhueta atrás do apê, aparece nas laterais
+  const buildings = React.useMemo(() => {
+    const pattern = [
+      { w: 70, h: 200, cols: 3, rows: 7, color: '#2a1a35', accent: '#3d2845' },
+      { w: 50, h: 150, cols: 2, rows: 5, color: '#3d2845', accent: '#4a3550' },
+      { w: 95, h: 260, cols: 4, rows: 9, color: '#1f1228', accent: '#352340' },
+      { w: 60, h: 175, cols: 2, rows: 6, color: '#2a1a35', accent: '#3d2845' },
+      { w: 80, h: 220, cols: 3, rows: 8, color: '#1a0f24', accent: '#2d1c38' },
+      { w: 55, h: 140, cols: 2, rows: 5, color: '#3d2845', accent: '#4a3550' },
+      { w: 75, h: 240, cols: 3, rows: 9, color: '#241632', accent: '#352340' },
+      { w: 65, h: 185, cols: 3, rows: 7, color: '#2a1a35', accent: '#3d2845' },
+    ];
+    const list = [];
+    let x = -20;
+    let i = 0;
+    while (x < 2400) {
+      const p = pattern[i % pattern.length];
+      list.push({ ...p, x, idx: i });
+      x += p.w + 6;
+      i++;
+    }
+    return list;
+  }, []);
+
+  return (
+    <div style={{
+      position: 'absolute',
+      bottom: '0',
+      left: 0,
+      right: 0,
+      height: '62%',
+      zIndex: 1,
+      pointerEvents: 'none',
+      overflow: 'hidden',
+    }}>
+      <svg
+        viewBox="0 0 2400 320"
+        preserveAspectRatio="xMidYEnd slice"
+        style={{ width: '100%', height: '100%', display: 'block', filter: isNight ? 'none' : 'brightness(1.1) saturate(0.9)' }}
+        shapeRendering="crispEdges"
+      >
+        {buildings.map((b) => {
+          const yTop = 320 - b.h;
+          const winW = 6, winH = 5;
+          const padX = 8, padY = 12;
+          const stepX = (b.w - padX * 2) / b.cols;
+          const stepY = (b.h - padY * 2) / b.rows;
+          return (
+            <g key={b.idx}>
+              {/* corpo */}
+              <rect x={b.x} y={yTop} width={b.w} height={b.h} fill={b.color} />
+              {/* faixa do telhado */}
+              <rect x={b.x + 3} y={yTop - 5} width={b.w - 6} height={5} fill={b.accent} />
+              {/* antena em alguns */}
+              {b.idx % 3 === 0 && (
+                <>
+                  <rect x={b.x + Math.floor(b.w / 2) - 1} y={yTop - 22} width={2} height={17} fill={b.accent} />
+                  <rect x={b.x + Math.floor(b.w / 2) - 3} y={yTop - 24} width={6} height={2} fill={b.accent} />
+                </>
+              )}
+              {/* janelas */}
+              {Array.from({ length: b.rows }).map((_, ry) =>
+                Array.from({ length: b.cols }).map((_, rx) => {
+                  const wx = b.x + padX + rx * stepX;
+                  const wy = yTop + padY + ry * stepY;
+                  const lit = ((b.idx * 7 + rx * 11 + ry * 5) % 7) < 4;
+                  const fill = isNight && lit ? '#ffd97a' : (lit ? '#5d4a55' : '#1a0f24');
+                  return (
+                    <rect
+                      key={`${rx}-${ry}`}
+                      x={wx}
+                      y={wy}
+                      width={winW}
+                      height={winH}
+                      fill={fill}
+                      opacity={isNight && lit ? 0.95 : 0.7}
+                    />
+                  );
+                })
+              )}
+            </g>
+          );
+        })}
+      </svg>
+    </div>
+  );
+}
+
 function Hero({ onDialog }) {
   const t = useTimeOfDay();
   const sky = skyGradient(t);
@@ -1757,6 +1846,9 @@ function Hero({ onDialog }) {
         background: 'linear-gradient(to bottom, rgba(13, 10, 46, 0.5), rgba(45, 27, 61, 0.2))',
         opacity: nightOverlayOpacity, pointerEvents: 'none', transition: 'opacity 1s',
       }} />
+
+      {/* === CIDADE PIXEL ATRÁS DO APÊ === */}
+      <CityScape isNight={isNight} />
 
       {/* === CENA DO APARTAMENTO (casal já incluso no PNG) === */}
       <div style={{
@@ -2376,46 +2468,266 @@ function Letter() {
 }
 
 // --- PLAYLIST ---------------------------------------------
-const PLAYLIST = [
-  { title: 'a primeira música nossa', artist: '—', mood: 'suave', dur: '3:42' },
-  { title: 'essa a gente cantou junto', artist: '—', mood: 'animada', dur: '4:18' },
-  { title: 'aquela do carro', artist: '—', mood: 'noturna', dur: '3:55' },
-  { title: 'a que eu lembro de você', artist: '—', mood: 'chorosa', dur: '4:02' },
-  { title: 'a do domingo de manhã', artist: '—', mood: 'tranquila', dur: '3:30' },
-];
+// --- PLAYLIST (conectada ao backend /api/tracks) ---------
+// Contract:
+//   GET    /api/tracks                → TrackDto[]
+//   POST   /api/tracks { spotifyTrackId, title, artist, mood? }
+//   PATCH  /api/tracks/:id { ... , position? }
+//   DELETE /api/tracks/:id
+
+function extractSpotifyTrackId(url) {
+  if (!url) return null;
+  const trimmed = url.trim();
+  // Direct ID (22 chars base62-ish)
+  if (/^[A-Za-z0-9]{20,40}$/.test(trimmed)) return trimmed;
+  const m = trimmed.match(/(?:open\.spotify\.com\/(?:intl-[a-z]+\/)?track\/|spotify:track:)([A-Za-z0-9]+)/);
+  return m ? m[1] : null;
+}
+
+async function fetchSpotifyOEmbed(url) {
+  try {
+    const res = await fetch(`https://open.spotify.com/oembed?url=${encodeURIComponent(url)}`);
+    if (!res.ok) return null;
+    return await res.json();
+  } catch { return null; }
+}
+
+function TrackEditor({ initial, onSave, onCancel, onDelete, saving }) {
+  const [urlInput, setUrlInput] = useStateC(initial ? `https://open.spotify.com/track/${initial.spotifyTrackId}` : '');
+  const [title, setTitle] = useStateC(initial?.title || '');
+  const [artist, setArtist] = useStateC(initial?.artist || '');
+  const [mood, setMood] = useStateC(initial?.mood || '');
+  const [loading, setLoading] = useStateC(false);
+  const isNew = !initial?.id;
+
+  const handleAutofill = async () => {
+    const id = extractSpotifyTrackId(urlInput);
+    if (!id) { alert('cola uma URL válida do Spotify, tipo https://open.spotify.com/track/...'); return; }
+    setLoading(true);
+    try {
+      const meta = await fetchSpotifyOEmbed(`https://open.spotify.com/track/${id}`);
+      if (meta?.title) {
+        // oEmbed title tende a vir "Música" ou "Música · Artista"
+        const parts = String(meta.title).split(/\s*[·\-—]\s*/);
+        if (!title) setTitle(parts[0] || meta.title);
+        if (!artist && parts[1]) setArtist(parts[1]);
+      }
+    } finally { setLoading(false); }
+  };
+
+  const handleSave = () => {
+    const id = extractSpotifyTrackId(urlInput);
+    if (!id) { alert('URL do Spotify inválida'); return; }
+    if (!title.trim() || !artist.trim()) { alert('preenche título e artista'); return; }
+    onSave({
+      id: initial?.id,
+      spotifyTrackId: id,
+      title: title.trim(),
+      artist: artist.trim(),
+      mood: mood.trim() || null,
+    });
+  };
+
+  return (
+    <div className="dialog-overlay" onClick={onCancel}>
+      <div className="dialog-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 560, width: 'min(560px, 92vw)', padding: 24 }}>
+        <div className="dialog-who">{isNew ? 'nova faixa' : 'editar faixa'}</div>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: 12, fontFamily: 'var(--serif)' }}>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>URL DO SPOTIFY</span>
+            <input
+              type="url"
+              value={urlInput}
+              onChange={(e) => setUrlInput(e.target.value)}
+              placeholder="https://open.spotify.com/track/..."
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 14 }}
+            />
+            <button type="button" className="pixel-btn pixel-btn-small" style={{ alignSelf: 'flex-start', marginTop: 6, background: 'var(--wood)' }} disabled={loading || !urlInput.trim()} onClick={handleAutofill}>
+              {loading ? 'buscando...' : 'preencher título/artista da URL'}
+            </button>
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>TÍTULO</span>
+            <input type="text" value={title} onChange={(e) => setTitle(e.target.value)} maxLength={200} placeholder="ex: a primeira música nossa"
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15 }} />
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>ARTISTA</span>
+            <input type="text" value={artist} onChange={(e) => setArtist(e.target.value)} maxLength={200}
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15 }} />
+          </label>
+          <label style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+            <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>CLIMA (opcional)</span>
+            <input type="text" value={mood} onChange={(e) => setMood(e.target.value)} maxLength={40} placeholder="ex: suave, animada, chorosa"
+              style={{ padding: '8px 10px', border: '2px solid var(--wood-dark)', background: 'var(--cream)', fontFamily: 'var(--serif)', fontSize: 15 }} />
+          </label>
+          <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
+            {!isNew && onDelete && (
+              <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood-dark)' }} disabled={saving}
+                onClick={() => { if (confirm('apagar essa faixa?')) onDelete(initial.id); }}>
+                apagar
+              </button>
+            )}
+            <div style={{ display: 'flex', gap: 8, marginLeft: 'auto' }}>
+              <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood)' }} disabled={saving} onClick={onCancel}>cancelar</button>
+              <button className="pixel-btn pixel-btn-small" disabled={saving} onClick={handleSave}>{saving ? 'salvando...' : 'salvar'}</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function SpotifyEmbedModal({ track, onClose }) {
+  if (!track) return null;
+  return (
+    <div className="dialog-overlay" onClick={onClose}>
+      <div className="dialog-box" onClick={(e) => e.stopPropagation()} style={{ maxWidth: 420, width: 'min(420px, 92vw)', padding: 18 }}>
+        <div className="dialog-who">{track.title}</div>
+        <div style={{ fontFamily: 'var(--serif)', fontSize: 14, opacity: 0.8, marginTop: -4, marginBottom: 12 }}>{track.artist}</div>
+        <iframe
+          title={track.title}
+          src={`https://open.spotify.com/embed/track/${track.spotifyTrackId}?utm_source=generator&theme=0`}
+          width="100%"
+          height="352"
+          frameBorder="0"
+          allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"
+          loading="lazy"
+          style={{ border: '3px solid var(--wood-dark)', boxShadow: '4px 4px 0 var(--wood-dark)', background: '#000' }}
+        />
+        <div className="dialog-hint" onClick={onClose}>clique fora pra fechar ▸</div>
+      </div>
+    </div>
+  );
+}
 
 function Playlist() {
-  const [playing, setPlaying] = useStateC(null);
+  const [tracks, setTracks] = useStateC([]);
+  const [loading, setLoading] = useStateC(true);
+  const [error, setError] = useStateC(null);
+  const [editing, setEditing] = useStateC(null); // null | 'new' | id
+  const [saving, setSaving] = useStateC(false);
+  const [playing, setPlaying] = useStateC(null); // track object or null
+
+  const refresh = async () => {
+    setLoading(true);
+    try {
+      const list = await apiFetch('/api/tracks');
+      setTracks(Array.isArray(list) ? list : []);
+      setError(null);
+    } catch (e) {
+      console.error('[playlist] fetch error:', e);
+      setError('não consegui carregar as músicas.');
+    } finally { setLoading(false); }
+  };
+
+  useEffectC(() => { refresh(); }, []);
+
+  const editingItem = editing && editing !== 'new' ? tracks.find((t) => t.id === editing) : null;
+
+  const handleSave = async (payload) => {
+    setSaving(true);
+    try {
+      if (payload.id) {
+        await apiFetch(`/api/tracks/${payload.id}`, {
+          method: 'PATCH',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            spotifyTrackId: payload.spotifyTrackId,
+            title: payload.title,
+            artist: payload.artist,
+            mood: payload.mood,
+          }),
+        });
+      } else {
+        await apiFetch('/api/tracks', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            spotifyTrackId: payload.spotifyTrackId,
+            title: payload.title,
+            artist: payload.artist,
+            mood: payload.mood,
+          }),
+        });
+      }
+      setEditing(null);
+      await refresh();
+    } catch (e) {
+      console.error('[playlist] save error:', e);
+      alert('deu ruim ao salvar: ' + e.message);
+    } finally { setSaving(false); }
+  };
+
+  const handleDelete = async (id) => {
+    setSaving(true);
+    try {
+      await apiFetch(`/api/tracks/${id}`, { method: 'DELETE' });
+      setEditing(null);
+      await refresh();
+    } catch (e) {
+      console.error('[playlist] delete error:', e);
+      alert('erro ao apagar: ' + e.message);
+    } finally { setSaving(false); }
+  };
+
   return (
     <section className="playlist-section" id="playlist">
       <div className="section-label">TRILHA SONORA</div>
-      <h2 className="section-title">nossas músicas</h2>
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', gap: 16, flexWrap: 'wrap', marginBottom: 24 }}>
+        <h2 className="section-title" style={{ marginBottom: 0 }}>nossas músicas</h2>
+        <button className="pixel-btn pixel-btn-small" onClick={() => setEditing('new')}>+ nova faixa</button>
+      </div>
       <div className="playlist-box">
         <div className="playlist-header">
           <PixelSprite data={NOTE_DATA} palette={NOTE_PALETTE} scale={3} />
           <div>
             <div style={{ fontFamily: 'var(--pixel)', fontSize: 14, letterSpacing: 2 }}>NOSSAS MÚSICAS.MP3</div>
-            <div style={{ fontSize: 12, opacity: 0.7 }}>{PLAYLIST.length} faixas · edite depois</div>
+            <div style={{ fontSize: 12, opacity: 0.7 }}>
+              {loading ? 'carregando...' : `${tracks.length} faixa${tracks.length === 1 ? '' : 's'} · clica no ▶ pra tocar`}
+            </div>
           </div>
         </div>
-        <ul className="playlist-list">
-          {PLAYLIST.map((p, i) => (
-            <li key={i} className={playing === i ? 'active' : ''} onClick={() => setPlaying(playing === i ? null : i)}>
-              <span className="pl-num">{String(i + 1).padStart(2, '0')}</span>
-              <span className="pl-title">{p.title}</span>
-              <span className="pl-mood">[{p.mood}]</span>
-              <span className="pl-dur">{p.dur}</span>
-              <span className="pl-play">{playing === i ? '▮▮' : '▶'}</span>
-            </li>
-          ))}
-        </ul>
-        {playing !== null && (
-          <div className="playlist-progress">
-            <div className="pp-bar" />
-            <div style={{ fontSize: 11, fontFamily: 'var(--pixel)', marginTop: 6, opacity: 0.7 }}>♪ tocando: {PLAYLIST[playing].title}</div>
+
+        {error && <div style={{ padding: 20, textAlign: 'center', color: 'var(--rose)', fontStyle: 'italic' }}>{error}</div>}
+
+        {!loading && !error && tracks.length === 0 && (
+          <div style={{ padding: '32px 20px', textAlign: 'center' }}>
+            <div style={{ fontSize: 28, marginBottom: 8 }}>🎶</div>
+            <p style={{ marginBottom: 12, opacity: 0.8 }}>nenhuma música ainda. que tal adicionar a primeira?</p>
+            <button className="pixel-btn pixel-btn-small" onClick={() => setEditing('new')}>+ primeira faixa</button>
           </div>
         )}
+
+        {!loading && !error && tracks.length > 0 && (
+          <ul className="playlist-list">
+            {tracks.map((t, i) => (
+              <li key={t.id} className={playing?.id === t.id ? 'active' : ''}>
+                <span className="pl-num">{String(i + 1).padStart(2, '0')}</span>
+                <span className="pl-title" style={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  <span>{t.title}</span>
+                  <span style={{ fontSize: 12, opacity: 0.6 }}>{t.artist}</span>
+                </span>
+                {t.mood && <span className="pl-mood">[{t.mood}]</span>}
+                <button className="pixel-btn pixel-btn-small" style={{ padding: '4px 10px', background: 'var(--wood)', fontSize: 11 }} onClick={(e) => { e.stopPropagation(); setEditing(t.id); }}>editar</button>
+                <span className="pl-play" onClick={() => setPlaying(t)} style={{ cursor: 'pointer' }}>▶</span>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
+
+      {editing && (
+        <TrackEditor
+          initial={editingItem || null}
+          onSave={handleSave}
+          onCancel={() => setEditing(null)}
+          onDelete={editingItem ? handleDelete : null}
+          saving={saving}
+        />
+      )}
+      <SpotifyEmbedModal track={playing} onClose={() => setPlaying(null)} />
     </section>
   );
 }

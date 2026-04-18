@@ -1754,13 +1754,19 @@ function Hero({ onDialog }) {
       <div style={{
         position: 'absolute',
         inset: 0,
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
+        overflow: 'hidden',
         zIndex: 2,
         pointerEvents: 'none',
       }}>
-        <div style={{ position: 'relative', height: '100%', aspectRatio: '1 / 1', maxWidth: '100%' }}>
+        <div style={{
+          position: 'absolute',
+          bottom: 0,
+          left: '50%',
+          transform: 'translateX(-50%)',
+          width: '100%',
+          minWidth: 'calc(100vh * 0.82)',
+          aspectRatio: '1 / 1',
+        }}>
           <img
             src="/scene/apartment.png"
             alt="nosso apartamento"
@@ -2245,12 +2251,35 @@ function Gallery({ onDialog }) {
 
 // --- TIMELINE --------------------------------------------
 const TIMELINE = [
-  { date: '18/04/2025', title: 'Level 1 — O começo', body: 'A gente se olhou e a quest principal começou.' },
-  { date: '30/05/2025', title: 'Level 3 — Primeiro beijo', body: 'Cutscene em câmera lenta, com trilha sonora e tudo.' },
-  { date: '15/07/2025', title: 'Level 5 — Show juntos', body: 'Braços levantados, voz rouca, coração cheio.' },
-  { date: '08/10/2025', title: 'Level 7 — Primeira viagem', body: 'Dois achievements desbloqueados: "perder-se juntos" e "rir muito".' },
-  { date: '22/12/2025', title: 'Level 9 — Natal a dois', body: 'Ceia, pijama, filme pela metade.' },
-  { date: '18/04/2026', title: 'Boss final — 1 ano!', body: 'Você é a melhor recompensa deste jogo.' },
+  {
+    title: 'Level 1 — Match no Tinder',
+    body: 'POV: ninguém precisa saber disso. Dois sem esperança nenhuma deslizando pra direita num domingo à toa — e a quest principal começou bem ali, entre um "oi" e um meme.',
+  },
+  {
+    title: 'Level 2 — Capotamos o carro 🚗💥',
+    body: 'Terceiro encontro, tudo indo lindo… até o carro capotar do lado da minha casa. Saímos de cabeça pra baixo, rindo de susto, já com plot twist digno de cutscene. Se isso não é sinal do universo, não sei o que é.',
+    image: '/assets/car-capotado.png',
+  },
+  {
+    title: 'Level 3 — Nasceu o amor',
+    body: 'Entre conversa até de madrugada, risadas bestas e aquele olhar meio bobo, rolou o clique. E logo depois veio o "quer namorar comigo?" — spoiler: deu certo.',
+  },
+  {
+    title: 'Level 4 — Melhorando juntos',
+    body: 'Dia após dia, a gente foi se encaixando melhor. Cada semana um motivo novo pra amar mais, cada detalhe somando XP no nosso save compartilhado.',
+  },
+  {
+    title: 'Level 5 — Boss das brigas',
+    body: 'Aí o jogo ficou difícil. Vieram as brigas, os dias pesados, os momentos em que parecia que a gente não ia passar da fase. Mas a gente nunca largou o controle — sempre voltou, sempre escolheu ficar.',
+  },
+  {
+    title: 'Level 6 — Green Valley / quase fui de ralo',
+    body: 'Festa eletrônica em Gramado, Green Valley, e… o Eduardo quase foi de ralo. Sério. Foi o núcleo da Terra me puxando. Você me segurou (literal e metaforicamente) e a gente saiu dessa junto também.',
+  },
+  {
+    title: 'Level 7 — Hoje',
+    body: 'E hoje? Hoje a gente tá muito bem. Mais forte, mais calmo, mais nosso. Sou grato por cada fase — as fáceis e as difíceis — e a gente segue crescendo juntos, um nível de cada vez.',
+  },
 ];
 
 function Timeline() {
@@ -2264,9 +2293,22 @@ function Timeline() {
           <div key={i} className={`timeline-item ${i % 2 === 0 ? 'left' : 'right'}`}>
             <div className="timeline-node" />
             <div className="timeline-card">
-              <div className="timeline-date">{t.date}</div>
               <h3>{t.title}</h3>
               <p>{t.body}</p>
+              {t.image && (
+                <img
+                  src={t.image}
+                  alt=""
+                  style={{
+                    display: 'block',
+                    marginTop: 14,
+                    marginLeft: i % 2 === 0 ? 'auto' : 0,
+                    width: 160,
+                    height: 'auto',
+                    imageRendering: 'pixelated',
+                  }}
+                />
+              )}
             </div>
           </div>
         ))}

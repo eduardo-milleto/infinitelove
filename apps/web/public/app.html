@@ -1421,6 +1421,14 @@ function DialogBox({ dialog, onClose }) {
     <div className="dialog-overlay" onClick={onClose}>
       <div className="dialog-box" onClick={(e) => e.stopPropagation()}>
         <div className="dialog-who">{dialog.who}</div>
+        {dialog.photo && (
+          <div style={{ marginBottom: 14, border: '3px solid var(--wood-dark)', boxShadow: '4px 4px 0 var(--wood-dark)', maxHeight: '55vh', overflow: 'hidden', background: '#000' }}>
+            <img src={dialog.photo} alt={dialog.who} style={{ width: '100%', maxHeight: '55vh', objectFit: 'contain', display: 'block' }} />
+          </div>
+        )}
+        {dialog.caption && (
+          <div style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 1.5, color: 'var(--sunset)', textTransform: 'uppercase', marginBottom: 10 }}>{dialog.caption}</div>
+        )}
         <div className="dialog-text">{shown}<span className="dialog-cursor">▮</span></div>
         <div className="dialog-hint" onClick={onClose}>clique ou pressione espaço ▸</div>
       </div>
@@ -1763,8 +1771,7 @@ function Hero({ onDialog }) {
           bottom: 0,
           left: '50%',
           transform: 'translateX(-50%)',
-          width: '100%',
-          minWidth: 'calc(100vh * 0.82)',
+          height: '115%',
           aspectRatio: '1 / 1',
         }}>
           <img
@@ -1968,7 +1975,7 @@ function photoUrl(photoId) {
   return `/api/photos/${photoId}/file`;
 }
 
-function MemoryEditor({ initial, onSave, onCancel, onDelete, saving }) {
+function MemoryEditor({ initial, onSave, onCancel, onDelete, onDeletePhoto, saving }) {
   const [title, setTitle] = useStateC(initial?.title || '');
   const [dateInput, setDateInput] = useStateC(isoToDateInput(initial?.happenedAt) || '');
   const [story, setStory] = useStateC(initial?.story || '');
@@ -2057,9 +2064,20 @@ function MemoryEditor({ initial, onSave, onCancel, onDelete, saving }) {
             <span style={{ fontFamily: 'var(--pixel)', fontSize: 12, letterSpacing: 2, color: 'var(--wood)' }}>FOTO</span>
             <input type="file" accept="image/jpeg,image/png,image/webp" onChange={handleFile} style={{ fontFamily: 'var(--serif)' }} />
             {previewSrc && (
-              <div style={{ marginTop: 8, maxHeight: 180, overflow: 'hidden', border: '2px solid var(--wood-dark)' }}>
+              <div style={{ marginTop: 8, maxHeight: 180, overflow: 'hidden', border: '2px solid var(--wood-dark)', position: 'relative' }}>
                 <img src={previewSrc} alt="preview" style={{ width: '100%', display: 'block' }} />
               </div>
+            )}
+            {existingPhoto && !file && onDeletePhoto && (
+              <button
+                type="button"
+                className="pixel-btn pixel-btn-small"
+                style={{ background: 'var(--wood-dark)', alignSelf: 'flex-start', marginTop: 8 }}
+                disabled={saving}
+                onClick={() => { if (confirm('remover essa foto? (a memória continua, sem imagem)')) onDeletePhoto(existingPhoto.id); }}
+              >
+                remover foto
+              </button>
             )}
           </label>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 10, gap: 8, flexWrap: 'wrap' }}>
@@ -2115,7 +2133,13 @@ function Gallery({ onDialog }) {
   const editingItem = editing && editing !== 'new' ? moments.find((m) => m.id === editing) : null;
 
   const handleCardClick = (m) => {
-    onDialog({ who: m.title, text: m.story });
+    const photo = m.photos?.[0];
+    onDialog({
+      who: m.title,
+      text: m.story,
+      photo: photo ? photoUrl(photo.id) : null,
+      caption: m.memeCaption || null,
+    });
   };
 
   const handleSave = async (payload, file) => {
@@ -2174,6 +2198,19 @@ function Gallery({ onDialog }) {
     }
   };
 
+  const handleDeletePhoto = async (photoId) => {
+    setSaving(true);
+    try {
+      await apiFetch(`/api/photos/${photoId}`, { method: 'DELETE' });
+      await refresh();
+    } catch (e) {
+      console.error('[gallery] delete photo error:', e);
+      alert('erro ao remover foto: ' + e.message);
+    } finally {
+      setSaving(false);
+    }
+  };
+
   return (
     <section className="gallery-section" id="galeria">
       <div className="section-label">NOSSA HISTÓRIA</div>
@@ -2222,7 +2259,7 @@ function Gallery({ onDialog }) {
                   {m.memeCaption && <p style={{ fontFamily: 'var(--pixel)', fontSize: 13, letterSpacing: 1.5, color: 'var(--sunset)', textTransform: 'uppercase', margin: '0 0 8px' }}>{m.memeCaption}</p>}
                   <p>{m.story.length > 180 ? m.story.slice(0, 180) + '...' : m.story}</p>
                   <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
-                    <button className="pixel-btn pixel-btn-small" onClick={(e) => { e.stopPropagation(); onDialog({ who: m.title, text: m.story }); }}>
+                    <button className="pixel-btn pixel-btn-small" onClick={(e) => { e.stopPropagation(); handleCardClick(m); }}>
                       abrir memória →
                     </button>
                     <button className="pixel-btn pixel-btn-small" style={{ background: 'var(--wood)' }} onClick={(e) => { e.stopPropagation(); setEditing(m.id); }}>
@@ -2242,6 +2279,7 @@ function Gallery({ onDialog }) {
           onSave={handleSave}
           onCancel={() => setEditing(null)}
           onDelete={editingItem ? handleDelete : null}
+          onDeletePhoto={editingItem ? handleDeletePhoto : null}
           saving={saving}
         />
       )}

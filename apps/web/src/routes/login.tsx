@@ -14,9 +14,17 @@ export const Route = createFileRoute('/login')({
   component: LoginPage,
 });
 
+// mapeia o "usuário" curto digitado no form para o e-mail real do Better Auth
+function usernameToEmail(raw: string): string {
+  const u = raw.trim().toLowerCase();
+  if (!u) return '';
+  if (u.includes('@')) return u;
+  return `${u}@infinitelove.local`;
+}
+
 function LoginPage() {
   const navigate = useNavigate();
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -25,10 +33,10 @@ function LoginPage() {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    const res = await signIn.email({ email, password });
+    const res = await signIn.email({ email: usernameToEmail(username), password });
     setLoading(false);
     if (res.error) {
-      setError('e-mail ou senha inválidos');
+      setError('usuário ou senha inválidos');
       return;
     }
     navigate({ to: '/' });
@@ -51,13 +59,13 @@ function LoginPage() {
 
         <Form onSubmit={onSubmit} className="flex flex-col gap-4">
           <TextField
-            label="e-mail"
-            type="email"
-            value={email}
-            onChange={setEmail}
+            label="usuário"
+            value={username}
+            onChange={setUsername}
             autoFocus
             isRequired
-            placeholder="voce@infinitelove.local"
+            placeholder="eduardo"
+            autoComplete="username"
           />
           <TextField
             label="senha"
@@ -65,6 +73,7 @@ function LoginPage() {
             value={password}
             onChange={setPassword}
             isRequired
+            autoComplete="current-password"
           />
           {error && <p className="text-sm text-[#b53333]">{error}</p>}
           <PixelButton type="submit" variant="pixel" isDisabled={loading}>

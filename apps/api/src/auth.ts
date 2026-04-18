@@ -19,7 +19,11 @@ function originVariants(url: string): string[] {
 const trustedOrigins = Array.from(new Set([
   ...originVariants(env.WEB_URL),
   ...originVariants(env.BETTER_AUTH_URL),
+  'https://eduebellaforever.com',
+  'https://www.eduebellaforever.com',
 ]));
+
+console.log('[auth] trustedOrigins:', trustedOrigins);
 
 export const auth = betterAuth({
   database: drizzleAdapter(db, {

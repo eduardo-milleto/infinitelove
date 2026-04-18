@@ -2,7 +2,7 @@ import { useQuery } from '@tanstack/react-query';
 import { createFileRoute, Link } from '@tanstack/react-router';
 import type { MomentDto } from '@infinitelove/shared';
 import { api } from '../lib/api';
-import { InfiniteCounter } from '../components/InfiniteCounter';
+import { HeroScene } from '../components/pixel/HeroScene';
 import { MomentCard } from '../components/MomentCard';
 
 export const Route = createFileRoute('/_authed/')({
@@ -17,7 +17,7 @@ function Home() {
 
   return (
     <div className="flex flex-col gap-10">
-      <InfiniteCounter />
+      <HeroScene />
 
       <section>
         <div className="flex items-end justify-between mb-6">
